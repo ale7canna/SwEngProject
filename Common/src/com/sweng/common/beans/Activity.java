@@ -1,8 +1,9 @@
 package com.sweng.common.beans;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Activity {
+public class Activity implements Serializable{
 	
 	private String name;
 	private String place;

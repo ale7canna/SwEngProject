@@ -1,6 +1,8 @@
 package com.sweng.common.beans;
 
-public class Participant {
+import java.io.Serializable;
+
+public class Participant implements Serializable {
 	private int idUser;
 	private int idProject;
 	

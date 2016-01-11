@@ -1,6 +1,8 @@
 package com.sweng.common.beans;
 
-public class Friendship {
+import java.io.Serializable;
+
+public class Friendship implements Serializable {
 
 	private int idUtente1;
 	private int idUtente2;

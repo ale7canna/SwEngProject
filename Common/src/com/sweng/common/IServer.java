@@ -9,6 +9,7 @@ import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.Notice;
 
 public interface IServer extends Remote{
 
@@ -23,5 +24,5 @@ public interface IServer extends Remote{
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
 	public void removeObserver(IClient _client) throws RemoteException;
-	public void notifyObservers() throws RemoteException;
+	public void notifyObservers(Notice _notice) throws RemoteException;
 }

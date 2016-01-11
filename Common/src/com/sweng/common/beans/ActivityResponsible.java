@@ -1,6 +1,8 @@
 package com.sweng.common.beans;
 
-public class ActivityResponsible {
+import java.io.Serializable;
+
+public class ActivityResponsible  implements Serializable{
 
 	private int idUser;
 	private int idActivity;

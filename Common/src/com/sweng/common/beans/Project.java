@@ -1,16 +1,18 @@
 package com.sweng.common.beans;
 
-public class Project {
+import java.io.Serializable;
+
+public class Project  implements Serializable{
 
 	private String name;
 	private int idProject;
-	private int idActivity;
+	private int idAdmin;
 	private boolean isActive;
 	
-	public Project(int _idProject, int _idActivity, String _name, boolean _isActive)
+	public Project(int _idProject, int _idAdmin, String _name, boolean _isActive)
 	{
 		idProject = _idProject;
-		idActivity = _idActivity;
+		idAdmin = _idAdmin;
 		name = _name;
 		isActive = _isActive;
 	}
@@ -31,12 +33,12 @@ public class Project {
 		this.idProject = idProject;
 	}
 
-	public int getIdActivity() {
-		return idActivity;
+	public int getIdAdmin() {
+		return idAdmin;
 	}
 
-	public void setIdActivity(int idActivity) {
-		this.idActivity = idActivity;
+	public void setIdAdmin(int idAdmin) {
+		this.idAdmin = idAdmin;
 	}
 
 	public boolean isActive() {
