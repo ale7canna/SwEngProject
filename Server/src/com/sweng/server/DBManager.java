@@ -38,7 +38,7 @@ public class DBManager {
 //	
 	
 	// METODI DI INTERROGAZIONE DB
-	public ArrayList<Activity> getActivityFromUser(User user) throws SQLException
+	public static ArrayList<Activity> getActivityFromUser(User user) throws SQLException
 	{
 		ArrayList<Activity> result = null;
 		String query = 	"SELECT * FROM attivita JOIN responsabile_attivita AS ar"
@@ -60,7 +60,7 @@ public class DBManager {
 		return result;
 	}
 	
-	public ArrayList<Project> getAllProjects() throws SQLException
+	public static ArrayList<Project> getAllProjects() throws SQLException
 	{
 		ArrayList<Project> result = null;
 		String query = 	"SELECT * FROM progetto";
@@ -78,7 +78,7 @@ public class DBManager {
 		return result;
 	}
 	
-	public ArrayList<User> getAllUsers() throws SQLException
+	public static ArrayList<User> getAllUsers() throws SQLException
 	{
 		ArrayList<User> result = null;
 		String query = 	"SELECT * FROM utente";

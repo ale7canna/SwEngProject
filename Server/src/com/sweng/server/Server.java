@@ -3,6 +3,7 @@ package com.sweng.server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
@@ -94,6 +95,34 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public void notifyObservers(Notice _notice) throws RemoteException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException {
+		ArrayList<Activity> result = null;
+		try
+		{
+			result = DBManager.getActivityFromUser(user);
+		}
+		catch (SQLException e)
+		{
+			
+		}
+		
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.sweng.common;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityResponsible;
@@ -23,6 +24,10 @@ public interface IServer extends Remote{
 	public void addUser(User _user) throws RemoteException;
 	
 	public User performLogin(String username, String password) throws RemoteException;
+	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException;
+	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException;
+	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException;
+	
 	
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
