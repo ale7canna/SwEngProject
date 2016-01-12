@@ -11,13 +11,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
 
-public class GUI extends JFrame {
-	public GUI() {
+public class ClientGUI extends JFrame {
+	public ClientGUI() {
 	}
 	
-	public void switchGui(JPanel panel)
-	{
-		getContentPane().removeAll();
-		getContentPane().add(panel);
-	}
+
 }

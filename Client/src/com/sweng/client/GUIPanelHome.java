@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import com.sweng.client.prova.MyTableModel;
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 
@@ -20,6 +21,10 @@ import javax.swing.JScrollPane;
 
 import java.awt.Dimension;
 import java.awt.List;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GUIPanelHome extends JPanel {
 	
@@ -65,6 +70,36 @@ public class GUIPanelHome extends JPanel {
 		UserInfo.add(UserName);
 		UserName.setColumns(10);
 		
+		JLabel NameLabel = new JLabel("Name");
+		NameLabel.setBounds(10, 29, 46, 14);
+		UserInfo.add(NameLabel);
+		
+		JLabel SurnameLabel = new JLabel("Surname\r\n");
+		SurnameLabel.setBounds(10, 73, 46, 14);
+		UserInfo.add(SurnameLabel);
+		
+		JLabel IdLabel = new JLabel("Id");
+		IdLabel.setBounds(10, 126, 46, 14);
+		UserInfo.add(IdLabel);
+		
+		JLabel UserNameLabel = new JLabel("UserName");
+		UserNameLabel.setBounds(10, 177, 65, 14);
+		UserInfo.add(UserNameLabel);
+		
+		JButton AddProjectButton = new JButton("Add Project\r\n");
+		AddProjectButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+			}
+		});
+		AddProjectButton.setBounds(311, 25, 89, 23);
+		UserInfo.add(AddProjectButton);
+		
+		JButton addFriendButton = new JButton("Add Friends");
+		addFriendButton.setBounds(311, 120, 89, 23);
+		UserInfo.add(addFriendButton);
+		
 	
 		ArrayList<String> titleFriends = new ArrayList<String>()
 				{{
@@ -82,6 +117,7 @@ public class GUIPanelHome extends JPanel {
 	    scrollPaneFriends.setBounds(5, 218, 884, 194);
 		
 	    tabbedPane.add(scrollPaneFriends);
+	    tabbedPane.setTitleAt(1, "My Friendship");
 	    
 	    
 	    ArrayList<String> titleActivity = new ArrayList<String>()
@@ -101,6 +137,7 @@ public class GUIPanelHome extends JPanel {
 	    scrollPaneActivity.setBounds(5, 218, 884, 194);
 	    
 	    tabbedPane.add(scrollPaneActivity);
+	    tabbedPane.setTitleAt(2, "My Activities");
 	    
 	    ArrayList<String> titleEvents = new ArrayList<String>()
 				{{
@@ -118,10 +155,11 @@ public class GUIPanelHome extends JPanel {
 	    scrollPaneProject.setBounds(5, 218, 884, 194);
 	    
 	    tabbedPane.add(scrollPaneProject);
+	    tabbedPane.setTitleAt(3, "My Projects");
 	
 	}
 	
-	public void userInfo(User u){
+	private void userInfo(User u){
 		Name.setText(u.getName());
 		Surname.setText(u.getSurname());
 		Id.setText(String.valueOf(u.getIdUser()));
@@ -129,7 +167,7 @@ public class GUIPanelHome extends JPanel {
 		
 	}
 	
-	public void addFriendtoList(ArrayList<User> user){
+	private void addFriendtoList(ArrayList<User> user){
 		
 	    List l = new List();
 		for(User u : user){
@@ -143,7 +181,7 @@ public class GUIPanelHome extends JPanel {
 		}
 	}
 	
-	public void addActivitytoList(ArrayList<Activity> activity){
+	private void addActivitytoList(ArrayList<Activity> activity){
 		List lActivity = new List();
 		for(Activity a: activity){
 			lActivity.add(a.getName(), 1);
@@ -156,7 +194,7 @@ public class GUIPanelHome extends JPanel {
 		}
 	}
 	
-	public void addProjecttoList(ArrayList<Project> project){
+	private void addProjecttoList(ArrayList<Project> project){
 		List lProject = new List();
 		for(Project p: project){
 			lProject.add(p.getName(), 1);
@@ -166,6 +204,16 @@ public class GUIPanelHome extends JPanel {
 			
 		}
 	}
+	
+	public void setUserInfo(User user, ArrayList<User> friendship, ArrayList<Activity> activity, ArrayList<Project> project){
+		
+		userInfo(user);
+		addFriendtoList(friendship);
+		addActivitytoList(activity);
+		addProjecttoList(project);
+		
+	}
+	
 	
 	class MyTableModel extends AbstractTableModel{
 
@@ -225,5 +273,4 @@ public class GUIPanelHome extends JPanel {
 	    
 	    	}
 	}
-	
 }

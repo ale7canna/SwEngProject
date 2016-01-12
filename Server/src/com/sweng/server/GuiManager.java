@@ -19,10 +19,7 @@ public class GuiManager{
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUI.setSize(600, 400);
 		GUI.setVisible(true);
-		
-		
-		
-		
+	
 	}
 	
 	public void LoadUser(ArrayList<User> users){

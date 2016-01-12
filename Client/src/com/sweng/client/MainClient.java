@@ -14,7 +14,7 @@ import com.sweng.common.beans.User;
 public class MainClient {
 
 	private static IServer server = null;
-	private static GUI gui = null;
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -31,13 +31,8 @@ public class MainClient {
 		}
 		
 		
-		gui = new GUI();
-		gui.switchGui(new GUIPanelSignIn(new GuiListener()));
-		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gui.setVisible(true);
-		gui.setSize(600, 400);
-		
-		
+		GuiManagerClient guiManagerClient = new GuiManagerClient(server);
+
 		
 	}
 	
@@ -46,28 +41,4 @@ public class MainClient {
 		return server;
 	}
 	
-	static class GuiListener implements EventListenerGUI
-	{
-
-		@Override
-		public void SignInRequest(String username, String password) {
-			// TODO Auto-generated method stub
-			try {
-				User user = server.performLogin(username, password);
-				GUIPanelHome home = new GUIPanelHome();
-				gui.switchGui(home);
-				gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				gui.setVisible(true);
-				gui.setSize(600, 400);
-				home.userInfo(user);
-				
-			}
-			catch (RemoteException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
-	}
-
 }
