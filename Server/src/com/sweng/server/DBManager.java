@@ -38,7 +38,7 @@ public class DBManager {
 		ArrayList<Activity> result = null;
 		try
 		{
-			String query = 	"SELECT * FROM attivita JOIN responsabile_attivita AS ar"
+			String query = 	"SELECT * FROM attivita JOIN responsabile_attivita AS ar "
 					+ 		"ON attivita.idAttivita = ar.idAttivita WHERE ar.idUtente = ?";
 			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
 			
@@ -59,6 +59,7 @@ public class DBManager {
 		}
 		catch (SQLException e)
 		{
+			e.printStackTrace();
 			throw new CustomException(Errors.ServerError);
 		}
 		
@@ -191,7 +192,7 @@ public class DBManager {
 		try
 		{
 			String query = 	"SELECT * FROM Utente JOIN amicizia "
-					+ 		"ON Utente.idUtente = amicizia.idUtente1 WHERE amicizia.idUtente2 = ?";
+					+ 		"ON Utente.idUtente = amicizia.idUtente2 WHERE amicizia.idUtente1 = ?";
 			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
 			
 			stat.setInt(1, user.getIdUser());

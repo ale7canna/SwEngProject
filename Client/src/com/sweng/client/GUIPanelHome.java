@@ -28,7 +28,9 @@ import java.awt.event.MouseEvent;
 
 public class GUIPanelHome extends JPanel {
 	
-	MyTableModel model;
+	MyTableModel modelFriendship;
+	MyTableModel modelActivity;
+	MyTableModel modelProject;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	private JTextField Name;
 	private JTextField Surname;
@@ -109,8 +111,8 @@ public class GUIPanelHome extends JPanel {
 			add("UserName");
 		}};
 
-		model = new MyTableModel(titleFriends);
-		JTable tableFriends = new JTable(model);
+		modelFriendship = new MyTableModel(titleFriends);
+		JTable tableFriends = new JTable(modelFriendship);
 		tableFriends.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableFriends.setFillsViewportHeight(true);
 		JScrollPane scrollPaneFriends = new JScrollPane(tableFriends);
@@ -129,8 +131,8 @@ public class GUIPanelHome extends JPanel {
 			add("IdProgetto");
 		}};
 		
-		model = new MyTableModel(titleActivity);
-		JTable tableActivity = new JTable(model);
+		modelActivity = new MyTableModel(titleActivity);
+		JTable tableActivity = new JTable(modelActivity);
 		tableActivity.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableActivity.setFillsViewportHeight(true);
 		JScrollPane scrollPaneActivity = new JScrollPane(tableActivity);
@@ -139,7 +141,7 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneActivity);
 	    tabbedPane.setTitleAt(2, "My Activities");
 	    
-	    ArrayList<String> titleEvents = new ArrayList<String>()
+	    ArrayList<String> titleProject = new ArrayList<String>()
 				{{
 			add("Nome");
 			add("Admin");
@@ -147,8 +149,8 @@ public class GUIPanelHome extends JPanel {
 			add("Attivo");
 		}};
 		
-		model = new MyTableModel(titleEvents);
-		JTable tableProject = new JTable(model);
+		modelProject = new MyTableModel(titleProject);
+		JTable tableProject = new JTable(modelProject);
 		tableProject.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableProject.setFillsViewportHeight(true);
 		JScrollPane scrollPaneProject = new JScrollPane(tableProject);
@@ -169,48 +171,53 @@ public class GUIPanelHome extends JPanel {
 	
 	private void addFriendtoList(ArrayList<User> user){
 		
-	    List l = new List();
+	    int k = 0;
 		for(User u : user){
-			l.add(u.getName(), 1);
-			l.add(u.getSurname(), 2);
-			l.add(String.valueOf(u.getIdUser()), 3);
-			l.add(u.getUsername(), 4);
+			List l = new List();
+			l.add(u.getName());
+			l.add(u.getSurname());
+			l.add(String.valueOf(u.getIdUser()));
+			l.add(u.getUsername());
 			
-			model.addRow(l);
-			
+			modelFriendship.addRow(l);			
 		}
 	}
 	
 	private void addActivitytoList(ArrayList<Activity> activity){
-		List lActivity = new List();
 		for(Activity a: activity){
+			List lActivity = new List();
 			lActivity.add(a.getName(), 1);
 			lActivity.add(a.getPlace(), 2);
 			lActivity.add(String.valueOf(a.getHour()), 3);
 			lActivity.add(String.valueOf(a.getIdActivity()), 4);
 			lActivity.add(String.valueOf(a.getIdProject()), 5);
 			
-			model.addRow(lActivity);
+			modelActivity.addRow(lActivity);
 		}
 	}
 	
 	private void addProjecttoList(ArrayList<Project> project){
-		List lProject = new List();
 		for(Project p: project){
+			List lProject = new List();
 			lProject.add(p.getName(), 1);
 			lProject.add(String.valueOf(p.getIdAdmin()), 2);
 			lProject.add(String.valueOf(p.getIdProject()), 3);
 			lProject.add(String.valueOf(p.isActive()), 4);
 			
+			modelProject.addRow(lProject);
 		}
 	}
 	
 	public void setUserInfo(User user, ArrayList<User> friendship, ArrayList<Activity> activity, ArrayList<Project> project){
 		
-		userInfo(user);
-		addFriendtoList(friendship);
-		addActivitytoList(activity);
-		addProjecttoList(project);
+		if (user != null)
+			userInfo(user);
+		if (friendship != null)
+			addFriendtoList(friendship);
+		if (activity != null)
+			addActivitytoList(activity);
+		if (project != null)
+			addProjecttoList(project);
 		
 	}
 	
