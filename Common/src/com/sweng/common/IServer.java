@@ -12,6 +12,7 @@ import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
+import com.sweng.common.utils.CustomException;
 
 public interface IServer extends Remote{
 
@@ -23,10 +24,10 @@ public interface IServer extends Remote{
 	public void addProject(Project _project) throws RemoteException;
 	public void addUser(User _user) throws RemoteException;
 	
-	public User performLogin(String username, String password) throws RemoteException;
-	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException;
-	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException;
-	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException;
+	public User performLogin(String username, String password) throws RemoteException, CustomException;
+	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException, CustomException;
+	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException, CustomException;
+	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException;
 	
 	
 	//OBSERVER PATTERN

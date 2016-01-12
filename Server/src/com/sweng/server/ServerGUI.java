@@ -45,6 +45,7 @@ public class ServerGUI extends JFrame{
 		splitPane.setLeftComponent(panel);
 		
 		list = new JList(new DefaultListModel());
+		
 		list.addListSelectionListener(new ListSelectionListener() {
 			
 			@Override

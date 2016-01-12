@@ -2,7 +2,7 @@ package com.sweng.common.utils;
 
 import java.util.HashMap;
 
-public abstract class CustomException extends Exception{
+public class CustomException extends Exception{
 
 	private static HashMap<Errors, String> listaErrori = null;
 	
@@ -27,6 +27,9 @@ public abstract class CustomException extends Exception{
 		listaErrori.put(Errors.UserNotFound, "Utente non esistente.");
 		listaErrori.put(Errors.WrongPassword, "Utente esistente, ma password sbagliata.");
 		listaErrori.put(Errors.ServerError, "Errore da parte del server.");
+		listaErrori.put(Errors.ActivitiesNotFound, "Nessuna attività presente.");
+		listaErrori.put(Errors.ProjectsNotFound, "Nessun progetto disponibile.");
+		
 			
 
 //		listaErrori.put(Errors.MaxHumidity, "L'umidità si trova già al massimo");

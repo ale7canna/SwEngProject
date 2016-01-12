@@ -14,6 +14,7 @@ import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
+import com.sweng.common.utils.CustomException;
 
 public class Server extends UnicastRemoteObject implements IServer{
 
@@ -61,20 +62,9 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 
 	@Override
-	public User performLogin(String username, String password) throws RemoteException {
+	public User performLogin(String username, String password) throws RemoteException, CustomException {
 		User result = null;
-		try 
-		{
-			result = DBManager.getUser(username, password);
-		}
-		catch (SQLException e)
-		{
-			
-		}
-		
-//		TODO 
-//		if (result == null)
-//			throws new Exception
+		result = DBManager.getUser(username, password);
 		
 		return result;
 	}
@@ -98,31 +88,27 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 
 	@Override
-	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException {
+	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException, CustomException {
 		ArrayList<Activity> result = null;
-		try
-		{
-			result = DBManager.getActivityFromUser(user);
-		}
-		catch (SQLException e)
-		{
-			
-		}
-		
+		result = DBManager.getActivityFromUser(user);		
 		
 		return result;
 	}
 
 	@Override
-	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException, CustomException {
+		ArrayList<Project> result = null;
+		result = DBManager.getProjectsFromUser(user);		
+		
+		return result;
 	}
 
 	@Override
-	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException {
+		ArrayList<User> result = null;
+		result = DBManager.getFriendsFromUser(user);
+
+		return result;
 	}
 
 }

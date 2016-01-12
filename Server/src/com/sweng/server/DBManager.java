@@ -13,6 +13,8 @@ import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
+import com.sweng.common.utils.CustomException;
+import com.sweng.common.utils.Errors;
 
 public class DBManager {
 
@@ -29,87 +31,189 @@ public class DBManager {
 		}
 	}
 	
-//	public DBManager() throws ClassNotFoundException, SQLException
-//	{
-//		Class.forName("com.mysql.jdbc.Driver");
-//		
-//		connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "root");		
-//	}
-//	
 	
 	// METODI DI INTERROGAZIONE DB
-	public static ArrayList<Activity> getActivityFromUser(User user) throws SQLException
+	public static ArrayList<Activity> getActivityFromUser(User user) throws CustomException
 	{
 		ArrayList<Activity> result = null;
-		String query = 	"SELECT * FROM attivita JOIN responsabile_attivita AS ar"
-				+ 		"ON attivita.idAttivita = ar.idAttivita WHERE ar.idUtente = ?";
-		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
-		
-		stat.setInt(1, user.getIdUser());
-		
-		ResultSet rs = stat.executeQuery();
-		
-		result = new ArrayList<Activity>();
-		while (rs.next())
+		try
 		{
-			Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"),
-					rs.getString("Nome"), rs.getString("Luogo"), rs.getDate("Ora"));
-			result.add(act);
+			String query = 	"SELECT * FROM attivita JOIN responsabile_attivita AS ar"
+					+ 		"ON attivita.idAttivita = ar.idAttivita WHERE ar.idUtente = ?";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			stat.setInt(1, user.getIdUser());
+			
+			ResultSet rs = stat.executeQuery();
+			
+			result = new ArrayList<Activity>();
+			while (rs.next())
+			{
+				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"),
+						rs.getString("Nome"), rs.getString("Luogo"), rs.getDate("Ora"));
+				result.add(act);
+			}
+			
+			if (result.isEmpty())
+				throw new CustomException(Errors.ActivitiesNotFound);
 		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
 		
 		return result;
 	}
 	
-	public static ArrayList<Project> getAllProjects() throws SQLException
+	public static ArrayList<Project> getAllProjects() throws CustomException
 	{
 		ArrayList<Project> result = null;
-		String query = 	"SELECT * FROM progetto";
-		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
-		
-		ResultSet rs = stat.executeQuery();
-		
-		result = new ArrayList<Project>();
-		while (rs.next())
+		try
 		{
-			Project proj = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"), rs.getBoolean("Attivo"));
-			result.add(proj);
+			String query = 	"SELECT * FROM progetto";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			ResultSet rs = stat.executeQuery();
+			
+			result = new ArrayList<Project>();
+			while (rs.next())
+			{
+				Project proj = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"), rs.getBoolean("Attivo"));
+				result.add(proj);
+			}
+			
+			if (result.isEmpty())
+				throw new CustomException(Errors.ProjectsNotFound);
 		}
-		
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
 		return result;
 	}
 	
-	public static ArrayList<User> getAllUsers() throws SQLException
+	public static ArrayList<User> getAllUsers() throws CustomException
 	{
 		ArrayList<User> result = null;
-		String query = 	"SELECT * FROM utente";
-		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
-		
-		ResultSet rs = stat.executeQuery();
-		
-		result = new ArrayList<User>();
-		while (rs.next())
+		try
 		{
-			User user = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
-			result.add(user);
+			String query = 	"SELECT * FROM utente";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			ResultSet rs = stat.executeQuery();
+			
+			result = new ArrayList<User>();
+			while (rs.next())
+			{
+				User user = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
+				result.add(user);
+			}
+			
+			if (result.isEmpty())
+				throw new CustomException(Errors.UserNotFound);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
 		}
 		
 		return result;
 	}
 	
-	public static User getUser(String username, String password) throws SQLException
+	public static User getUser(String username, String password) throws CustomException
 	{
 		User result = null;
 		String query = 	"SELECT * FROM utente WHERE UserName = ? AND Password = ?";
-		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
 		
-		stat.setString(1, username);
-		stat.setString(2, password);
-		
-		ResultSet rs = stat.executeQuery();
-		
-		while (rs.next())
-			result = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
+		try 
+		{
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
 			
+			stat.setString(1, username);
+			stat.setString(2, password);
+			
+			ResultSet rs = stat.executeQuery();
+			
+			while (rs.next())
+				result = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
+			
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		if (result == null)
+		{
+			if (userExists(username))
+				throw new CustomException(Errors.WrongPassword);
+			else
+				throw new CustomException(Errors.UserNotFound);
+		}
+		return result;
+	}
+	
+	public static ArrayList<Project> getProjectsFromUser(User user) throws CustomException
+	{
+		ArrayList<Project> result = null;
+		try
+		{
+			String query = 	"SELECT * FROM progetto JOIN partecipante "
+					+ 		"ON progetto.idProgetto = partecipante.idProgetto WHERE partecipante.idUtente = ?";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			stat.setInt(1, user.getIdUser());
+			
+			ResultSet rs = stat.executeQuery();
+			result = new ArrayList<Project>();
+			while (rs.next())
+			{
+				Project p = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"),
+						rs.getString("Nome"), rs.getBoolean("Attivo"));
+				result.add(p);
+			}
+			
+			if (result.isEmpty())
+				throw new CustomException(Errors.ProjectsNotFound);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		return result;
+	}
+	
+	public static ArrayList<User> getFriendsFromUser(User user) throws CustomException
+	{
+		ArrayList<User> result = null;
+		try
+		{
+			String query = 	"SELECT * FROM Utente JOIN amicizia "
+					+ 		"ON Utente.idUtente = amicizia.idUtente1 WHERE amicizia.idUtente2 = ?";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			stat.setInt(1, user.getIdUser());
+			
+			ResultSet rs = stat.executeQuery();
+			
+			result = new ArrayList<User>();
+			while (rs.next())
+			{
+				User u = new User(rs.getInt("idUtente"), rs.getString("Nome"),
+						rs.getString("Cognome"), rs.getString("UserName"), rs.getString("Password"));
+				result.add(u);
+			}
+			
+			if (result.isEmpty())
+				throw new CustomException(Errors.ProjectsNotFound);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
 		return result;
 	}
 	
@@ -188,6 +292,27 @@ public class DBManager {
 		
 		stat.executeUpdate();
 		
+	}
+	
+	private static boolean userExists(String username) throws CustomException
+	{
+		String query = 	"SELECT * FROM utente WHERE UserName = ?";
+		
+		try 
+		{
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			stat.setString(1, username);		
+			ResultSet rs = stat.executeQuery();
+			
+			if (!rs.next())
+				return false;
+			else
+				return true;
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
 	}
 	
 }
