@@ -1,5 +1,12 @@
 package com.sweng.common.notice;
 
-public interface Notice {
+import java.io.Serializable;
+
+public interface Notice extends Serializable{
+	
+	
+	public static void Notice(){
+		
+	}
 	
 }

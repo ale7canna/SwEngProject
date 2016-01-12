@@ -22,6 +22,10 @@ public class Client extends UnicastRemoteObject implements IClient{
 		
 	}
 	
+	public void signIn(){
+		
+	}
+	
 	public void matchUser(){
 		
 	}

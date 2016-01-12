@@ -1,5 +1,7 @@
 package com.sweng.common.notice;
 
-public class FinishedProjNotify implements Notice {
+import java.io.Serializable;
+
+public class FinishedProjNotify implements Notice, Serializable {
 
 }
