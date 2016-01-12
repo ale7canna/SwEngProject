@@ -39,6 +39,7 @@ public class DBManager {
 		
 		ResultSet rs = stat.executeQuery();
 		
+		result = new ArrayList<Activity>();
 		while (rs.next())
 		{
 			Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"),
@@ -48,6 +49,43 @@ public class DBManager {
 		
 		return result;
 	}
+	
+	public ArrayList<Project> getAllProjects() throws SQLException
+	{
+		ArrayList<Project> result = null;
+		String query = 	"SELECT * FROM progetto";
+		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+		
+		ResultSet rs = stat.executeQuery();
+		
+		result = new ArrayList<Project>();
+		while (rs.next())
+		{
+			Project proj = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"), rs.getBoolean("Attivo"));
+			result.add(proj);
+		}
+		
+		return result;
+	}
+	
+	public ArrayList<User> getAllUsers() throws SQLException
+	{
+		ArrayList<User> result = null;
+		String query = 	"SELECT * FROM utente";
+		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+		
+		ResultSet rs = stat.executeQuery();
+		
+		result = new ArrayList<User>();
+		while (rs.next())
+		{
+			User user = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
+			result.add(user);
+		}
+		
+		return result;
+	}
+	
 	
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public void addActivity(Activity activity) throws SQLException
@@ -101,7 +139,7 @@ public class DBManager {
 	{
 		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(
 				"INSERT INTO progetto (Nome, idAdmin, Attivo)"
-						+ 	"VALUES (?, ?)");
+						+ 	"VALUES (?, ?, ?)");
 		
 		stat.setString(1, project.getName());
 		stat.setInt(2, project.getIdAdmin());
