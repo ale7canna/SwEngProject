@@ -5,16 +5,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GUIPanelSignIn extends JPanel{
+		
 	private JTextField textSignInUserName;
 	private JTextField textSignUpName;
 	private JTextField textSignUpUserName;
 	private JTextField textSignUpSurname;
 	private JPasswordField textSignInPassword;
 	private JPasswordField textSignUpPassword;
-	public GUIPanelSignIn() {
+	
+	private EventListenerGUI listener;
+	
+	public GUIPanelSignIn(EventListenerGUI _listener ) {
 		setLayout(null);
+		listener = _listener;
 		
 		textSignInUserName = new JTextField();
 		textSignInUserName.setColumns(10);
@@ -22,6 +29,15 @@ public class GUIPanelSignIn extends JPanel{
 		add(textSignInUserName);
 		
 		JButton button = new JButton("SignIn");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				String username = textSignInUserName.getText();
+				String password = String.copyValueOf(textSignInPassword.getPassword());
+				if (!username.isEmpty() && !password.isEmpty())
+					listener.SignInRequest(username, password);
+			}
+		});
 		button.setBounds(72, 170, 89, 23);
 		add(button);
 		

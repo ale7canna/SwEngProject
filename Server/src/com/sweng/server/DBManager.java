@@ -16,16 +16,26 @@ import com.sweng.common.beans.User;
 
 public class DBManager {
 
-	Connection connection;
+	static Connection connection;
 	
-	
-	public DBManager() throws ClassNotFoundException, SQLException
+	static 
 	{
-		Class.forName("com.mysql.jdbc.Driver");
-		
-		connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "root");		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "root");
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+//	public DBManager() throws ClassNotFoundException, SQLException
+//	{
+//		Class.forName("com.mysql.jdbc.Driver");
+//		
+//		connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "root");		
+//	}
+//	
 	
 	// METODI DI INTERROGAZIONE DB
 	public ArrayList<Activity> getActivityFromUser(User user) throws SQLException
@@ -83,6 +93,23 @@ public class DBManager {
 			result.add(user);
 		}
 		
+		return result;
+	}
+	
+	public static User getUser(String username, String password) throws SQLException
+	{
+		User result = null;
+		String query = 	"SELECT * FROM utente WHERE UserName = ? AND Password = ?";
+		PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+		
+		stat.setString(1, username);
+		stat.setString(2, password);
+		
+		ResultSet rs = stat.executeQuery();
+		
+		while (rs.next())
+			result = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
+			
 		return result;
 	}
 	

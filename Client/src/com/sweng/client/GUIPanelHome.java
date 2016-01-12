@@ -76,11 +76,12 @@ public class GUIPanelHome extends JPanel {
 
 		model = new MyTableModel(titleFriends);
 		JTable tableFriends = new JTable(model);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-		table.setFillsViewportHeight(true);
-		JScrollPane scrollPaneFriends = new JScrollPane(table);
+		tableFriends.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		tableFriends.setFillsViewportHeight(true);
+		JScrollPane scrollPaneFriends = new JScrollPane(tableFriends);
 	    scrollPaneFriends.setBounds(5, 218, 884, 194);
 		
+	    tabbedPane.add(scrollPaneFriends);
 	    
 	    
 	    ArrayList<String> titleActivity = new ArrayList<String>()
@@ -94,11 +95,12 @@ public class GUIPanelHome extends JPanel {
 		
 		model = new MyTableModel(titleActivity);
 		JTable tableActivity = new JTable(model);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-		table.setFillsViewportHeight(true);
-		JScrollPane scrollPaneActivity = new JScrollPane(table);
+		tableActivity.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		tableActivity.setFillsViewportHeight(true);
+		JScrollPane scrollPaneActivity = new JScrollPane(tableActivity);
 	    scrollPaneActivity.setBounds(5, 218, 884, 194);
 	    
+	    tabbedPane.add(scrollPaneActivity);
 	    
 	    ArrayList<String> titleEvents = new ArrayList<String>()
 				{{
@@ -110,10 +112,12 @@ public class GUIPanelHome extends JPanel {
 		
 		model = new MyTableModel(titleEvents);
 		JTable tableProject = new JTable(model);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-		table.setFillsViewportHeight(true);
-		JScrollPane scrollPaneProject = new JScrollPane(table);
+		tableProject.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		tableProject.setFillsViewportHeight(true);
+		JScrollPane scrollPaneProject = new JScrollPane(tableProject);
 	    scrollPaneProject.setBounds(5, 218, 884, 194);
+	    
+	    tabbedPane.add(scrollPaneProject);
 	
 	}
 	

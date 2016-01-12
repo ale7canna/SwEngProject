@@ -2,6 +2,7 @@ package com.sweng.common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityResponsible;
@@ -20,6 +21,8 @@ public interface IServer extends Remote{
 	public void addParticipant(Participant _participant) throws RemoteException; 
 	public void addProject(Project _project) throws RemoteException;
 	public void addUser(User _user) throws RemoteException;
+	
+	public User performLogin(String username, String password) throws RemoteException;
 	
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
