@@ -48,7 +48,7 @@ public class GuiManagerClient {
 				ArrayList<User> friendship = server.getFriendsFromUser(user);
 				ArrayList<Activity> activity = server.getActivityFromUser(user);
 				ArrayList<Project> project = server.getProjectsFromUsers(user);
-				GUIPanelHome home = new GUIPanelHome();
+				GUIPanelHome home = new GUIPanelHome(this);
 				switchGui(home);
 				home.setUserInfo(user, friendship, activity, project);
 				
@@ -61,6 +61,7 @@ public class GuiManagerClient {
 		
 		public void addProject(){
 			GUIaddProject addProjectFrame = new GUIaddProject();
+			
 			
 			
 		}

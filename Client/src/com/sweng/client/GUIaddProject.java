@@ -8,25 +8,28 @@ import javax.swing.JCheckBox;
 import javax.swing.JList;
 
 public class GUIaddProject extends JFrame{
-	private JTextField textField;
+	private JTextField txtProjectName;
 	public GUIaddProject() {
 		getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Project Name\r\n");
-		lblNewLabel.setBounds(10, 21, 83, 14);
-		getContentPane().add(lblNewLabel);
+		JLabel ProjectNameLabel = new JLabel("Project Name\r\n");
+		ProjectNameLabel.setBounds(13, 21, 83, 14);
+		getContentPane().add(ProjectNameLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(84, 18, 86, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		txtProjectName = new JTextField();
+		txtProjectName.setBounds(10, 59, 86, 20);
+		getContentPane().add(txtProjectName);
+		txtProjectName.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(178, 21, 226, 168);
+		scrollPane.setBounds(178, 59, 226, 168);
 		getContentPane().add(scrollPane);
 		
 		CheckBoxList list = new CheckBoxList();
-		list.setBounds(180, 20, 224, 166);
-		getContentPane().add(list);
+		scrollPane.setRowHeaderView(list);
+		
+		JLabel ChooseFriendsLabel = new JLabel("Choose Friends ");
+		ChooseFriendsLabel.setBounds(178, 21, 103, 14);
+		getContentPane().add(ChooseFriendsLabel);
 	}
 }

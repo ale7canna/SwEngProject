@@ -21,8 +21,10 @@ import javax.swing.JScrollPane;
 
 import java.awt.Dimension;
 import java.awt.List;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -36,8 +38,12 @@ public class GUIPanelHome extends JPanel {
 	private JTextField UserName;
 	private JScrollPane scrollFriends;
 	private JTable table;
+	private EventListenerGUI listener;
 	
-	public GUIPanelHome() {
+	public GUIPanelHome(EventListenerGUI _listener) {
+		
+		listener = _listener;
+		
 		setLayout(null);
 		tabbedPane.setBounds(10, 0, 511, 269);
 		add(tabbedPane);
@@ -90,7 +96,7 @@ public class GUIPanelHome extends JPanel {
 		AddProjectButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				listener.addProject();
 			}
 		});
 		AddProjectButton.setBounds(311, 25, 89, 23);
