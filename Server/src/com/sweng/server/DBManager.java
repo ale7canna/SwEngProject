@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sweng.common.Consts;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
@@ -24,7 +25,7 @@ public class DBManager {
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "giorgio00");
+			connection = (Connection) DriverManager.getConnection(Consts.DB_URL, Consts.DB_USERNAME, Consts.DB_PASSWORD);
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

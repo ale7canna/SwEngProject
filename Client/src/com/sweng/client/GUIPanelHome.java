@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import com.sweng.client.prova.MyTableModel;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;

@@ -47,17 +47,7 @@ public class GuiManagerClient {
 			// TODO Auto-generated method stub
 			
 			try {
-<<<<<<< HEAD
-				user = server.performLogin(username, password);
-				ArrayList<User> friendship = server.getFriendsFromUser(user);
-				ArrayList<Activity> activity = server.getActivityFromUser(user);
-				ArrayList<Project> project = server.getProjectsFromUsers(user);
-				GUIPanelHome home = new GUIPanelHome(this);
-				switchGui(home);
-				home.setUserInfo(user, friendship, activity, project);
-=======
->>>>>>> branch 'master' of https://github.com/ale7canna/SwEngProject.git
-				
+
 				User user = null;
 				ArrayList<User> friendships = null;
 				ArrayList<Activity> activities = null;
@@ -81,7 +71,7 @@ public class GuiManagerClient {
 				}
 				catch (CustomException e) {}
 				
-					GUIPanelHome home = new GUIPanelHome();
+					GUIPanelHome home = new GUIPanelHome(this);
 					switchGui(home);
 					home.setUserInfo(user, friendships, activities, projects);
 					
