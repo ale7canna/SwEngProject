@@ -98,6 +98,7 @@ public class GuiManagerClient {
 			try {
 				friendships= server.getFriendsFromUser(user);
 				addProjectFrame = new GUIaddComponent(this, friendships, true);
+				addProjectFrame.setVisible(true);
 			} catch (RemoteException | CustomException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -112,7 +113,7 @@ public class GuiManagerClient {
 			ArrayList<User> participant = null;
 			try {
 				participant = server.getParticipantsFromProject(project);
-			} catch (CustomException e) {
+			} catch (CustomException | RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -121,9 +122,13 @@ public class GuiManagerClient {
 
 
 		@Override
-		public void buttonclickedAddProject(Project proj) {
-			// TODO Auto-generated method stub
-			
+		public void buttonclickedAddProject(String nameProject, ArrayList<Integer> partecipants) {
+			try {
+				server.addProject(new Project(user.getIdUser(), nameProject, true));
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	

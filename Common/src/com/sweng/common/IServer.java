@@ -29,8 +29,8 @@ public interface IServer extends Remote{
 	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException, CustomException;
 	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException, CustomException;
 	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException;
-	public ArrayList<User> getParticipantsFromProject(Project project) throws CustomException;
-	public ProjectInfo getProjectInfo(Project project) throws CustomException;
+	public ArrayList<User> getParticipantsFromProject(Project project) throws RemoteException, CustomException;
+	public ProjectInfo getProjectInfo(Project project) throws RemoteException, CustomException;
 	
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;

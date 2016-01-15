@@ -1,9 +1,10 @@
 package com.sweng.common.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ProjectInfo {
+public class ProjectInfo implements Serializable{
 	
 	private String name;
 	private int idProject;

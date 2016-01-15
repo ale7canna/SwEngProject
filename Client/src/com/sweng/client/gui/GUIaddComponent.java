@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.xml.bind.Marshaller.Listener;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
@@ -42,7 +43,7 @@ public class GUIaddComponent extends JFrame{
 	private JTextField TimeActivityText;
 	private JTextField PlaceActivityText;
 	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject) {
-		
+		setSize(600, 600);
 		
 		getContentPane().setLayout(null);
 	
@@ -59,9 +60,10 @@ public class GUIaddComponent extends JFrame{
 		
 		ArrayList<CheckBoxId> checkboxList = createCheckboxList(friendships);		
 		CheckBoxList listFriends = new CheckBoxList();
-		for (JCheckBox c : checkboxList){
-				listFriends.addCheckbox((CheckBoxId) c);		
+		for (CheckBoxId c : checkboxList){
+				listFriends.addCheckbox(c);		
 				}		
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
@@ -69,6 +71,7 @@ public class GUIaddComponent extends JFrame{
 	
 				
 		scrollPane.setRowHeaderView(listFriends);
+		getContentPane().add(scrollPane);
 		
 		JLabel ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
 		ChooseFriendsLabel.setBounds(178, 21, 219, 14);
@@ -86,7 +89,15 @@ public class GUIaddComponent extends JFrame{
 		
 		JButton addProjbtn = new JButton("OK");
 		addProjbtn.setBounds(266, 227, 89, 23);
+		addProjbtn.addMouseMotionListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent event)
+			{
+				//TODO Sistemare e aggiornare interfaccia
+				_listener.buttonclickedAddProject(txtProjectName.getText(), listFriends.getSelectedItems());
+			}
+		});
 		getContentPane().add(addProjbtn);
+		
 		
 		JLabel TimeActivityLabel = new JLabel("Activity Time\r\n\r\n");
 		TimeActivityLabel.setBounds(13, 101, 83, 14);
@@ -108,7 +119,8 @@ public class GUIaddComponent extends JFrame{
 		
 		
 		if(isProject){
-			
+			PlaceActivityText.setVisible(false);
+			TimeActivityText.setVisible(false);
 			PlaceActivityLabel.setVisible(false);
 			TimeActivityLabel.setVisible(false);
 		}
@@ -116,11 +128,6 @@ public class GUIaddComponent extends JFrame{
 			NameLabel = new JLabel("Activity Name\r\n");
 			addActivitybtn.setVisible(false);
 		}
-		
-		
-	    JFrame frame = new JFrame();
-	    frame.getContentPane().setLayout(null);
-	    frame.getContentPane().add(scrollPane);
 	    
 	}
 }

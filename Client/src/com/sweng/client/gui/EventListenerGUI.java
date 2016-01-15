@@ -1,6 +1,7 @@
 package com.sweng.client.gui;
 
-import com.sweng.common.beans.Project;
+import java.util.ArrayList;
+
 import com.sweng.common.beans.User;
 
 public interface EventListenerGUI {
@@ -9,6 +10,6 @@ public interface EventListenerGUI {
 	public void addProject();
 	
 
-	public void buttonclickedAddProject(Project proj);
+	public void buttonclickedAddProject(String nameProject, ArrayList<Integer> partecipants);
 	
 }

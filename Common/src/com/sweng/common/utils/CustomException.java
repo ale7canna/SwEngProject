@@ -1,8 +1,9 @@
 package com.sweng.common.utils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class CustomException extends Exception{
+public class CustomException extends Exception implements Serializable{
 
 	private static HashMap<Errors, String> listaErrori = null;
 	
