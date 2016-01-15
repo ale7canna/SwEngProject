@@ -1,12 +1,17 @@
 package com.sweng.server;
 
+import java.awt.Dimension;
+import java.security.Guard;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
-import com.sweng.server.ServerGUI.GUIListener;
+import com.sweng.common.utils.CustomException;
+import com.sweng.server.gui.ServerGUI;
+import com.sweng.server.gui.GUIListener;
+import com.sweng.server.gui.ProjectInfoGui;
 
 public class GuiManager{
 	
@@ -35,9 +40,34 @@ public class GuiManager{
 	{
 
 		@Override
-		public void UserClicked() {
-			// TODO Auto-generated method stub
+		public void UserClicked(User user) {
+			System.out.println(user.getName());
+			ArrayList<Project> progetti = null;
 			
+			try {
+				progetti = DBManager.getProjectsFromUser(user);
+			}
+			catch (CustomException e)
+			{
+				
+			}
+			GUI.AddProjectsToList(progetti);
+		}
+
+		@Override
+		public void ProjectClicked(Project project) {
+						
+			if (project != null)
+			{	System.out.println(project.getName());
+			
+				try {
+				ProjectInfoGui projectGui = new ProjectInfoGui(DBManager.getProjectInfo(project));
+				projectGui.setSize(new Dimension(800, 600));
+				projectGui.setVisible(true);
+				}
+				catch (CustomException e)
+				{}
+			}
 		}
 	}
 

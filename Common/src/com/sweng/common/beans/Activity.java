@@ -10,14 +10,18 @@ public class Activity implements Serializable{
 	private Date hour;
 	private int idActivity;
 	private int idProject;
+	private boolean isDone;
 
-	public Activity(int _idProject, int _idActivity, String _name, String _place, Date _hour)
+	
+
+	public Activity(int _idProject, int _idActivity, String _name, String _place, Date _hour, boolean _isDone)
 	{
 		idProject = _idProject;
 		idActivity = _idActivity;
 		name = _name;
 		place = _place;
 		hour = _hour;
+		isDone = _isDone;
 	}
 
 	public String getName() {
@@ -60,7 +64,13 @@ public class Activity implements Serializable{
 		this.idProject = idProject;
 	}
 	
-	
+	public boolean getIsDone() {
+		return isDone;
+	}
+
+	public void setIsDone(boolean isDone) {
+		this.isDone = isDone;
+	}
 	
 	
 	

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.sweng.common.Consts;
 import com.sweng.common.beans.Activity;
@@ -13,6 +14,7 @@ import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
+import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.utils.CustomException;
 import com.sweng.common.utils.Errors;
@@ -51,7 +53,7 @@ public class DBManager {
 			while (rs.next())
 			{
 				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"),
-						rs.getString("Nome"), rs.getString("Luogo"), rs.getDate("Ora"));
+						rs.getString("Nome"), rs.getString("Luogo"), rs.getDate("Ora"), rs.getBoolean("Completata"));
 				result.add(act);
 			}
 			
@@ -156,6 +158,31 @@ public class DBManager {
 		return result;
 	}
 	
+	public static User getUser(int id) throws CustomException
+	{
+		User result = null;
+		String query = 	"SELECT * FROM utente WHERE idUtente = ?";
+		
+		try 
+		{
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			stat.setInt(1, id);
+			
+			ResultSet rs = stat.executeQuery();
+			
+			while (rs.next())
+				result = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("Username"), rs.getString("Password"));
+			
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		return result;
+	}
+	
 	public static ArrayList<Project> getProjectsFromUser(User user) throws CustomException
 	{
 		ArrayList<Project> result = null;
@@ -219,6 +246,93 @@ public class DBManager {
 		return result;
 	}
 	
+	public static ProjectInfo getProjectInfo(Project project) throws CustomException{
+		ProjectInfo resultInfo = null;
+		
+		try 
+		{
+			String query = "SELECT * FROM attivita JOIN responsabile_attivita AS ar " +
+							"ON attivita.idAttivita = ar.idAttivita JOIN utente ON ar.idUtente = utente.idUtente " +
+							"WHERE idProgetto = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setInt(1, project.getIdProject());
+			ResultSet rs = stat.executeQuery();
+			
+			int attivitaComplete = 0;
+			HashMap<Activity, User> actInResp = new HashMap<Activity, User>();
+			while (rs.next())
+			{
+				boolean completa = rs.getBoolean("Completata");
+				if (completa)
+					attivitaComplete ++;
+				Activity act = new Activity(project.getIdProject(), rs.getInt("ar.idAttivita"), rs.getString("attivita.Nome"), 
+						rs.getString("Luogo"), rs.getDate("Ora"), completa);
+				
+				User u = new User(rs.getInt("ar.idUtente"), rs.getString("utente.Nome"),
+						rs.getString("Cognome"), rs.getString("UserName"), null);
+				
+				actInResp.put(act, u);
+			}
+			
+			ArrayList<User> parts = getParticipantsFromProject(project);
+			User admin = getUser(project.getIdAdmin());
+			float compPerc = (float)attivitaComplete / (float)actInResp.size();
+			
+			
+			
+			resultInfo = new ProjectInfo(project.getName(), project.getIdProject(), 
+					project.isActive(), admin, actInResp, parts, compPerc);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		catch (CustomException e)
+		{
+			throw new CustomException(Errors.ActivitiesNotFound);
+		}
+		
+		if (resultInfo == null)
+			throw new CustomException(Errors.ActivitiesNotFound);
+		
+		return resultInfo;
+		
+	}
+	
+	public static ArrayList<User> getParticipantsFromProject(Project project) throws CustomException
+	{
+		ArrayList<User> result = null;
+		try
+		{
+			String query = 	"SELECT * FROM utente JOIN partecipante AS p "
+					+ 		"ON utente.idUtente = p.idUtente WHERE p.idProgetto = ?";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			
+			stat.setInt(1, project.getIdProject());
+			
+			ResultSet rs = stat.executeQuery();
+			
+			result = new ArrayList<User>();
+			while (rs.next())
+			{
+				User u = new User(rs.getInt("p.idUtente"), rs.getString("Nome"),
+						rs.getString("Cognome"), rs.getString("UserName"), null);
+				result.add(u);
+			}
+			
+			if (result.isEmpty())
+				throw new CustomException(Errors.ActivitiesNotFound);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		
+		return result;
+	}
 	
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public void addActivity(Activity activity) throws SQLException

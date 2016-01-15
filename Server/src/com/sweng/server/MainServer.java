@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import com.sweng.common.Consts;
 import com.sweng.common.utils.CustomException;
+import com.sweng.server.gui.ServerGUI;
 
 public class MainServer {
 
@@ -22,7 +23,7 @@ public class MainServer {
 		try
 		{
 			guiMgr.LoadUser(db.getAllUsers());
-			guiMgr.LoadProjects(db.getAllProjects());
+			//guiMgr.LoadProjects(db.getAllProjects());
 		}
 		catch (CustomException e)
 		{
