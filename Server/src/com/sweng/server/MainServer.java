@@ -7,6 +7,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 
 import com.sweng.common.Consts;
+import com.sweng.common.utils.CustomException;
 
 public class MainServer {
 
@@ -18,8 +19,15 @@ public class MainServer {
 		GuiManager guiMgr = new GuiManager();
 		
 //		db.addProject(new Project(0, 1, "Cena", true));
-		guiMgr.LoadUser(db.getAllUsers());
-		guiMgr.LoadProjects(db.getAllProjects());
+		try
+		{
+			guiMgr.LoadUser(db.getAllUsers());
+			guiMgr.LoadProjects(db.getAllProjects());
+		}
+		catch (CustomException e)
+		{
+			
+		}
 		
 		Server server = new Server();
 		try 

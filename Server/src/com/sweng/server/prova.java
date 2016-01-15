@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
 
 public class prova extends JPanel {
 
@@ -43,6 +44,10 @@ public class prova extends JPanel {
     });
 
     add(pane, BorderLayout.NORTH);
+    
+    JCheckBox chckbxNewCheckBox = new JCheckBox("New check box");
+    chckbxNewCheckBox.setSelected(true);
+    pane.setRowHeaderView(chckbxNewCheckBox);
     add(addButton, BorderLayout.WEST);
     add(removeButton, BorderLayout.EAST);
   }
