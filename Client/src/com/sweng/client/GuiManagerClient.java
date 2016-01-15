@@ -11,6 +11,7 @@ import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
+import com.sweng.common.utils.CustomException;
 
 public class GuiManagerClient {
 	
@@ -44,6 +45,7 @@ public class GuiManagerClient {
 		 public  User user = null;
 		public void SignInRequest(String username, String password) {
 			// TODO Auto-generated method stub
+			
 			try {
 				user = server.performLogin(username, password);
 				ArrayList<User> friendship = server.getFriendsFromUser(user);
@@ -53,12 +55,40 @@ public class GuiManagerClient {
 				switchGui(home);
 				home.setUserInfo(user, friendship, activity, project);
 				
-			}
+				User user = null;
+				ArrayList<User> friendships = null;
+				ArrayList<Activity> activities = null;
+				ArrayList<Project> projects = null;
+				
+				try {
+					user = server.performLogin(username, password);
+				}
+				catch (CustomException e)
+				{
+				}
+				try {
+					friendships = server.getFriendsFromUser(user);
+				} catch (CustomException e) {}
+				try {
+					activities = server.getActivityFromUser(user);
+				}
+				catch (CustomException e) {}
+				try{
+					projects = server.getProjectsFromUsers(user);
+				}
+				catch (CustomException e) {}
+				
+					GUIPanelHome home = new GUIPanelHome();
+					switchGui(home);
+					home.setUserInfo(user, friendships, activities, projects);
+					
+				}
 			catch (RemoteException e)
 			{
 				e.printStackTrace();
-				}
 			}
+		}
+		
 		
 		public void addProject(){
 		addProjectFrame = new GUIaddProject();
