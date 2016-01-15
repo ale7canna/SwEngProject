@@ -1,4 +1,4 @@
-package com.sweng.client;
+package com.sweng.client.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;

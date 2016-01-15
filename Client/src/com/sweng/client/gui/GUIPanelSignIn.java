@@ -1,10 +1,11 @@
-package com.sweng.client;
+package com.sweng.client.gui;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

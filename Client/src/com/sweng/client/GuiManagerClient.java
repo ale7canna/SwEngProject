@@ -6,9 +6,14 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.sweng.client.gui.ClientGUI;
+import com.sweng.client.gui.EventListenerGUI;
+import com.sweng.client.gui.GUIPanelHome;
+import com.sweng.client.gui.GUIPanelSignIn;
+import com.sweng.client.gui.GUIaddComponent;
 import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
-import com.sweng.common.beans.Friendship;
+import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 import com.sweng.common.utils.CustomException;
@@ -41,17 +46,20 @@ public class GuiManagerClient {
 	
 	 class GuiListener implements EventListenerGUI {
 		
-		 GUIaddProject addProjectFrame= null;
-		 public  User user = null;
-		public void SignInRequest(String username, String password) {
+		 GUIaddComponent addProjectFrame= null;
+		 User user = null;
+		 GUIaddComponent addActivity = null;
+		 
+			
+			ArrayList<User> friendships = null;
+			ArrayList<Activity> activities = null;
+			ArrayList<Project> projects = null;
+			
+		 
+		 public User SignInRequest(String username, String password) {
 			// TODO Auto-generated method stub
 			
-			try {
-
-				User user = null;
-				ArrayList<User> friendships = null;
-				ArrayList<Activity> activities = null;
-				ArrayList<Project> projects = null;
+			try {			
 				
 				try {
 					user = server.performLogin(username, password);
@@ -80,13 +88,45 @@ public class GuiManagerClient {
 			{
 				e.printStackTrace();
 			}
+			
+			return user;
 		}
-		
+		 
 		
 		public void addProject(){
-		addProjectFrame = new GUIaddProject();
+			
+			try {
+				friendships= server.getFriendsFromUser(user);
+				addProjectFrame = new GUIaddComponent(this, friendships, true);
+			} catch (RemoteException | CustomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 						
 		}
+		
+		public void addActivity(Project project){
+			
+			ArrayList<User> participant = null;
+			try {
+				participant = server.getParticipantsFromProject(project);
+			} catch (CustomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			addActivity = new GUIaddComponent(this, participant, false);
+		}
+
+
+		@Override
+		public void buttonclickedAddProject(Project proj) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	
 	}
 
 }
