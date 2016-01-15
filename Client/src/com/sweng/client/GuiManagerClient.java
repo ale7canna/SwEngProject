@@ -40,6 +40,7 @@ public class GuiManagerClient {
 	
 	 class GuiListener implements EventListenerGUI {
 		
+		 GUIaddProject addProjectFrame= null;
 		 public  User user = null;
 		public void SignInRequest(String username, String password) {
 			// TODO Auto-generated method stub
@@ -60,10 +61,8 @@ public class GuiManagerClient {
 			}
 		
 		public void addProject(){
-			GUIaddProject addProjectFrame = new GUIaddProject();
-			
-			
-			
+		addProjectFrame = new GUIaddProject();
+						
 		}
 	}
 

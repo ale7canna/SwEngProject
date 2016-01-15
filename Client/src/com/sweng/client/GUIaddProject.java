@@ -25,8 +25,8 @@ public class GUIaddProject extends JFrame{
 		scrollPane.setBounds(178, 59, 226, 168);
 		getContentPane().add(scrollPane);
 		
-		CheckBoxList list = new CheckBoxList();
-		scrollPane.setRowHeaderView(list);
+		CheckBoxList listFriends = new CheckBoxList();
+		scrollPane.setRowHeaderView(listFriends);
 		
 		JLabel ChooseFriendsLabel = new JLabel("Choose Friends ");
 		ChooseFriendsLabel.setBounds(178, 21, 103, 14);

@@ -1,12 +1,12 @@
 package com.sweng.server;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
@@ -22,7 +22,7 @@ public class DBManager {
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "root");
+			connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/swengproj", "root", "giorgio00");
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
