@@ -12,6 +12,7 @@ import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
+import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
 import com.sweng.common.utils.CustomException;
@@ -108,6 +109,22 @@ public class Server extends UnicastRemoteObject implements IServer{
 		ArrayList<User> result = null;
 		result = DBManager.getFriendsFromUser(user);
 
+		return result;
+	}
+
+	@Override
+	public ArrayList<User> getParticipantsFromProject(Project project) throws CustomException {
+		ArrayList<User> result = null;
+		result = DBManager.getParticipantsFromProject(project);
+		
+		return result;
+	}
+
+	@Override
+	public ProjectInfo getProjectInfo(Project project) throws CustomException {
+		ProjectInfo result = null;
+		result = DBManager.getProjectInfo(project);
+		
 		return result;
 	}
 

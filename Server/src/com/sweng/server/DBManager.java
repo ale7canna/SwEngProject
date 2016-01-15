@@ -334,6 +334,8 @@ public class DBManager {
 		return result;
 	}
 	
+	
+	
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public void addActivity(Activity activity) throws SQLException
 	{
