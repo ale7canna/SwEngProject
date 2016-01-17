@@ -1,6 +1,6 @@
 package com.sweng.client;
 
-import java.rmi.RemoteException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -8,29 +8,24 @@ import javax.swing.JPanel;
 
 import com.sweng.client.gui.ClientGUI;
 import com.sweng.client.gui.EventListenerGUI;
-import com.sweng.client.gui.GUIPanelHome;
 import com.sweng.client.gui.GUIPanelSignIn;
 import com.sweng.client.gui.GUIaddComponent;
-import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
-import com.sweng.common.beans.Participant;
+import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
-import com.sweng.common.utils.CustomException;
 
 public class GuiManagerClient {
-	
-	private static IServer server = null;
+
 	private static ClientGUI gui = null;
+	private static IClientManager clientManager;
 	
-	public GuiManagerClient(IServer server){
+	public GuiManagerClient(IClientManager clientManager){
 		
-		this.server= server;
+		this.clientManager= clientManager;
 		gui = new ClientGUI();
 		switchGui(new GUIPanelSignIn(new GuiListener()));
-	
-		
-	}
+		}
 	
 	
 	public void switchGui(JPanel panel)
@@ -46,90 +41,66 @@ public class GuiManagerClient {
 	
 	 class GuiListener implements EventListenerGUI {
 		
-		 GUIaddComponent addProjectFrame= null;
-		 User user = null;
-		 GUIaddComponent addActivity = null;
+		GUIaddComponent addProjectFrame= null;
+		User user = null;
+		GUIaddComponent addActivity = null;
+		Project project = null;
+		Activity activity= null;
+		
+		ArrayList<User> friendships = null;
+		ArrayList<Activity> activities = null;
+		ArrayList<Project> projects = null;
+		ArrayList<User> participants=null;
+			
 		 
+		public User SignInRequest(String username, String password) {
 			
-			ArrayList<User> friendships = null;
-			ArrayList<Activity> activities = null;
-			ArrayList<Project> projects = null;
-			
-		 
-		 public User SignInRequest(String username, String password) {
-			// TODO Auto-generated method stub
-			
-			try {			
-				
-				try {
-					user = server.performLogin(username, password);
-				}
-				catch (CustomException e)
-				{
-				}
-				try {
-					friendships = server.getFriendsFromUser(user);
-				} catch (CustomException e) {}
-				try {
-					activities = server.getActivityFromUser(user);
-				}
-				catch (CustomException e) {}
-				try{
-					projects = server.getProjectsFromUsers(user);
-				}
-				catch (CustomException e) {}
-				
-					GUIPanelHome home = new GUIPanelHome(this);
-					switchGui(home);
-					home.setUserInfo(user, friendships, activities, projects);
-					
-				}
-			catch (RemoteException e)
-			{
-				e.printStackTrace();
-			}
+			user= clientManager.SignInRequest(username, password);
+			friendships = clientManager.getFriendships(user);
+			activities = clientManager.getActivity(user);
+			projects = clientManager.getProject(user);
 			
 			return user;
-		}
-		 
-		
-		public void addProject(){
-			
-			try {
-				friendships= server.getFriendsFromUser(user);
-				addProjectFrame = new GUIaddComponent(this, friendships, true);
-				addProjectFrame.setVisible(true);
-			} catch (RemoteException | CustomException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			
-			
-						
+
+		public void addProjectView(){
+			friendships= clientManager.getFriendships(user);
+			addProjectFrame = new GUIaddComponent(this, friendships, true);
 		}
 		
-		public void addActivity(Project project){
-			
-			ArrayList<User> participant = null;
-			try {
-				participant = server.getParticipantsFromProject(project);
-			} catch (CustomException | RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			addActivity = new GUIaddComponent(this, participant, false);
+		public void addActivityView(Project project){
+			participants = clientManager.getParticipant(project);
+			addActivity = new GUIaddComponent(this, participants, false);
 		}
 
+		public void addProject(String name, ArrayList<Integer> participants, boolean isActive){
+			
+			project = clientManager.addProject(name, user.getIdUser(), isActive);
+			clientManager.addParticipants(participants, project.getIdProject());
+		}
+		
+		public void addActivity(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
+			
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
+			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
+			
+		}
 
+		public void addFriends( ArrayList<Integer> friends){
+			
+			clientManager.addFriends(user.getIdUser(), friends);
+			
+		}
 		@Override
-		public void buttonclickedAddProject(String nameProject, ArrayList<Integer> partecipants) {
-			try {
-				server.addProject(new Project(user.getIdUser(), nameProject, true));
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		public void buttonclickedAddProject(Project proj) {
+			// TODO Auto-generated method stub
+			
 		}
+
+	
+	
+		
+		
 
 	
 	}

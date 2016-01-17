@@ -4,18 +4,23 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import com.sweng.client.gui.ClientGUI;
 import com.sweng.common.Consts;
 import com.sweng.common.IServer;
+import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 
 public class MainClient {
 
 	private static IServer server = null;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub
 		
 		
@@ -31,7 +36,7 @@ public class MainClient {
 		}
 		
 		
-		GuiManagerClient guiManagerClient = new GuiManagerClient(server);
+		Client clientManager = new Client(server);
 
 		
 	}

@@ -97,13 +97,19 @@ public class GUIPanelHome extends JPanel {
 		AddProjectButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				listener.addProject();
+				listener.addProjectView();
 			}
 		});
 		AddProjectButton.setBounds(311, 25, 89, 23);
 		UserInfo.add(AddProjectButton);
 		
 		JButton addFriendButton = new JButton("Add Friends");
+		addFriendButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				listener.addFriendsView();
+			}
+		});
 		addFriendButton.setBounds(311, 120, 89, 23);
 		UserInfo.add(addFriendButton);
 		

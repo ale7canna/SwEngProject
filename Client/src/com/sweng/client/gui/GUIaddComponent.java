@@ -1,25 +1,22 @@
 package com.sweng.client.gui;
 
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.xml.bind.Marshaller.Listener;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JCheckBox;
-import javax.swing.JList;
+import javax.swing.JTextField;
 
 import com.sweng.client.CheckBoxId;
 import com.sweng.client.CheckBoxList;
-import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
-
-import javax.swing.JButton;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GUIaddComponent extends JFrame{
 	
@@ -43,7 +40,7 @@ public class GUIaddComponent extends JFrame{
 	private JTextField TimeActivityText;
 	private JTextField PlaceActivityText;
 	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject) {
-		setSize(600, 600);
+		
 		
 		getContentPane().setLayout(null);
 	
@@ -60,10 +57,9 @@ public class GUIaddComponent extends JFrame{
 		
 		ArrayList<CheckBoxId> checkboxList = createCheckboxList(friendships);		
 		CheckBoxList listFriends = new CheckBoxList();
-		for (CheckBoxId c : checkboxList){
-				listFriends.addCheckbox(c);		
+		for (JCheckBox c : checkboxList){
+				listFriends.addCheckbox((CheckBoxId) c);		
 				}		
-		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
@@ -71,7 +67,6 @@ public class GUIaddComponent extends JFrame{
 	
 				
 		scrollPane.setRowHeaderView(listFriends);
-		getContentPane().add(scrollPane);
 		
 		JLabel ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
 		ChooseFriendsLabel.setBounds(178, 21, 219, 14);
@@ -82,34 +77,39 @@ public class GUIaddComponent extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
+				_listener.addActivity(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
 			}
 		});
 		addActivitybtn.setBounds(119, 227, 106, 23);
 		getContentPane().add(addActivitybtn);
 		
+		JCheckBox isActive = new JCheckBox("New check box");
+		isActive.setBounds(56, 85, 23, 20);
+		getContentPane().add(isActive);
+		
 		JButton addProjbtn = new JButton("OK");
-		addProjbtn.setBounds(266, 227, 89, 23);
-		addProjbtn.addMouseMotionListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent event)
-			{
-				//TODO Sistemare e aggiornare interfaccia
-				_listener.buttonclickedAddProject(txtProjectName.getText(), listFriends.getSelectedItems());
+		addProjbtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			
+				_listener.addProject(txtProjectName.toString(), listFriends.getSelectedItems(), isActive.isEnabled());
+				JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
 			}
 		});
+		addProjbtn.setBounds(266, 227, 89, 23);
 		getContentPane().add(addProjbtn);
 		
-		
 		JLabel TimeActivityLabel = new JLabel("Activity Time\r\n\r\n");
-		TimeActivityLabel.setBounds(13, 101, 83, 14);
+		TimeActivityLabel.setBounds(10, 125, 83, 14);
 		getContentPane().add(TimeActivityLabel);
 		
 		TimeActivityText = new JTextField();
-		TimeActivityText.setBounds(10, 134, 86, 20);
+		TimeActivityText.setBounds(10, 150, 86, 20);
 		getContentPane().add(TimeActivityText);
 		TimeActivityText.setColumns(10);
 		
 		JLabel PlaceActivityLabel = new JLabel("Activity Place \r\n");
-		PlaceActivityLabel.setBounds(13, 173, 83, 14);
+		PlaceActivityLabel.setBounds(10, 181, 83, 14);
 		getContentPane().add(PlaceActivityLabel);
 		
 		PlaceActivityText = new JTextField();
@@ -117,10 +117,15 @@ public class GUIaddComponent extends JFrame{
 		PlaceActivityText.setBounds(10, 206, 86, 20);
 		getContentPane().add(PlaceActivityText);
 		
+		JLabel lblNewLabelActivate = new JLabel("Activate");
+		lblNewLabelActivate.setBounds(10, 88, 40, 14);
+		getContentPane().add(lblNewLabelActivate);
+		
+		
+		
 		
 		if(isProject){
-			PlaceActivityText.setVisible(false);
-			TimeActivityText.setVisible(false);
+			
 			PlaceActivityLabel.setVisible(false);
 			TimeActivityLabel.setVisible(false);
 		}
@@ -128,6 +133,11 @@ public class GUIaddComponent extends JFrame{
 			NameLabel = new JLabel("Activity Name\r\n");
 			addActivitybtn.setVisible(false);
 		}
+		
+		
+	    JFrame frame = new JFrame();
+	    frame.getContentPane().setLayout(null);
+	    frame.getContentPane().add(scrollPane);
 	    
 	}
 }
