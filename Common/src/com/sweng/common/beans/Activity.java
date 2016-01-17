@@ -14,6 +14,15 @@ public class Activity implements Serializable{
 
 	
 
+	public Activity(int idProject, String name, String place, Date hour, boolean isDone) {
+		super();
+		this.idProject = idProject;
+		this.name = name;
+		this.place = place;
+		this.hour = hour;
+		this.isDone = isDone;
+	}
+
 	public Activity(int _idProject, int _idActivity, String _name, String _place, Date _hour, boolean _isDone)
 	{
 		idProject = _idProject;

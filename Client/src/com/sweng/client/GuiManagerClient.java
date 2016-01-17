@@ -93,7 +93,13 @@ public class GuiManagerClient {
 		}
 		@Override
 		public void buttonclickedAddProject(Project proj) {
-			// TODO Auto-generated method stub
+			System.out.println("Add Project");
+			
+		}
+
+		@Override
+		public void addFriendsView() {
+			System.out.println("Add friends view");
 			
 		}
 

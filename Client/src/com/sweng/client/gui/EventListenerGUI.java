@@ -18,7 +18,7 @@ public interface EventListenerGUI {
 	
 	public void addActivity(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity);
 	
-	
+	public void addFriendsView();
 	
 	public void buttonclickedAddProject(Project proj);
 	

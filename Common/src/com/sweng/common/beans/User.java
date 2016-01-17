@@ -10,6 +10,15 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	
+	public User(String _name, String _surname, String _username, String _password)
+	{
+		name = _name;
+		surname = _surname;
+		username = _username;
+		password = _password;
+	}
+
+	
 	public User(int _idUser, String _name, String _surname, String _username, String _password)
 	{
 		idUser = _idUser;

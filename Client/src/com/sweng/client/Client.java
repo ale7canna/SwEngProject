@@ -93,12 +93,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 	 //ADD METHODS
 	 public Project addProject(String nameProject, int idAdmin, boolean isActive){
-		 Project _project = new Project(null, idAdmin, nameProject, isActive);
+		 Project _project = new Project(idAdmin, nameProject, isActive);
 		 
 		 try{
 			 server.addProject(_project);
 			 
-		 }catch(CustomException e){
+		 }catch(RemoteException e){
 			 e.printStackTrace();
 		 } 
 		 
@@ -121,11 +121,11 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	 
 	 public Activity addActivity(String nameActivity, int idProject, String place, Date hour){
 	
-		Activity _activity= new Activity(idProject, _idActivity, nameActivity, place, hour, false);
+		Activity _activity= new Activity(idProject, nameActivity, place, hour, false);
 		 
 		 try{
 			 server.addActivity(_activity);
-		 }catch(CustomException e){
+		 }catch(RemoteException e){
 			 e.printStackTrace();
 		 }
 		 return _activity;
