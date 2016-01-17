@@ -11,10 +11,11 @@ import com.sweng.common.beans.User;
 
 public interface IClientManager {
 	
-	public User SignInRequest(String username, String password);
-	public ArrayList<User> getFriendships(User user);
-	public ArrayList<Activity> getActivity(User user);
-	public ArrayList<Project> getProject(User user);
+	public void SignInRequest(String username, String password);
+	public User getUser(); 
+	public ArrayList<User> getFriendships();
+	public ArrayList<Activity> getActivity();
+	public ArrayList<Project> getProject();
 	public ArrayList<User> getParticipant(Project project);
 	public Project addProject(String nameProject, int idAdmin, boolean isActive);
 	public Activity addActivity(String nameActivity, int idProject, String place, Date hour);

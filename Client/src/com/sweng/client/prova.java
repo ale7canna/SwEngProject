@@ -105,9 +105,10 @@ public class prova {
 		for (User u : lista){
 			String userName = u.getUsername();
 			int id = u.getIdUser();
-			checkbox = new CheckBoxId(id, userName);
-						
-			listacheckbox.add((CheckBoxId) checkbox);
+			//Qua non ho capito perché usi quel JCheckBox per aggiungerlo alla lista ???
+			//checkbox = new CheckBoxId(id, userName);
+
+			listacheckbox.add(new CheckBoxId(id, userName));
 		}
 		return listacheckbox;
 	}

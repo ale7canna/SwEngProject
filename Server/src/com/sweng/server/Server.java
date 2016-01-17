@@ -28,37 +28,66 @@ public class Server extends UnicastRemoteObject implements IServer{
 
 	@Override
 	public void addActivity(Activity _activity) throws RemoteException {
-		// TODO Auto-generated method stub
+		try {
+			DBManager.addActivity(_activity);
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException {
-		// TODO Auto-generated method stub
+		try {
+			DBManager.addActivityResponsible(_activityResponsible);
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public void addFriendship(Friendship _friendship) throws RemoteException {
-		// TODO Auto-generated method stub
+		try {
+			DBManager.addFriendship(_friendship);
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public void addParticipant(Participant _participant) throws RemoteException {
-		// TODO Auto-generated method stub
+		try {
+			DBManager.addParticipant(_participant);
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
-	public void addProject(Project _project) throws RemoteException {
-		// TODO Auto-generated method stub
+	public Project addProject(Project _project) throws RemoteException, CustomException {
 		
+		Project result = null;
+		DBManager.addProject(_project);
+		result = DBManager.getProjectFromNameAndAdmin(_project.getName(), _project.getIdAdmin());
+		
+		return result;
 	}
 
 	@Override
 	public void addUser(User _user) throws RemoteException {
-		// TODO Auto-generated method stub
+		try {
+			DBManager.addUser(_user);
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -128,4 +157,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 		return result;
 	}
 
+	
+	
 }

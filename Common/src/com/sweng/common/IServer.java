@@ -22,15 +22,15 @@ public interface IServer extends Remote{
 	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException;
 	public void addFriendship(Friendship _friendship) throws RemoteException;
 	public void addParticipant(Participant _participant) throws RemoteException; 
-	public void addProject(Project _project) throws RemoteException;
+	public Project addProject(Project _project) throws RemoteException, CustomException;
 	public void addUser(User _user) throws RemoteException;
 	
 	public User performLogin(String username, String password) throws RemoteException, CustomException;
 	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException, CustomException;
 	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException, CustomException;
 	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException;
-	public ArrayList<User> getParticipantsFromProject(Project project) throws CustomException;
-	public ProjectInfo getProjectInfo(Project project) throws CustomException;
+	public ArrayList<User> getParticipantsFromProject(Project project) throws RemoteException, CustomException;
+	public ProjectInfo getProjectInfo(Project project) throws RemoteException, CustomException;
 	
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;

@@ -27,9 +27,10 @@ public class GUIaddComponent extends JFrame{
 		for (User u : lista){
 			String userName = u.getUsername();
 			int id = u.getIdUser();
-			checkbox = new CheckBoxId(id, userName);
+			//Qua non ho capito perché usi quel JCheckBox per aggiungerlo alla lista ???
+			//checkbox = new CheckBoxId(id, userName);
 						
-			listacheckbox.add((CheckBoxId) checkbox);
+			listacheckbox.add(new CheckBoxId(id, userName));
 		}
 		return listacheckbox;
 	}
@@ -39,6 +40,7 @@ public class GUIaddComponent extends JFrame{
 	private JTextField txtProjectName;
 	private JTextField TimeActivityText;
 	private JTextField PlaceActivityText;
+	
 	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject) {
 		
 		
@@ -57,14 +59,14 @@ public class GUIaddComponent extends JFrame{
 		
 		ArrayList<CheckBoxId> checkboxList = createCheckboxList(friendships);		
 		CheckBoxList listFriends = new CheckBoxList();
-		for (JCheckBox c : checkboxList){
-				listFriends.addCheckbox((CheckBoxId) c);		
+		for (CheckBoxId c : checkboxList){
+				listFriends.addCheckbox(c);		
 				}		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
 		scrollPane.setBounds(178, 59, 226, 168);
-	
+		scrollPane.setVisible(true);
 				
 		scrollPane.setRowHeaderView(listFriends);
 		
@@ -91,8 +93,9 @@ public class GUIaddComponent extends JFrame{
 		addProjbtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-			
-				_listener.addProject(txtProjectName.toString(), listFriends.getSelectedItems(), isActive.isEnabled());
+				//Qua Marzo mi usi i metodi sbagliati per recuperare nome e il boolean attivo
+				//_listener.addProject(txtProjectName.toString(), listFriends.getSelectedItems(), isActive.isEnabled());
+				_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
 				JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
 			}
 		});
@@ -125,8 +128,10 @@ public class GUIaddComponent extends JFrame{
 		
 		
 		if(isProject){
-			
+			// Nascondi solo le etichette ma rimangono i campi di testo
+			PlaceActivityText.setVisible(false);
 			PlaceActivityLabel.setVisible(false);
+			TimeActivityText.setVisible(false);
 			TimeActivityLabel.setVisible(false);
 		}
 		else if(!isProject){
@@ -135,9 +140,8 @@ public class GUIaddComponent extends JFrame{
 		}
 		
 		
-	    JFrame frame = new JFrame();
-	    frame.getContentPane().setLayout(null);
-	    frame.getContentPane().add(scrollPane);
+	    getContentPane().setLayout(null);
+	    getContentPane().add(scrollPane);
 	    
 	}
 }
