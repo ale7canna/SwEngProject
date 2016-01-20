@@ -288,6 +288,35 @@ public class DBManager {
 		return result;
 	}
 
+	public static ArrayList<User> getNotMyFriends(int idUser) throws CustomException{
+		ArrayList<User> result = null;
+		try {
+			String query =  "SELECT * FROM utente WHERE idUtente NOT IN(SELECT idUtente2 "+ 
+							"FROM amicizia WHERE amicizia.idUtente1=?)";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+
+			stat.setInt(1, idUser);
+
+			ResultSet rs = stat.executeQuery();
+
+			result = new ArrayList<User>();
+			while (rs.next()) {
+				if(rs.getInt("idUtente")!=idUser){
+					User u = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"),
+							rs.getString("UserName"), null);
+					result.add(u);
+				}
+			}
+
+			if (result.isEmpty())
+				throw new CustomException(Errors.ActivitiesNotFound);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new CustomException(Errors.ServerError);
+		}
+
+		return result;
+	}
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public static void addActivity(Activity activity) throws CustomException {
 		try {

@@ -10,7 +10,7 @@ public interface EventListenerGUI {
 
 	public User SignInRequest(String username, String password); 
 	
-	public void addProject(String name, ArrayList<Integer> participants, boolean isActive);
+	public Project addProject(String name, ArrayList<Integer> participants, boolean isActive);
 	
 	public void addProjectView();
 	
@@ -19,6 +19,8 @@ public interface EventListenerGUI {
 	public void addActivity(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity);
 	
 	public void addFriendsView();
+	
+	public void addFriends( ArrayList<Integer> friends);
 	
 	public void buttonclickedAddProject(Project proj);
 	

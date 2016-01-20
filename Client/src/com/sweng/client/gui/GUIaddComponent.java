@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.jar.Attributes.Name;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.sweng.client.CheckBoxId;
 import com.sweng.client.CheckBoxList;
+import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 
 public class GUIaddComponent extends JFrame{
@@ -40,14 +42,22 @@ public class GUIaddComponent extends JFrame{
 	private JTextField txtProjectName;
 	private JTextField TimeActivityText;
 	private JTextField PlaceActivityText;
+	public static Project project;
+	private JLabel NameLabel;
+	private JLabel ChooseFriendsLabel;
 	
-	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject) {
+	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
 		
 		
 		getContentPane().setLayout(null);
 	
+	    if(isProject&&!isAddFriends)
+	    	NameLabel = new JLabel("Project Name\r\n");
+	    if(isProject&&isAddFriends)
+	    	NameLabel = new JLabel("Add Friends\r\n");
+	    if(!isProject)
+	    	NameLabel = new JLabel("Activity Name\r\n");
 	    
-		JLabel NameLabel = new JLabel("Project Name\r\n");
 		NameLabel.setBounds(10, 21, 83, 14);
 		getContentPane().add(NameLabel);
 		
@@ -70,7 +80,11 @@ public class GUIaddComponent extends JFrame{
 				
 		scrollPane.setRowHeaderView(listFriends);
 		
-		JLabel ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
+		if(isProject&&!isAddFriends)
+			ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
+	    if(isProject&&isAddFriends)
+	    	ChooseFriendsLabel = new JLabel("Choose new friends");
+		
 		ChooseFriendsLabel.setBounds(178, 21, 219, 14);
 		getContentPane().add(ChooseFriendsLabel);
 		
@@ -78,6 +92,9 @@ public class GUIaddComponent extends JFrame{
 		addActivitybtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if(isProject){
+					_listener.addActivityView(project);
+				}
 				
 				_listener.addActivity(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
 			}
@@ -95,8 +112,15 @@ public class GUIaddComponent extends JFrame{
 			public void mouseClicked(MouseEvent arg0) {
 				//Qua Marzo mi usi i metodi sbagliati per recuperare nome e il boolean attivo
 				//_listener.addProject(txtProjectName.toString(), listFriends.getSelectedItems(), isActive.isEnabled());
-				_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
-				JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
+				if(isProject&&!isAddFriends){
+					project=_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
+					JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
+					}
+				if(isProject&&isAddFriends){
+					ArrayList<Integer> daaggiungere = listFriends.getSelectedItems();
+					_listener.addFriends(daaggiungere);
+				}
+				
 			}
 		});
 		addProjbtn.setBounds(266, 227, 89, 23);
@@ -133,9 +157,15 @@ public class GUIaddComponent extends JFrame{
 			PlaceActivityLabel.setVisible(false);
 			TimeActivityText.setVisible(false);
 			TimeActivityLabel.setVisible(false);
+			if(isAddFriends){
+				txtProjectName.setVisible(false);
+				addActivitybtn.setVisible(false);
+				isActive.setVisible(false);
+				
+				lblNewLabelActivate.setVisible(false);
+			}
 		}
 		else if(!isProject){
-			NameLabel = new JLabel("Activity Name\r\n");
 			addActivitybtn.setVisible(false);
 		}
 		

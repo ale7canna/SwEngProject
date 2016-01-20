@@ -22,5 +22,5 @@ public interface IClientManager {
 	public void addFriends(int idUser, ArrayList<Integer> friends);
 	public void addParticipants(ArrayList<Integer> participants, int idProject);
 	public void addRespActivity(int idActivity, ArrayList<Integer> responsibles);
-	 
+	public ArrayList<User> getNotmyFriends();
 }

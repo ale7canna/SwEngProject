@@ -31,7 +31,7 @@ public interface IServer extends Remote{
 	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException;
 	public ArrayList<User> getParticipantsFromProject(Project project) throws RemoteException, CustomException;
 	public ProjectInfo getProjectInfo(Project project) throws RemoteException, CustomException;
-	
+	public ArrayList<User> getNotMyFriends(int idUser) throws CustomException, RemoteException;
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
 	public void removeObserver(IClient _client) throws RemoteException;

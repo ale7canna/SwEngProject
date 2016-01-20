@@ -52,7 +52,8 @@ public class GuiManagerClient {
 		
 		GUIaddComponent addProjectFrame= null;
 		User user = null;
-		GUIaddComponent addActivity = null;
+		GUIaddComponent addActivityFrame = null;
+		GUIaddComponent addFriendsFrame = null;
 		Project project = null;
 		Activity activity= null;
 		
@@ -60,6 +61,7 @@ public class GuiManagerClient {
 		ArrayList<Activity> activities = null;
 		ArrayList<Project> projects = null;
 		ArrayList<User> participants=null;
+		ArrayList<User> notmyfriends=null;
 			
 		 
 		public User SignInRequest(String username, String password) {
@@ -77,23 +79,37 @@ public class GuiManagerClient {
 		public void addProjectView(){
 			// Qua mancavano le ultime due istruzioni. Non veniva visualizzato ovviamente.
 			friendships = clientManager.getFriendships();
-			addProjectFrame = new GUIaddComponent(this, friendships, true);
+			addProjectFrame = new GUIaddComponent(this, friendships, true, false);
 			addProjectFrame.setVisible(true);
 			addProjectFrame.setSize(600, 600);
 		}
 		
 		public void addActivityView(Project project){
 			participants = clientManager.getParticipant(project);
-			addActivity = new GUIaddComponent(this, participants, false);
+			addActivityFrame = new GUIaddComponent(this, participants, false, false);
+			addActivityFrame.setVisible(true);
+			addActivityFrame.setSize(600, 600);
+		}
+		
+		public void addFriendsView() {
+			//DA CREARE QUERY PER FAR SI DI TROVARE TUTTI GLI UTENTI NON MIEI AMICI
+			notmyfriends = clientManager.getNotmyFriends();
+			addFriendsFrame = new GUIaddComponent(this, notmyfriends, true, true);
+			addFriendsFrame.setVisible(true);
+			addFriendsFrame.setSize(600, 600);
+			System.out.println("Add friends view");
+			
 		}
 
-		public void addProject(String name, ArrayList<Integer> participants, boolean isActive){
+		public Project addProject(String name, ArrayList<Integer> participants, boolean isActive){
 			
 			//Marzo questo project come viene creato? È quello che crea il client da inviare al server. Quindi non ha l'ID.
 			//non ha senso quindi fare poi l'addParticipants su quell'ID. 
 			//Modifico la funzione del server addProject. Le faccio restituire un bean Progetto con l'id giusto.
 			project = clientManager.addProject(name, clientManager.getUser().getIdUser(), isActive);
 			clientManager.addParticipants(participants, project.getIdProject());
+			
+			return project;
 		}
 		
 		public void addActivity(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
@@ -104,21 +120,19 @@ public class GuiManagerClient {
 		}
 
 		public void addFriends( ArrayList<Integer> friends){
-			
-			clientManager.addFriends(user.getIdUser(), friends);
+			int idUser = user.getIdUser();
+			clientManager.addFriends(idUser, friends);
 			
 		}
-		@Override
+		
 		public void buttonclickedAddProject(Project proj) {
 			System.out.println("Add Project");
 			
 		}
 
-		@Override
-		public void addFriendsView() {
-			System.out.println("Add friends view");
-			
-		}
+	
+	
+	
 
 	
 	

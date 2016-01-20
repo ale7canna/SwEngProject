@@ -27,6 +27,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	ArrayList<Activity> activities = null;
 	ArrayList<Project> projects = null;
 	ArrayList<User> participants = null;
+	ArrayList<User> notmyFriends = null;
 
 	protected Client(IServer server) throws RemoteException {
 		super();
@@ -77,6 +78,16 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		guiManagerClient.goToUserHomePage();
 	}
 
+	public ArrayList<User> getNotmyFriends(){
+		try {
+			notmyFriends=server.getNotMyFriends(user.getIdUser());
+		} catch (RemoteException | CustomException e) {
+			
+			e.printStackTrace();
+		}
+		return notmyFriends;
+	}
+	
 	public ArrayList<User> getFriendships() {
 		return friendships;
 	}
