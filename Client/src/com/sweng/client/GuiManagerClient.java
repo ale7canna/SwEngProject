@@ -51,7 +51,6 @@ public class GuiManagerClient {
 	 class GuiListener implements EventListenerGUI {
 		
 		GUIaddComponent addProjectFrame= null;
-		User user = null;
 		GUIaddComponent addActivityFrame = null;
 		GUIaddComponent addFriendsFrame = null;
 		Project project = null;
@@ -120,8 +119,7 @@ public class GuiManagerClient {
 		}
 
 		public void addFriends( ArrayList<Integer> friends){
-			int idUser = user.getIdUser();
-			clientManager.addFriends(idUser, friends);
+			clientManager.addFriends(friends);
 			
 		}
 		

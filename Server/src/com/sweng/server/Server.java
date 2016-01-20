@@ -159,7 +159,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 
 	@Override
 	public ArrayList<User> getNotMyFriends(int idUser) throws CustomException,RemoteException {
-		// TODO Auto-generated method stub
+		
 		ArrayList<User> result = null;
 		result = DBManager.getNotMyFriends(idUser);
 		

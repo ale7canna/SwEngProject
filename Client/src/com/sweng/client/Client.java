@@ -155,9 +155,9 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 	}
 
-	public void addFriends(int idUser, ArrayList<Integer> friends) {
+	public void addFriends(ArrayList<Integer> friends) {
 		Friendship _friendship = null;
-
+		int idUser = user.getIdUser();
 		for (Integer i : friends) {
 			// IO SONO SUO AMICO idUser->i IL CONTRARIO NO
 			_friendship = new Friendship(idUser, i);
