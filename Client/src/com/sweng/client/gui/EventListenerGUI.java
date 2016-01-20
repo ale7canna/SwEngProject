@@ -10,13 +10,15 @@ public interface EventListenerGUI {
 
 	public User SignInRequest(String username, String password); 
 	
-	public Project addProject(String name, ArrayList<Integer> participants, boolean isActive);
+	public void addProject(String name, ArrayList<Integer> participants, boolean isActive);
 	
 	public void addProjectView();
 	
 	public void addActivityView(Project project);
 	
-	public void addActivity(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity);
+	public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity);
+	
+	public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity);
 	
 	public void addFriendsView();
 	

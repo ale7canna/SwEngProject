@@ -28,6 +28,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	ArrayList<Project> projects = null;
 	ArrayList<User> participants = null;
 	ArrayList<User> notmyFriends = null;
+	ArrayList<User> responsible=null;
 
 	protected Client(IServer server) throws RemoteException {
 		super();
@@ -46,7 +47,14 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			else
 				e.printStackTrace();
 		}
+		loadFriendsfromServer(user);
+		loadActivitiesfromServer(user);
+		loadProjectsfromServer(user);
+		
+		guiManagerClient.goToUserHomePage();
+	}
 
+	public ArrayList<User> loadFriendsfromServer(User user){
 		try{
 			friendships = server.getFriendsFromUser(user);
 		} catch (CustomException | RemoteException e) {
@@ -55,7 +63,10 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			else
 				e.printStackTrace();
 		}
-
+		return friendships;
+	}
+	
+	public ArrayList<Activity> loadActivitiesfromServer(User user){
 		try {			
 			activities = server.getActivityFromUser(user);
 		} catch (CustomException | RemoteException e) {
@@ -64,20 +75,22 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			else
 				e.printStackTrace();
 		}
-
+		return activities;
+	}
+	
+	public ArrayList<Project> loadProjectsfromServer(User user){
 		try{
 			projects = server.getProjectsFromUsers(user);
-			
+			//participants = server.getParticipantsFromProject(project);
 		} catch (CustomException | RemoteException e) {
 			if (e instanceof CustomException)
 				System.out.println(e.getMessage());
 			else
 				e.printStackTrace();
 		}
-		
-		guiManagerClient.goToUserHomePage();
+		return projects;
 	}
-
+	
 	public ArrayList<User> getNotmyFriends(){
 		try {
 			notmyFriends=server.getNotMyFriends(user.getIdUser());
@@ -95,12 +108,20 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public ArrayList<Activity> getActivity() {
 		return activities;
 	}
-
+	
 	public ArrayList<Project> getProject() {
 		return projects;
 	}
 
 	public ArrayList<User> getParticipant(Project project) {
+		try{
+			participants = server.getParticipantsFromProject(project);
+		} catch (CustomException | RemoteException e) {
+			if (e instanceof CustomException)
+				System.out.println(e.getMessage());
+			else
+				e.printStackTrace();
+		}
 		return participants;
 	}
 
@@ -114,7 +135,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
-
+		loadProjectsfromServer(user);
 		return _project;
 	}
 
@@ -138,9 +159,10 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 
 		try {
 			server.addActivity(_activity);
-		} catch (RemoteException e) {
+		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
+		loadActivitiesfromServer(user);
 		return _activity;
 	}
 
@@ -167,6 +189,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				e.printStackTrace();
 			}
 		}
+		loadFriendsfromServer(user);
 	}
 
 	public void update() {
@@ -181,11 +204,6 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public void signIn() {
 
 	}
-
-	public void matchUser() {
-
-	}
-
 	
 	@Override
 	public User getUser() {

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.sweng.client.gui.ClientGUI;
@@ -65,18 +66,13 @@ public class GuiManagerClient {
 		 
 		public User SignInRequest(String username, String password) {
 			
-			//Qui Marzo c'erano le funzioni per recuperare USER, FRIENDSHIPS, ACTIVITIES e PROJECTS.
-			//Secondo me non se ne deve occupare GuiManager, quindi (molto democraticamente) le ho tolte.
-			//Credo che tutte le richieste verso il server debbano partire dalla classe client.
-			
-			//Qui limitiamoci a fargli fare il login. Sarà la classe client a decidere cosa voler fare dopo il login.
 			clientManager.SignInRequest(username, password);
 			
 			return null;
 			}
 
 		public void addProjectView(){
-			// Qua mancavano le ultime due istruzioni. Non veniva visualizzato ovviamente.
+			
 			friendships = clientManager.getFriendships();
 			addProjectFrame = new GUIaddComponent(this, friendships, true, false);
 			addProjectFrame.setVisible(true);
@@ -100,7 +96,7 @@ public class GuiManagerClient {
 			
 		}
 
-		public Project addProject(String name, ArrayList<Integer> participants, boolean isActive){
+		public void addProject(String name, ArrayList<Integer> participants, boolean isActive){
 			
 			//Marzo questo project come viene creato? È quello che crea il client da inviare al server. Quindi non ha l'ID.
 			//non ha senso quindi fare poi l'addParticipants su quell'ID. 
@@ -108,19 +104,40 @@ public class GuiManagerClient {
 			project = clientManager.addProject(name, clientManager.getUser().getIdUser(), isActive);
 			clientManager.addParticipants(participants, project.getIdProject());
 			
-			return project;
+			JOptionPane.showMessageDialog(null, "Project was added correctly");
+			addProjectFrame.setVisible(false);
+			addProjectFrame.dispose();
+			addActivityView(project);
+		
 		}
 		
-		public void addActivity(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
+		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
 			
 			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 			
+			JOptionPane.showMessageDialog(null, "Activity was added correctly");
+			addActivityFrame.setVisible(false);
+			addActivityFrame.dispose();
+			addActivityView(project);
 		}
+		
+		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
+					
+					activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
+					clientManager.addRespActivity(activity.getIdActivity(), respActivity);
+					
+					JOptionPane.showMessageDialog(null, "Activity was added correctly");
+					addActivityFrame.setVisible(false);
+					addActivityFrame.dispose();
+				}
 
 		public void addFriends( ArrayList<Integer> friends){
 			clientManager.addFriends(friends);
 			
+			JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
+			addFriendsFrame.setVisible(false);
+			addFriendsFrame.dispose();
 		}
 		
 		public void buttonclickedAddProject(Project proj) {
@@ -128,16 +145,6 @@ public class GuiManagerClient {
 			
 		}
 
-	
-	
-	
-
-	
-	
-		
-		
-
-	
 	}
 
 

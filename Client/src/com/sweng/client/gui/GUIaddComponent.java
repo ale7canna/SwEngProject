@@ -26,13 +26,16 @@ public class GUIaddComponent extends JFrame{
 	
 	public ArrayList<CheckBoxId> createCheckboxList(ArrayList<User> lista){
 		ArrayList<CheckBoxId> listacheckbox = new ArrayList<CheckBoxId>();
-		for (User u : lista){
-			String userName = u.getUsername();
-			int id = u.getIdUser();
-			//Qua non ho capito perché usi quel JCheckBox per aggiungerlo alla lista ???
-			//checkbox = new CheckBoxId(id, userName);
-						
-			listacheckbox.add(new CheckBoxId(id, userName));
+		if(lista!=null){
+			
+			for (User u : lista){
+				String userName = u.getUsername();
+				int id = u.getIdUser();
+				//Qua non ho capito perché usi quel JCheckBox per aggiungerlo alla lista ???
+				//checkbox = new CheckBoxId(id, userName);
+							
+				listacheckbox.add(new CheckBoxId(id, userName));
+			}
 		}
 		return listacheckbox;
 	}
@@ -44,6 +47,7 @@ public class GUIaddComponent extends JFrame{
 	private JTextField PlaceActivityText;
 	public static Project project;
 	private JLabel NameLabel;
+	private JButton addProjbtn;
 	private JLabel ChooseFriendsLabel;
 	
 	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
@@ -80,45 +84,51 @@ public class GUIaddComponent extends JFrame{
 				
 		scrollPane.setRowHeaderView(listFriends);
 		
-		if(isProject&&!isAddFriends)
-			ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
-	    if(isProject&&isAddFriends)
-	    	ChooseFriendsLabel = new JLabel("Choose new friends");
+				if(isProject&&!isAddFriends)
+					ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
+			    if(isProject&&isAddFriends)
+			    	ChooseFriendsLabel = new JLabel("Choose new friends");
+				if(!isProject)
+					ChooseFriendsLabel = new JLabel("Choose responsible for the activity");
+				ChooseFriendsLabel.setBounds(178, 21, 219, 14);
+				getContentPane().add(ChooseFriendsLabel);
 		
-		ChooseFriendsLabel.setBounds(178, 21, 219, 14);
-		getContentPane().add(ChooseFriendsLabel);
-		
-		JButton addActivitybtn = new JButton("Add Activity");
+		JButton addActivitybtn = new JButton("Add New Activity");
 		addActivitybtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(isProject){
-					_listener.addActivityView(project);
+				if(!isProject){
+					_listener.addActivityContinue(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
 				}
-				
-				_listener.addActivity(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
-			}
-		});
+		}});
 		addActivitybtn.setBounds(119, 227, 106, 23);
 		getContentPane().add(addActivitybtn);
 		
 		JCheckBox isActive = new JCheckBox("New check box");
 		isActive.setBounds(56, 85, 23, 20);
+		isActive.setSelected(true);
 		getContentPane().add(isActive);
 		
-		JButton addProjbtn = new JButton("OK");
+		if(!isProject){
+			addProjbtn = new JButton("FINISH");
+		}
+		else
+			 addProjbtn = new JButton("OK");
+		
 		addProjbtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Qua Marzo mi usi i metodi sbagliati per recuperare nome e il boolean attivo
-				//_listener.addProject(txtProjectName.toString(), listFriends.getSelectedItems(), isActive.isEnabled());
 				if(isProject&&!isAddFriends){
-					project=_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
-					JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
-					}
+					_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
+					
+				}
 				if(isProject&&isAddFriends){
 					ArrayList<Integer> daaggiungere = listFriends.getSelectedItems();
 					_listener.addFriends(daaggiungere);
+				
+				}
+				if(!isProject){
+					_listener.addActivityFinish(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
 				}
 				
 			}
@@ -157,17 +167,17 @@ public class GUIaddComponent extends JFrame{
 			PlaceActivityLabel.setVisible(false);
 			TimeActivityText.setVisible(false);
 			TimeActivityLabel.setVisible(false);
+			addActivitybtn.setVisible(false);
 			if(isAddFriends){
 				txtProjectName.setVisible(false);
 				addActivitybtn.setVisible(false);
 				isActive.setVisible(false);
 				
 				lblNewLabelActivate.setVisible(false);
+				
 			}
 		}
-		else if(!isProject){
-			addActivitybtn.setVisible(false);
-		}
+		
 		
 		
 	    getContentPane().setLayout(null);
