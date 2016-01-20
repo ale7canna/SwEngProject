@@ -317,6 +317,8 @@ public class DBManager {
 
 		return result;
 	}
+	
+	
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public static void addActivity(Activity activity) throws CustomException {
 		try {

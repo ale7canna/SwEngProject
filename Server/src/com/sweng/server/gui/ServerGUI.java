@@ -100,7 +100,6 @@ public class ServerGUI extends JFrame{
 	{
 		MyUserListModel listModel = (MyUserListModel) list.getModel();
 		
-		update(getGraphics());
 		for (User u :users)
 			listModel.addElement(u);
 	}
@@ -110,9 +109,10 @@ public class ServerGUI extends JFrame{
 		MyProjectListModel listModel = (MyProjectListModel)projectList.getModel();
 		listModel.removeAllElements();
 		
-		update(getGraphics());
-		for (Project p: projects)
-			listModel.addElement(p);
+		//update(getGraphics());
+		if (projects != null)
+			for (Project p: projects)
+				listModel.addElement(p);
 	}
 	
 	
