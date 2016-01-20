@@ -23,6 +23,7 @@ public class MainServer {
 		try
 		{
 			guiMgr.LoadUser(db.getAllUsers());
+			guiMgr.LoadProjects(db.getAllProjects());
 			//guiMgr.LoadProjects(db.getAllProjects());
 		}
 		catch (CustomException e)

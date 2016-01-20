@@ -2,11 +2,13 @@ package com.sweng.server;
 
 import java.awt.Dimension;
 import java.security.Guard;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import com.sweng.common.beans.Project;
+import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.utils.CustomException;
 import com.sweng.server.gui.ServerGUI;
@@ -16,6 +18,7 @@ import com.sweng.server.gui.ProjectInfoGui;
 public class GuiManager{
 	
 	private static ServerGUI GUI;
+	ProjectInfoGui projectInfoGui;
 
 	
 	public GuiManager()
@@ -36,6 +39,11 @@ public class GuiManager{
 		GUI.AddProjectsToList(projects);
 	}
 	
+	public void refreshInfo()
+	{
+		
+	}
+	
 	class GuiListener implements GUIListener
 	{
 
@@ -51,24 +59,55 @@ public class GuiManager{
 			{
 				
 			}
-			GUI.AddProjectsToList(progetti);
+			GUI.AddUserProjectsToList(progetti);
 		}
 
 		@Override
-		public void ProjectClicked(Project project) {
+		public void UserProjectClicked(Project project) {
 						
 			if (project != null)
 			{	System.out.println(project.getName());
 			
 				try {
-				ProjectInfoGui projectGui = new ProjectInfoGui(DBManager.getProjectInfo(project));
-				projectGui.setSize(new Dimension(800, 600));
-				projectGui.setVisible(true);
+					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this);
+					projectInfoGui.setSize(new Dimension(800, 600));
+					projectInfoGui.setVisible(true);
+					LoadProjects(null);
 				}
 				catch (CustomException e)
 				{}
 			}
 		}
+
+		@Override
+		public void RemoveProjectPressed(ProjectInfo projectInfo) {
+			Project p = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive());
+			try {
+				DBManager.removeProject(p);
+				projectInfoGui.setVisible(false);
+//				projectInfoGui.dispose();
+				
+			}
+			catch (CustomException e )
+			{
+				
+			}
+		}
+
+		@Override
+		public void ProjectClicked(Project project) {
+			// TODO Auto-generated method stub
+			ProjectInfo pi = null;
+			try {
+				pi = DBManager.getProjectInfo(project);
+			} catch (CustomException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this);
+			GUI.ChangeProjectInfo(projectInfo);
+		}
+
 	}
 
 

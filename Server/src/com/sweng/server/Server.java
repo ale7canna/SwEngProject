@@ -27,14 +27,12 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 
 	@Override
-	public void addActivity(Activity _activity) throws RemoteException {
-		try {
-			DBManager.addActivity(_activity);
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
+		Activity result = null;
+		DBManager.addActivity(_activity);
+		result = DBManager.getActivityFromNamePlaceAndProject(_activity.getName(), _activity.getIdProject());
 		
+		return result ;
 	}
 
 	@Override
@@ -88,7 +86,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -164,6 +161,12 @@ public class Server extends UnicastRemoteObject implements IServer{
 		result = DBManager.getNotMyFriends(idUser);
 		
 		return result;
+	}
+
+	@Override
+	public void removeProject(Project project) throws RemoteException, CustomException {
+		DBManager.removeProject(project);
+		
 	}
 
 	

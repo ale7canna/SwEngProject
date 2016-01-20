@@ -254,7 +254,7 @@ public class DBManager {
 		}
 
 		if (resultInfo == null)
-			throw new CustomException(Errors.ActivitiesNotFound);
+			throw new CustomException(Errors.ProjectsNotFound);
 
 		return resultInfo;
 
@@ -279,7 +279,7 @@ public class DBManager {
 			}
 
 			if (result.isEmpty())
-				throw new CustomException(Errors.ActivitiesNotFound);
+				throw new CustomException(Errors.UserNotFound);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new CustomException(Errors.ServerError);
@@ -427,6 +427,70 @@ public class DBManager {
 		}
 	}
 
+	//METODI DI ELIMINAZIONE DAL DB
+	public static void removeProject(Project project) throws CustomException{
+		removeActivitiesFromProject(project);
+		removeParticipantsFromProject(project);
+
+		
+		String query = "DELETE FROM progetto WHERE idProgetto = ?";
+		
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+		
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		
+	}
+	
+	public static void removeActivitiesFromProject(Project project) throws CustomException
+	{
+		String query = "DELETE FROM responsabile_attivita WHERE idAttivita IN " +
+						"(SELECT idAttivita FROM attivita WHERE idProgetto = ?)";
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+		
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		query = "DELETE FROM attivita WHERE idProgetto = ?";
+				
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+		
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+	}
+	
+	public static void removeParticipantsFromProject(Project project) throws CustomException
+	{
+		String query = "DELETE FROM partecipante WHERE idProgetto = ?";
+		
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+		
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+	}
+	
+	
+	
+	
+	
+
 	public static Project getProjectFromNameAndAdmin(String projectName, int idAdmin) throws CustomException {
 		
 		Project result = null;
@@ -449,5 +513,29 @@ public class DBManager {
 		}
 		return result;
 	}
+	
+	public static Activity getActivityFromNamePlaceAndProject(String activityName, int idProject) throws CustomException {
+		
+		Activity result = null;
+		String query = "SELECT * FROM attivita WHERE Nome = ? AND idProgetto = ";
 
+		try {
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			stat.setString(1, activityName);
+			stat.setInt(2, idProject);
+			ResultSet rs = stat.executeQuery();
+
+			if (rs.next())
+			{
+				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), rs.getString("Luogo"), rs.getDate("Ora"), rs.getBoolean("Completata"));
+			}
+			else
+				throw new CustomException(Errors.ProjectsNotFound);
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		return result;
+	}
+
+	
 }

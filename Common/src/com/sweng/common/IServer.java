@@ -18,7 +18,7 @@ import com.sweng.common.utils.CustomException;
 public interface IServer extends Remote{
 
 	//REMOTE METHODS
-	public void addActivity(Activity _activity) throws RemoteException;
+	public Activity addActivity(Activity _activity) throws RemoteException, CustomException;
 	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException;
 	public void addFriendship(Friendship _friendship) throws RemoteException;
 	public void addParticipant(Participant _participant) throws RemoteException; 
@@ -32,6 +32,8 @@ public interface IServer extends Remote{
 	public ArrayList<User> getParticipantsFromProject(Project project) throws RemoteException, CustomException;
 	public ProjectInfo getProjectInfo(Project project) throws RemoteException, CustomException;
 	public ArrayList<User> getNotMyFriends(int idUser) throws CustomException, RemoteException;
+	
+	public void removeProject(Project project) throws RemoteException, CustomException;
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
 	public void removeObserver(IClient _client) throws RemoteException;

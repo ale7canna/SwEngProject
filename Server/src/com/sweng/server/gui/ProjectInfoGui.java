@@ -17,19 +17,24 @@ import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class ProjectInfoGui extends JFrame{
+public class ProjectInfoGui extends JPanel{
 	private JTextField txtProjectName;
 	private JTextField txtAdmin;
 	JList listActivities;
 	JList listParticipants;
 
-	public ProjectInfoGui(ProjectInfo projectInfo)
+	public ProjectInfoGui(ProjectInfo projectInfo, GUIListener _listener)
 	{
-		getContentPane().setLayout(new BorderLayout(0, 0));
+//		getContentPane().setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout(0, 0));
 		
 		JSplitPane splitPane = new JSplitPane();
-		getContentPane().add(splitPane);
+//		getContentPane().add(splitPane);
+		add(splitPane);
 		
 		JPanel panel_1 = new JPanel();
 		splitPane.setRightComponent(panel_1);
@@ -92,6 +97,16 @@ public class ProjectInfoGui extends JFrame{
 		txtAdmin.setColumns(10);
 		txtAdmin.setBounds(240, 131, 146, 26);
 		panel.add(txtAdmin);
+		
+		JButton btnRemove = new JButton("Remove");
+		btnRemove.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				_listener.RemoveProjectPressed(projectInfo);
+			}
+		});
+		btnRemove.setBounds(271, 12, 115, 29);
+		panel.add(btnRemove);
 		
 		JPanel panel_2 = new JPanel();
 		splitPane_1.setRightComponent(panel_2);
