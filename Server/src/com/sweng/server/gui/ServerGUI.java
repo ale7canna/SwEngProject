@@ -96,7 +96,7 @@ public class ServerGUI extends JFrame{
 		
 		projectSplittable = new JSplitPane();
 		tabbedPane.addTab("Progetti", null, projectSplittable, null);
-		
+	
 		projectList = new JList(new MyProjectListModel());
 		projectList.addMouseListener(new MouseAdapter() {
 			
