@@ -144,7 +144,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		Participant _participant = null;
 		for (int i : participants) {
 			try {
-				_participant = new Participant(idProject, i);
+				_participant = new Participant(i, idProject);
 				server.addParticipant(_participant);
 
 			} catch (RemoteException e) {
