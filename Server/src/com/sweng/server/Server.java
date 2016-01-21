@@ -30,7 +30,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
 		Activity result = null;
 		DBManager.addActivity(_activity);
-		result = DBManager.getActivityFromNamePlaceAndProject(_activity.getName(), _activity.getIdProject());
+		result = DBManager.getActivityFromNameAndProject(_activity.getName(), _activity.getIdProject());
 		
 		return result ;
 	}

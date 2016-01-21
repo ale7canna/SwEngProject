@@ -158,7 +158,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		Activity _activity = new Activity(idProject, nameActivity, place, hour, false);
 
 		try {
-			server.addActivity(_activity);
+			_activity = server.addActivity(_activity);
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}

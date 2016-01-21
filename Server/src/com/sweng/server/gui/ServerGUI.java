@@ -24,6 +24,7 @@ import javax.swing.plaf.FontUIResource;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import javax.swing.BoxLayout;
 
 public class ServerGUI extends JFrame {
 	private JList userList, userProjectList, projectList;
@@ -61,6 +62,7 @@ public class ServerGUI extends JFrame {
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Statistiche", null, panel_3, null);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		JSplitPane splitPane = new JSplitPane();
 		tabbedPane.addTab("Utenti", null, splitPane, null);

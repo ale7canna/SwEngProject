@@ -1,11 +1,12 @@
 package com.sweng.server;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -335,7 +336,8 @@ public class DBManager {
 
 			stat.setString(1, activity.getName());
 			stat.setString(2, activity.getPlace());
-			stat.setDate(3, (Date)activity.getHour());
+			Timestamp t = new Timestamp(activity.getHour().getTime());
+			stat.setTimestamp(3, t);
 			stat.setInt(4, activity.getIdProject());
 
 			stat.executeUpdate();
@@ -512,11 +514,10 @@ public class DBManager {
 		return result;
 	}
 
-	public static Activity getActivityFromNamePlaceAndProject(String activityName, int idProject)
-			throws CustomException {
+	public static Activity getActivityFromNameAndProject(String activityName, int idProject)throws CustomException {
 
 		Activity result = null;
-		String query = "SELECT * FROM attivita WHERE Nome = ? AND idProgetto = ";
+		String query = "SELECT * FROM attivita WHERE Nome = ? AND idProgetto = ?";
 
 		try {
 			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);

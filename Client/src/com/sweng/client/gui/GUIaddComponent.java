@@ -106,7 +106,7 @@ public class GUIaddComponent extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(!isProject){
-					_listener.addActivityContinue(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
+					_listener.addActivityContinue(txtProjectName.getText(), PlaceActivityText.getText(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
 				}
 		}});
 		addActivitybtn.setBounds(119, 227, 106, 23);
@@ -153,7 +153,7 @@ public class GUIaddComponent extends JFrame{
 					}
 					System.out.println(dateTime);
 				
-					_listener.addActivityFinish(txtProjectName.toString(), PlaceActivityText.toString(), date , listFriends.getSelectedItems());
+					_listener.addActivityFinish(txtProjectName.getText(), PlaceActivityText.getText(), date , listFriends.getSelectedItems());
 				}
 				
 			}
