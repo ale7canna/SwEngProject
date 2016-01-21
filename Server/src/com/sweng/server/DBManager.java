@@ -1,6 +1,7 @@
 package com.sweng.server;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -216,6 +217,11 @@ public class DBManager {
 
 	public static ProjectInfo getProjectInfo(Project project) throws CustomException {
 		ProjectInfo resultInfo = null;
+		int attivitaComplete = 0;
+		HashMap<Activity, User> actInResp = new HashMap<Activity, User>();
+		ArrayList<User> parts = null;
+		User admin = null;
+		float compPerc = 0;
 
 		try {
 			String query = "SELECT * FROM attivita JOIN responsabile_attivita AS ar "
@@ -226,8 +232,6 @@ public class DBManager {
 			stat.setInt(1, project.getIdProject());
 			ResultSet rs = stat.executeQuery();
 
-			int attivitaComplete = 0;
-			HashMap<Activity, User> actInResp = new HashMap<Activity, User>();
 			while (rs.next()) {
 				boolean completa = rs.getBoolean("Completata");
 				if (completa)
@@ -241,22 +245,27 @@ public class DBManager {
 				actInResp.put(act, u);
 			}
 
-			ArrayList<User> parts = getParticipantsFromProject(project);
-			User admin = getUser(project.getIdAdmin());
-			float compPerc = (float) attivitaComplete / (float) actInResp.size();
+			compPerc = (float) attivitaComplete / (float) actInResp.size();
 
-			resultInfo = new ProjectInfo(project.getName(), project.getIdProject(), project.isActive(), admin,
-					actInResp, parts, compPerc);
-		} catch (SQLException e) {
-			throw new CustomException(Errors.ServerError);
-		} catch (CustomException e) {
-			throw new CustomException(Errors.ActivitiesNotFound);
+		} catch (SQLException exc) {
 		}
 
-		if (resultInfo == null)
-			throw new CustomException(Errors.ProjectsNotFound);
+		try {
+			parts = getParticipantsFromProject(project);
+		} catch (CustomException e) {
+		}
+		try {
+			admin = getUser(project.getIdAdmin());
+		} catch (CustomException e) {
+		}
 
+		if (admin == null && actInResp == null && parts == null)
+			throw new CustomException(Errors.ProjectsNotFound);
+		else
+			resultInfo = new ProjectInfo(project.getName(), project.getIdProject(), project.isActive(), admin, actInResp, parts, compPerc);
+		
 		return resultInfo;
+		
 
 	}
 
@@ -288,11 +297,11 @@ public class DBManager {
 		return result;
 	}
 
-	public static ArrayList<User> getNotMyFriends(int idUser) throws CustomException{
+	public static ArrayList<User> getNotMyFriends(int idUser) throws CustomException {
 		ArrayList<User> result = null;
 		try {
-			String query =  "SELECT * FROM utente WHERE idUtente NOT IN(SELECT idUtente2 "+ 
-							"FROM amicizia WHERE amicizia.idUtente1=?)";
+			String query = "SELECT * FROM utente WHERE idUtente NOT IN(SELECT idUtente2 "
+					+ "FROM amicizia WHERE amicizia.idUtente1=?)";
 			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
 
 			stat.setInt(1, idUser);
@@ -301,7 +310,7 @@ public class DBManager {
 
 			result = new ArrayList<User>();
 			while (rs.next()) {
-				if(rs.getInt("idUtente")!=idUser){
+				if (rs.getInt("idUtente") != idUser) {
 					User u = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"),
 							rs.getString("UserName"), null);
 					result.add(u);
@@ -317,8 +326,7 @@ public class DBManager {
 
 		return result;
 	}
-	
-	
+
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public static void addActivity(Activity activity) throws CustomException {
 		try {
@@ -327,7 +335,7 @@ public class DBManager {
 
 			stat.setString(1, activity.getName());
 			stat.setString(2, activity.getPlace());
-			stat.setDate(3, activity.getHour());
+			stat.setDate(3, (Date)activity.getHour());
 			stat.setInt(4, activity.getIdProject());
 
 			stat.executeUpdate();
@@ -427,72 +435,63 @@ public class DBManager {
 		}
 	}
 
-	//METODI DI ELIMINAZIONE DAL DB
-	public static void removeProject(Project project) throws CustomException{
+	// METODI DI ELIMINAZIONE DAL DB
+	public static void removeProject(Project project) throws CustomException {
 		removeActivitiesFromProject(project);
 		removeParticipantsFromProject(project);
 
-		
 		String query = "DELETE FROM progetto WHERE idProgetto = ?";
-		
+
 		try {
 			PreparedStatement stat = connection.prepareStatement(query);
-		
+
 			stat.setInt(1, project.getIdProject());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
-		
-		
+
 	}
-	
-	public static void removeActivitiesFromProject(Project project) throws CustomException
-	{
-		String query = "DELETE FROM responsabile_attivita WHERE idAttivita IN " +
-						"(SELECT idAttivita FROM attivita WHERE idProgetto = ?)";
+
+	public static void removeActivitiesFromProject(Project project) throws CustomException {
+		String query = "DELETE FROM responsabile_attivita WHERE idAttivita IN "
+				+ "(SELECT idAttivita FROM attivita WHERE idProgetto = ?)";
 		try {
 			PreparedStatement stat = connection.prepareStatement(query);
-		
+
 			stat.setInt(1, project.getIdProject());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
-		
+
 		query = "DELETE FROM attivita WHERE idProgetto = ?";
-				
+
 		try {
 			PreparedStatement stat = connection.prepareStatement(query);
-		
+
 			stat.setInt(1, project.getIdProject());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
 	}
-	
-	public static void removeParticipantsFromProject(Project project) throws CustomException
-	{
+
+	public static void removeParticipantsFromProject(Project project) throws CustomException {
 		String query = "DELETE FROM partecipante WHERE idProgetto = ?";
-		
+
 		try {
 			PreparedStatement stat = connection.prepareStatement(query);
-		
+
 			stat.setInt(1, project.getIdProject());
 			stat.executeUpdate();
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
 	}
-	
-	
-	
-	
-	
 
 	public static Project getProjectFromNameAndAdmin(String projectName, int idAdmin) throws CustomException {
-		
+
 		Project result = null;
 		String query = "SELECT * FROM progetto WHERE Nome = ? AND idAdmin = ? ";
 
@@ -502,20 +501,20 @@ public class DBManager {
 			stat.setInt(2, idAdmin);
 			ResultSet rs = stat.executeQuery();
 
-			if (rs.next())
-			{
-				result = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"), rs.getBoolean("Attivo"));
-			}
-			else
+			if (rs.next()) {
+				result = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"),
+						rs.getBoolean("Attivo"));
+			} else
 				throw new CustomException(Errors.ProjectsNotFound);
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
 		return result;
 	}
-	
-	public static Activity getActivityFromNamePlaceAndProject(String activityName, int idProject) throws CustomException {
-		
+
+	public static Activity getActivityFromNamePlaceAndProject(String activityName, int idProject)
+			throws CustomException {
+
 		Activity result = null;
 		String query = "SELECT * FROM attivita WHERE Nome = ? AND idProgetto = ";
 
@@ -525,11 +524,10 @@ public class DBManager {
 			stat.setInt(2, idProject);
 			ResultSet rs = stat.executeQuery();
 
-			if (rs.next())
-			{
-				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), rs.getString("Luogo"), rs.getDate("Ora"), rs.getBoolean("Completata"));
-			}
-			else
+			if (rs.next()) {
+				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
+						rs.getString("Luogo"), rs.getDate("Ora"), rs.getBoolean("Completata"));
+			} else
 				throw new CustomException(Errors.ProjectsNotFound);
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
@@ -537,5 +535,4 @@ public class DBManager {
 		return result;
 	}
 
-	
 }

@@ -70,8 +70,10 @@ public class GuiManager{
 			
 				try {
 					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this);
-					projectInfoGui.setSize(new Dimension(800, 600));
-					projectInfoGui.setVisible(true);
+					JFrame frame = new JFrame();
+					frame.getContentPane().add(projectInfoGui);
+					frame.setVisible(true);
+					frame.setSize(800, 600);
 					LoadProjects(null);
 				}
 				catch (CustomException e)
