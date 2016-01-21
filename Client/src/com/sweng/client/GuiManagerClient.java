@@ -15,7 +15,10 @@ import com.sweng.client.gui.GUIaddComponent;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
+import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.gui.ICommonGui;
+import com.sweng.common.gui.ProjectInfoGui;
 
 public class GuiManagerClient {
 
@@ -49,7 +52,7 @@ public class GuiManagerClient {
 	}
 	
 	
-	 class GuiListener implements EventListenerGUI {
+	 class GuiListener implements EventListenerGUI, ICommonGui {
 		
 		GUIaddComponent addProjectFrame= null;
 		GUIaddComponent addActivityFrame = null;
@@ -142,6 +145,22 @@ public class GuiManagerClient {
 		
 		public void buttonclickedAddProject(Project proj) {
 			System.out.println("Add Project");
+			
+		}
+
+		
+		public void showProjectInfo(int idProject, int idAdmin){
+			Project project = new Project(idProject, idAdmin, null, true);
+			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
+			JFrame projectInfoFrame = new JFrame();
+			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this);
+			projectInfoFrame.getContentPane().add(piGui);
+			projectInfoFrame.setSize(800, 600);
+			projectInfoFrame.setVisible(true);
+		}
+		@Override
+		public void RemoveProjectPressed(ProjectInfo projectInfo) {
+			// TODO Auto-generated method stub
 			
 		}
 

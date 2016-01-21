@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Project;
+import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 
 public interface IClientManager {
@@ -23,4 +24,5 @@ public interface IClientManager {
 	public void addParticipants(ArrayList<Integer> participants, int idProject);
 	public void addRespActivity(int idActivity, ArrayList<Integer> responsibles);
 	public ArrayList<User> getNotmyFriends();
+	public ProjectInfo getProjectInfo(Project project);
 }

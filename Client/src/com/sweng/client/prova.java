@@ -2,19 +2,21 @@ package com.sweng.client;
 
 import java.awt.Dimension;
 import java.awt.List;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.DateFormatter;
 
@@ -141,50 +143,108 @@ public class prova {
 	    model = new MyTableModel();
 	 
 	    
-	    new Demo().createAndShowGUI();
+	  //  new Demo().createAndShowGUI();
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
 		scrollPane.setBounds(0, 0, 434, 261);
 		
-	
-		
+		   List l = new List();
+		    l.add( "yi",1);
+		    l.add("chen", 2);
+		    l.add("sleep", 3);
+		    l.add("35", 4);
+		    l.add("false", 5);
+		    
+		   
+		    model.addRow(l);
+		    
+			   List m = new List();
+			    m.add( "Giorgio",1);
+			    m.add("Marzorati", 2);
+			    m.add("alive", 3);
+			    m.add("15", 4);
+			    m.add("false", 5);
+			    
+			   
+			    model.addRow(m);
+			    
+				   List n = new List();
+				    n.add( "Cani",1);
+				    n.add("Bomber", 2);
+				    n.add("gioca", 3);
+				    n.add("44", 4);
+				    n.add("true", 5);
+				    
+				   
+				    model.addRow(n);
+		    
+		    JTable table = new JTable(model);
+		    table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		    table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		    table.setFillsViewportHeight(true);
+		    JScrollPane scrollPaneProject = new JScrollPane(table);
+		    scrollPaneProject.setBounds(5, 218, 884, 194);
+		    
+		    
+		    JFrame frame = new JFrame();
+		    frame.getContentPane().add(scrollPaneProject);
+		    frame.setVisible(true);
+		    
+		    
+		   table.addMouseListener(new MouseAdapter() {
+		        public void mousePressed(MouseEvent me) {
+		            JTable table =(JTable) me.getSource();
+		            Point p = me.getPoint();
+		            int row = table.rowAtPoint(p);
+		            if (me.getClickCount() == 2) {
+		                // your valueChanged overridden method 
+		            	String riga="";
+		            	for(int col = 0; col< table.getColumnCount(); col++){
+		            		riga += table.getValueAt(row, col);
+		            		riga += " ";
+		            	}
+		            	JOptionPane.showMessageDialog(null, riga);
+		            }
+		        }
+		    });
+		    
 		//ArrayList<CheckBoxId> checkboxList = createCheckboxList(friends, friends1);
 			
-		CheckBoxList listFriends = new CheckBoxList();
+		//CheckBoxList listFriends = new CheckBoxList();
 	
 //		for (JCheckBox c : checkboxList){
 //				listFriends.addCheckbox((CheckBoxId) c);		
 //				}
-		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
-		timeSpinner.setEditor(timeEditor);
-		timeSpinner.setValue(new Date(0, 0, 0));
-		
+//		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+//		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+//		timeSpinner.setEditor(timeEditor);
+//		timeSpinner.setValue(new Date(0, 0, 0));
+//		
 
-		scrollPane.setRowHeaderView(listFriends);
+		//scrollPane.setRowHeaderView(listFriends);
 		//now adding this to the frame where I want to show 
-	    JFrame frame = new JFrame();
-	    frame.getContentPane().setLayout(null);
-	    frame.getContentPane().add(timeSpinner);
-	   // frame.getContentPane().add(scrollPane);
-	    
-	    JButton viewButton = new JButton("view\r\n");
-	    viewButton.setSize(new Dimension(100, 100));
-	    viewButton.addMouseListener(new MouseAdapter() {
-	    	@Override
-	    	public void mouseClicked(MouseEvent arg0) {
-	    		ArrayList<Integer> id = listFriends.getSelectedItems();
-	    		
-	    		for(Integer i : id){
-	    			System.out.println(i);
-	    		}
-	    	}
-	    });
-	    scrollPane.setViewportView(viewButton);
+	   
+//	    frame.getContentPane().setLayout(null);
+//	    frame.getContentPane().add(timeSpinner);
+	 
+
+//	    JButton viewButton = new JButton("view\r\n");
+//	    viewButton.setSize(new Dimension(100, 100));
+//	    viewButton.addMouseListener(new MouseAdapter() {
+//	    	@Override
+//	    	public void mouseClicked(MouseEvent arg0) {
+//	    		ArrayList<Integer> id = listFriends.getSelectedItems();
+//	    		
+//	    		for(Integer i : id){
+//	    			System.out.println(i);
+//	    		}
+//	    	}
+//	    });
+	   // scrollPane.setViewportView(viewButton);
 //	    comboBox.setBounds(0, 0, 0, 0);
 //	    frame.getContentPane().add(comboBox);
 //	    comboBox.setModel(new DefaultComboBoxModel(new String[] {"ciao"}));
-	    frame.setVisible(true);
+	   
 	    
 	    
 	    {	/*	ArrayList<Integer> friends = new ArrayList<Integer>();
@@ -198,19 +258,8 @@ public class prova {
 			friends1.add("ale");*/
 			
 			
-		   /* List l = new List();
-		    l.add( "yi",1);
-		    l.add("chen", 2);
-		    l.add("sleep", 3);
-		    l.add("35", 4);
-		    l.add("false", 5);
+		
 		    
-		   
-		    model.addRow(l);*/
-		    
-		   /* JTable table = new JTable(model);
-		    table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-		    table.setFillsViewportHeight(true);*/
 			   
 		   }
 	}

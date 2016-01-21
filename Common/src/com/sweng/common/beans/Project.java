@@ -9,6 +9,10 @@ public class Project  implements Serializable{
 	private int idAdmin;
 	private boolean isActive;
 	
+	public Project(int _idProject){
+		idProject = _idProject;
+	}
+	
 	public Project(int _idAdmin, String _name, boolean _isActive)
 	{
 		idAdmin = _idAdmin;
