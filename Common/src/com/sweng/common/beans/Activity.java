@@ -1,13 +1,13 @@
 package com.sweng.common.beans;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class Activity implements Serializable{
 	
 	private String name;
 	private String place;
-	private Date hour;
+	private java.util.Date hour;
 	private int idActivity;
 	private int idProject;
 	private boolean isDone;
@@ -49,7 +49,7 @@ public class Activity implements Serializable{
 		this.place = place;
 	}
 
-	public Date getHour() {
+	public java.util.Date getHour() {
 		return hour;
 	}
 

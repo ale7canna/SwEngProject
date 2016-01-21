@@ -4,17 +4,23 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.jar.Attributes.Name;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
+import com.michaelbaranov.microba.calendar.DatePicker;
 import com.sweng.client.CheckBoxId;
 import com.sweng.client.CheckBoxList;
 import com.sweng.common.beans.Project;
@@ -49,6 +55,8 @@ public class GUIaddComponent extends JFrame{
 	private JLabel NameLabel;
 	private JButton addProjbtn;
 	private JLabel ChooseFriendsLabel;
+	private JSpinner timeSpinner;
+	private DatePicker datePicker;
 	
 	public GUIaddComponent(EventListenerGUI _listener, ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
 		
@@ -128,7 +136,24 @@ public class GUIaddComponent extends JFrame{
 				
 				}
 				if(!isProject){
-					_listener.addActivityFinish(txtProjectName.toString(), PlaceActivityText.toString(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
+					String ts = null;
+				
+					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+					
+					ts = format.format((java.util.Date)timeSpinner.getValue()); 
+					String dateTime= null;
+					dateTime= datePicker.getDateFormat().format(datePicker.getDate())+" "+ts;
+					java.util.Date date= null;
+					SimpleDateFormat defin= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					try {
+						date = defin.parse(dateTime);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println(dateTime);
+				
+					_listener.addActivityFinish(txtProjectName.toString(), PlaceActivityText.toString(), date , listFriends.getSelectedItems());
 				}
 				
 			}
@@ -158,7 +183,18 @@ public class GUIaddComponent extends JFrame{
 		lblNewLabelActivate.setBounds(10, 88, 40, 14);
 		getContentPane().add(lblNewLabelActivate);
 		
-		
+		if(!isProject){
+			timeSpinner = new JSpinner( new SpinnerDateModel() );
+			JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+			timeSpinner.setEditor(timeEditor);
+			timeSpinner.setValue(Time.from(Instant.now()));
+			timeSpinner.setBounds(10, 250, 80, 30);
+			getContentPane().add(timeSpinner);
+			datePicker = new DatePicker(Date.from(Instant.now()), new SimpleDateFormat("yyyy/MM/dd"));
+			datePicker.setBounds(200, 400, 200, 50);
+			getContentPane().add(datePicker);
+								
+		}
 		
 		
 		if(isProject){

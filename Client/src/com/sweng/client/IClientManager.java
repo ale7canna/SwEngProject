@@ -1,7 +1,7 @@
 package com.sweng.client;
 
 import java.rmi.RemoteException;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 
 import com.sweng.common.IServer;

@@ -153,7 +153,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 	}
 
-	public Activity addActivity(String nameActivity, int idProject, String place, Date hour) {
+	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour) {
 
 		Activity _activity = new Activity(idProject, nameActivity, place, hour, false);
 

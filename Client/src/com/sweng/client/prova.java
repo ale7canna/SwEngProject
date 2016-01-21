@@ -1,37 +1,24 @@
 package com.sweng.client;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.List;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
-
-import com.sweng.client.CheckBoxList.CellRenderer;
-import com.sweng.common.beans.User;
+import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.text.DateFormatter;
+
+import com.sweng.common.beans.User;
 
 public class prova {
 	
@@ -114,13 +101,47 @@ public class prova {
 	}
 	
 	
-	
+	public static class Demo {
+
+	    private void createAndShowGUI() {
+
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.set(Calendar.HOUR_OF_DAY, 24); // 24 == 12 PM == 00:00:00
+	        calendar.set(Calendar.MINUTE, 0);
+	        calendar.set(Calendar.SECOND, 0);
+
+	        SpinnerDateModel model = new SpinnerDateModel();
+	        model.setValue(calendar.getTime());
+
+	        JSpinner spinner = new JSpinner(model);
+
+	        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "HH:mm:ss");
+	        DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
+	        formatter.setAllowsInvalid(false); // this makes what you want
+	        formatter.setOverwriteMode(true);
+
+	        spinner.setEditor(editor);
+
+	        JPanel content = new JPanel();
+	        content.add(spinner);
+
+	        JFrame frame = new JFrame("Demo");
+	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        frame.getContentPane().add(content);
+	        frame.pack();
+	        frame.setLocationRelativeTo(null);
+	        frame.setVisible(true);
+	    }
+	}
+	 
 	
 	
 	public static void main(String[] args)
 	{
 	    model = new MyTableModel();
 	 
+	    
+	    new Demo().createAndShowGUI();
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
 		scrollPane.setBounds(0, 0, 434, 261);
@@ -130,18 +151,22 @@ public class prova {
 		//ArrayList<CheckBoxId> checkboxList = createCheckboxList(friends, friends1);
 			
 		CheckBoxList listFriends = new CheckBoxList();
-
+	
 //		for (JCheckBox c : checkboxList){
 //				listFriends.addCheckbox((CheckBoxId) c);		
 //				}
-		
+		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		timeSpinner.setEditor(timeEditor);
+		timeSpinner.setValue(new Date(0, 0, 0));
 		
 
 		scrollPane.setRowHeaderView(listFriends);
 		//now adding this to the frame where I want to show 
 	    JFrame frame = new JFrame();
 	    frame.getContentPane().setLayout(null);
-	    frame.getContentPane().add(scrollPane);
+	    frame.getContentPane().add(timeSpinner);
+	   // frame.getContentPane().add(scrollPane);
 	    
 	    JButton viewButton = new JButton("view\r\n");
 	    viewButton.setSize(new Dimension(100, 100));
