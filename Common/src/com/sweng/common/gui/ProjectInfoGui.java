@@ -22,6 +22,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 public class ProjectInfoGui extends JPanel {
 	private JTextField txtProjectName;
@@ -30,8 +32,7 @@ public class ProjectInfoGui extends JPanel {
 	JList listParticipants;
 
 	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener) {
-		// getContentPane().setLayout(new BorderLayout(0, 0));
-		setLayout(new BorderLayout(0, 0));
+		setLayout(new GridLayout(0, 1, 0, 0));
 
 		JSplitPane splitPane = new JSplitPane();
 		// getContentPane().add(splitPane);

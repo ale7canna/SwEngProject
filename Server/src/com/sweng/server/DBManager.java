@@ -576,4 +576,22 @@ public class DBManager {
 		return result;
 	}
 
+	public static void removeFriendship(Friendship friendship) throws CustomException {
+		
+		String query = "DELETE FROM amicizia WHERE idUtente1 = ? AND idUtente2 = ?";
+		
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, friendship.getIdUtente1());
+			stat.setInt(2, friendship.getIdUtente2());
+			
+			ResultSet rs = stat.executeQuery();
+		}
+		catch (SQLException exception)
+		{
+			throw new CustomException(Errors.UserNotFound);
+		}
+		
+	}
+
 }

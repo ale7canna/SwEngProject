@@ -169,6 +169,11 @@ public class Server extends UnicastRemoteObject implements IServer{
 		
 	}
 
+	@Override
+	public void removeFriendship(Friendship friendship) throws RemoteException, CustomException {
+		DBManager.removeFriendship(friendship);
+	}
+
 	
 	
 }

@@ -14,6 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -38,6 +39,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 public class ServerGUI extends JFrame {
 	private JList userList, userProjectList, projectList, listFriends;
@@ -68,7 +70,7 @@ public class ServerGUI extends JFrame {
 		setUIFont(new FontUIResource(f));
 
 		getContentPane().setSize(new Dimension(600, 400));
-		setSize(new Dimension(860, 455));
+		setSize(new Dimension(860, 490));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setSize(new Dimension(600, 400));
@@ -150,8 +152,7 @@ public class ServerGUI extends JFrame {
 		userProjectList.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent evt) {
-				if (evt.getClickCount() == 2)
-				{
+				if (evt.getClickCount() == 2) {
 					Project p = (Project) ((MyProjectListModel) userProjectList.getModel())
 							.getProjectAt(userProjectList.getSelectedIndex());
 					listener.UserProjectClicked(p);
@@ -186,11 +187,31 @@ public class ServerGUI extends JFrame {
 
 		JPanel tabProgetti = new JPanel();
 		tabbedPane.addTab("Progetti", null, tabProgetti, null);
-		tabProgetti.setLayout(null);
+		GridBagLayout gbl_tabProgetti = new GridBagLayout();
+		gbl_tabProgetti.columnWidths = new int[] { 833, 0 };
+		gbl_tabProgetti.rowHeights = new int[] { 41, 324, 0 };
+		gbl_tabProgetti.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
+		gbl_tabProgetti.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		tabProgetti.setLayout(gbl_tabProgetti);
+
+		JPanel panel_2 = new JPanel();
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.fill = GridBagConstraints.BOTH;
+		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_2.gridx = 0;
+		gbc_panel_2.gridy = 0;
+		tabProgetti.add(panel_2, gbc_panel_2);
+		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		projectSummaryLabel = new JLabel("");
+		panel_2.add(projectSummaryLabel);
 
 		splitPaneProjects = new JSplitPane();
-		splitPaneProjects.setBounds(0, 41, 833, 324);
-		tabProgetti.add(splitPaneProjects);
+		GridBagConstraints gbc_splitPaneProjects = new GridBagConstraints();
+		gbc_splitPaneProjects.fill = GridBagConstraints.BOTH;
+		gbc_splitPaneProjects.gridx = 0;
+		gbc_splitPaneProjects.gridy = 1;
+		tabProgetti.add(splitPaneProjects, gbc_splitPaneProjects);
 
 		projectList = new JList(new MyProjectListModel());
 		projectList.addMouseListener(new MouseAdapter() {
@@ -214,15 +235,6 @@ public class ServerGUI extends JFrame {
 		label.setAlignmentX(0.5f);
 		panel_3.add(label);
 		splitPaneProjects.setDividerLocation(200);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(0, 0, 833, 41);
-		tabProgetti.add(panel_2);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		projectSummaryLabel = new JLabel("");
-		panel_2.add(projectSummaryLabel);
-		;
 
 	}
 
