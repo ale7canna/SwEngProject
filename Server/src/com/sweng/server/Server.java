@@ -2,12 +2,12 @@ package com.sweng.server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
@@ -172,6 +172,11 @@ public class Server extends UnicastRemoteObject implements IServer{
 	@Override
 	public void removeFriendship(Friendship friendship) throws RemoteException, CustomException {
 		DBManager.removeFriendship(friendship);
+	}
+
+	@Override
+	public ActivityInfo getActivityInfo(Activity activity) throws RemoteException, CustomException {
+		return DBManager.getActivityInfo(activity);
 	}
 
 	

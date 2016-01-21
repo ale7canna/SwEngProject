@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import com.sweng.common.Consts;
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
@@ -366,6 +367,55 @@ public class DBManager {
 		}
 		
 		return count;
+	}
+	
+	public static ActivityInfo getActivityInfo(Activity activity) throws CustomException {
+		
+		ActivityInfo activityInfo = null;
+		ArrayList<User> responsabili = null;
+		Project project = null;
+		
+		String query = "SELECT * FROM responsabile_attivita AS ar JOIN utente ON ar.idUtente = utente.idUtente " +
+						"WHERE ar.idAttivita = ?";
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, activity.getIdActivity());
+			
+			ResultSet rs = stat.executeQuery();
+			
+			responsabili = new ArrayList<User>();
+			while (rs.next())
+			{
+				User u = new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("UserName"), null);
+				responsabili.add(u);
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		try {
+			query = "SELECT * FROM progetto WHERE idAttivita = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, activity.getIdActivity());
+			
+			ResultSet rs = stat.executeQuery();
+			
+			if (rs.next())
+			{
+				project = new Project(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), rs.getBoolean("Attivo"));
+			}
+			
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		activityInfo = new ActivityInfo(activity.getIdActivity(), responsabili, project, activity.getName(),
+						activity.getPlace(), activity.getHour(), activity.getIsDone());
+		
+		return activityInfo;
 	}
 	
 	// METODI DI AGGIUNTA ENTRY AL DB

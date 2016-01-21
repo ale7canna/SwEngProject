@@ -2,10 +2,10 @@ package com.sweng.common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
@@ -31,6 +31,7 @@ public interface IServer extends Remote{
 	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException;
 	public ArrayList<User> getParticipantsFromProject(Project project) throws RemoteException, CustomException;
 	public ProjectInfo getProjectInfo(Project project) throws RemoteException, CustomException;
+	public ActivityInfo getActivityInfo(Activity activity) throws RemoteException, CustomException;
 	public ArrayList<User> getNotMyFriends(int idUser) throws CustomException, RemoteException;
 	
 	public void removeProject(Project project) throws RemoteException, CustomException;
