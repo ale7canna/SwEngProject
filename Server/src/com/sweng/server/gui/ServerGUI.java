@@ -34,9 +34,13 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.border.BevelBorder;
 import javax.swing.ListModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.GridLayout;
 
 public class ServerGUI extends JFrame {
-	private JList userList, userProjectList, projectList;
+	private JList userList, userProjectList, projectList, listFriends;
 	private JPanel projectInfo;
 	private JSplitPane splitPaneProjects;
 	private JLabel projectSummaryLabel;
@@ -69,45 +73,55 @@ public class ServerGUI extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setSize(new Dimension(600, 400));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		
-		JPanel panelStatistics = new JPanel();
-		panelStatistics.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		tabbedPane.addTab("Statistiche", null, panelStatistics, null);
-		panelStatistics.setLayout(new BoxLayout(panelStatistics, BoxLayout.X_AXIS));
-		
+
+		JPanel tabStatistics = new JPanel();
+		tabStatistics.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		tabbedPane.addTab("Statistiche", null, tabStatistics, null);
+		tabStatistics.setLayout(new BoxLayout(tabStatistics, BoxLayout.X_AXIS));
+
 		JPanel panel_4 = new JPanel();
+		panel_4.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
 		gbc_panel_4.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel_4.gridx = 0;
 		gbc_panel_4.gridy = 0;
-		panelStatistics.add(panel_4);
-		
+		tabStatistics.add(panel_4);
+
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		panel_4.add(lblNewLabel_1);
-		
+
 		JPanel panel_5 = new JPanel();
+		panel_5.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		GridBagConstraints gbc_panel_5 = new GridBagConstraints();
 		gbc_panel_5.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel_5.gridx = 0;
 		gbc_panel_5.gridy = 0;
-		panelStatistics.add(panel_5);
-		
+		tabStatistics.add(panel_5);
+
 		JButton btnNewButton = new JButton("New button");
 		panel_5.add(btnNewButton);
-		
+
 		JPanel panel_6 = new JPanel();
-		panelStatistics.add(panel_6);
-		
+		panel_6.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		tabStatistics.add(panel_6);
+
 		JLabel lblNewLabel = new JLabel("New label");
 		panel_6.add(lblNewLabel);
+		;
 
-		JSplitPane UserSplitPane = new JSplitPane();
-		tabbedPane.addTab("Utenti", null, UserSplitPane, null);
+		JPanel tabUtente = new JPanel();
+		tabbedPane.addTab("Utenti", null, tabUtente, null);
+		tabUtente.setLayout(new GridLayout(0, 3, 0, 0));
 
-		JPanel panel = new JPanel();
-		UserSplitPane.setLeftComponent(panel);
+		JPanel panelUser = new JPanel();
+		panelUser.setAlignmentY(Component.TOP_ALIGNMENT);
+		panelUser.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelUser.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		tabUtente.add(panelUser);
 
 		userList = new JList(new MyUserListModel());
+		userList.setAlignmentY(Component.TOP_ALIGNMENT);
+		userList.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		userList.addMouseListener(new MouseAdapter() {
 
@@ -116,60 +130,96 @@ public class ServerGUI extends JFrame {
 				listener.UserClicked(u);
 			}
 		});
-		panel.add(userList);
+		panelUser.setLayout(new BoxLayout(panelUser, BoxLayout.Y_AXIS));
 
-		JPanel panel_1 = new JPanel();
-		UserSplitPane.setRightComponent(panel_1);
+		JLabel lblNewLabel_2 = new JLabel("Utenti");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		lblNewLabel_2.setAlignmentY(Component.TOP_ALIGNMENT);
+		panelUser.add(lblNewLabel_2);
+		panelUser.add(userList);
 
-		UserSplitPane.setDividerLocation(200);
+		JPanel panelUserProject = new JPanel();
+		panelUserProject.setAlignmentY(Component.TOP_ALIGNMENT);
+		panelUserProject.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelUserProject.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		tabUtente.add(panelUserProject);
 
 		userProjectList = new JList(new MyProjectListModel());
+		userProjectList.setAlignmentY(Component.TOP_ALIGNMENT);
+		userProjectList.setAlignmentX(Component.LEFT_ALIGNMENT);
 		userProjectList.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent evt) {
-				Project p = (Project) ((MyProjectListModel) userProjectList.getModel())
-						.getProjectAt(userProjectList.getSelectedIndex());
-				listener.UserProjectClicked(p);
+				if (evt.getClickCount() == 2)
+				{
+					Project p = (Project) ((MyProjectListModel) userProjectList.getModel())
+							.getProjectAt(userProjectList.getSelectedIndex());
+					listener.UserProjectClicked(p);
+				}
 			}
 		});
-		;
+		panelUserProject.setLayout(new BoxLayout(panelUserProject, BoxLayout.Y_AXIS));
 
-		panel_1.add(userProjectList);
-		
-		JPanel progettiPane = new JPanel();
-		tabbedPane.addTab("Progetti", null, progettiPane, null);
-		progettiPane.setLayout(null);
-		
+		JLabel lblNewLabel_3 = new JLabel("Progetti");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		lblNewLabel_3.setAlignmentY(Component.TOP_ALIGNMENT);
+		panelUserProject.add(lblNewLabel_3);
+
+		panelUserProject.add(userProjectList);
+
+		JPanel panelUserFriends = new JPanel();
+		panelUserFriends.setAlignmentY(Component.TOP_ALIGNMENT);
+		panelUserFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelUserFriends.setBorder(new LineBorder(new Color(0, 0, 0)));
+		tabUtente.add(panelUserFriends);
+		panelUserFriends.setLayout(new BoxLayout(panelUserFriends, BoxLayout.Y_AXIS));
+
+		JLabel lblNewLabel_4 = new JLabel("Amici");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		lblNewLabel_4.setAlignmentY(Component.TOP_ALIGNMENT);
+		panelUserFriends.add(lblNewLabel_4);
+
+		listFriends = new JList(new MyUserListModel());
+		listFriends.setAlignmentY(Component.TOP_ALIGNMENT);
+		listFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelUserFriends.add(listFriends);
+
+		JPanel tabProgetti = new JPanel();
+		tabbedPane.addTab("Progetti", null, tabProgetti, null);
+		tabProgetti.setLayout(null);
+
 		splitPaneProjects = new JSplitPane();
 		splitPaneProjects.setBounds(0, 41, 833, 324);
-		progettiPane.add(splitPaneProjects);
-		
+		tabProgetti.add(splitPaneProjects);
+
 		projectList = new JList(new MyProjectListModel());
 		projectList.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent evt) {
-				Project p = (Project) ((MyProjectListModel) projectList.getModel())
-						.getProjectAt(projectList.getSelectedIndex());
-				listener.ProjectClicked(p);
+				if (evt.getClickCount() == 1) {
+					Project p = (Project) ((MyProjectListModel) projectList.getModel())
+							.getProjectAt(projectList.getSelectedIndex());
+					listener.ProjectClicked(p);
+				}
 			}
 		});
 		splitPaneProjects.setLeftComponent(projectList);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		splitPaneProjects.setRightComponent(panel_3);
-		
+
 		JLabel label = new JLabel("Clicca un progetto a lato per caricare i dettagli");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setAlignmentX(0.5f);
 		panel_3.add(label);
 		splitPaneProjects.setDividerLocation(200);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(0, 0, 833, 41);
-		progettiPane.add(panel_2);
+		tabProgetti.add(panel_2);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		projectSummaryLabel = new JLabel("");
 		panel_2.add(projectSummaryLabel);
 		;
@@ -179,8 +229,19 @@ public class ServerGUI extends JFrame {
 	public void AddUsersToList(ArrayList<User> users) {
 		MyUserListModel listModel = (MyUserListModel) userList.getModel();
 
-		for (User u : users)
-			listModel.addElement(u);
+		if (users != null)
+			for (User u : users)
+				listModel.addElement(u);
+	}
+
+	public void AddFriendsToList(ArrayList<User> users) {
+		MyUserListModel listModel = (MyUserListModel) listFriends.getModel();
+
+		listModel.removeAllElements();
+
+		if (users != null)
+			for (User u : users)
+				listModel.addElement(u);
 	}
 
 	public void AddUserProjectsToList(ArrayList<Project> projects) {
@@ -206,10 +267,10 @@ public class ServerGUI extends JFrame {
 	public void ChangeProjectInfo(ProjectInfoGui projectInfo) {
 		splitPaneProjects.setRightComponent(projectInfo);
 	}
-	
-	public void ChangeProjectsSummary(int progettiAttivi, int progettiTotali)
-	{
-		String s = String.format("Ci sono %d progetti attivi su un totale di %d progetti.", progettiAttivi, progettiTotali);
+
+	public void ChangeProjectsSummary(int progettiAttivi, int progettiTotali) {
+		String s = String.format("Ci sono %d progetti attivi su un totale di %d progetti.", progettiAttivi,
+				progettiTotali);
 		projectSummaryLabel.setText(s);
 	}
 }

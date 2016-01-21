@@ -53,12 +53,19 @@ public class GuiManager{
 			
 			try {
 				progetti = DBManager.getProjectsFromUser(user);
+				GUI.AddUserProjectsToList(progetti);
 			}
-			catch (CustomException e)
-			{
-				
+			catch (CustomException e) {
+				GUI.AddUserProjectsToList(null);
 			}
-			GUI.AddUserProjectsToList(progetti);
+			
+			try {
+				ArrayList<User> friends = DBManager.getFriendsFromUser(user);
+				GUI.AddFriendsToList(friends);
+			}
+			catch (CustomException e) {
+				GUI.AddFriendsToList(null);
+			}
 		}
 
 		@Override
