@@ -1,8 +1,5 @@
 package com.sweng.server;
 
-import java.awt.Dimension;
-import java.security.Guard;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -10,10 +7,11 @@ import javax.swing.JFrame;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.gui.ICommonGui;
+import com.sweng.common.gui.ProjectInfoGui;
 import com.sweng.common.utils.CustomException;
-import com.sweng.server.gui.ServerGUI;
 import com.sweng.server.gui.GUIListener;
-import com.sweng.server.gui.ProjectInfoGui;
+import com.sweng.server.gui.ServerGUI;
 
 public class GuiManager{
 	
@@ -25,7 +23,7 @@ public class GuiManager{
 	{
 		GUI = new ServerGUI(new GuiListener());
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GUI.setSize(600, 400);
+		GUI.setSize(800, 600);
 		GUI.setVisible(true);
 	
 	}
@@ -34,9 +32,10 @@ public class GuiManager{
 		GUI.AddUsersToList(users);		
 	}
 	
-	public void LoadProjects(ArrayList<Project> projects)
+	public void LoadProjects(ArrayList<Project> projects, int activeProjects, int totalProjects)
 	{
 		GUI.AddProjectsToList(projects);
+		GUI.ChangeProjectsSummary(activeProjects, totalProjects);
 	}
 	
 	public void refreshInfo()
@@ -44,7 +43,7 @@ public class GuiManager{
 		
 	}
 	
-	class GuiListener implements GUIListener
+	class GuiListener implements GUIListener, ICommonGui
 	{
 
 		@Override
@@ -74,7 +73,7 @@ public class GuiManager{
 					frame.getContentPane().add(projectInfoGui);
 					frame.setVisible(true);
 					frame.setSize(800, 600);
-					LoadProjects(null);
+//					LoadProjects(null);
 				}
 				catch (CustomException e)
 				{}

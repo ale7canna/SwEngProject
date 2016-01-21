@@ -1,4 +1,4 @@
-package com.sweng.server.gui;
+package com.sweng.common.gui;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -27,7 +29,7 @@ public class ProjectInfoGui extends JPanel {
 	JList listActivities;
 	JList listParticipants;
 
-	public ProjectInfoGui(ProjectInfo projectInfo, GUIListener _listener) {
+	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener) {
 		// getContentPane().setLayout(new BorderLayout(0, 0));
 		setLayout(new BorderLayout(0, 0));
 

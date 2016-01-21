@@ -22,8 +22,8 @@ public class MainServer {
 //		db.addProject(new Project(0, 1, "Cena", true));
 		try
 		{
-			guiMgr.LoadUser(db.getAllUsers());
-			guiMgr.LoadProjects(db.getAllProjects());
+			guiMgr.LoadUser(DBManager.getAllUsers());
+			guiMgr.LoadProjects(DBManager.getAllProjects(), DBManager.getActiveProjectsCount(), DBManager.getTotalProjectsCount());
 			//guiMgr.LoadProjects(db.getAllProjects());
 		}
 		catch (CustomException e)

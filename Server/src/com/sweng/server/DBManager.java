@@ -328,6 +328,46 @@ public class DBManager {
 		return result;
 	}
 
+	public static int getActiveProjectsCount() throws CustomException {
+		int count = 0;
+		
+		try {
+			String query = "SELECT Count(*) AS numero_progetti FROM progetto WHERE ATTIVO = 1";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+
+			ResultSet rs = stat.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt("numero_progetti");
+			}
+
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		return count;
+	}
+	
+	public static int getTotalProjectsCount() throws CustomException {
+		int count = 0;
+		
+		try {
+			String query = "SELECT Count(*) AS numero_progetti FROM progetto";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+
+			ResultSet rs = stat.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt("numero_progetti");
+			}
+
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		return count;
+	}
+	
 	// METODI DI AGGIUNTA ENTRY AL DB
 	public static void addActivity(Activity activity) throws CustomException {
 		try {

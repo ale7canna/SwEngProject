@@ -9,6 +9,4 @@ public interface GUIListener
 	public void UserClicked(User user);
 	public void ProjectClicked(Project project);
 	public void UserProjectClicked(Project project);
-	
-	public void RemoveProjectPressed(ProjectInfo projectInfo);
 }

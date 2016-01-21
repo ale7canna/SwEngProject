@@ -1,4 +1,4 @@
-package com.sweng.server.gui;
+package com.sweng.common.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;

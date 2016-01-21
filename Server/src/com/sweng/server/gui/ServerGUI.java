@@ -24,12 +24,22 @@ import javax.swing.plaf.FontUIResource;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.gui.MyProjectListModel;
+import com.sweng.common.gui.MyUserListModel;
+import com.sweng.common.gui.ProjectInfoGui;
+
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import javax.swing.border.BevelBorder;
+import javax.swing.ListModel;
 
 public class ServerGUI extends JFrame {
 	private JList userList, userProjectList, projectList;
-	private JSplitPane projectSplittable;
 	private JPanel projectInfo;
+	private JSplitPane splitPaneProjects;
+	private JLabel projectSummaryLabel;
 	private DefaultListModel model;
 	private int counter = 0;
 	private GUIListener listener;
@@ -60,15 +70,36 @@ public class ServerGUI extends JFrame {
 		tabbedPane.setSize(new Dimension(600, 400));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("Statistiche", null, panel_3, null);
-		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+		JPanel panelStatistics = new JPanel();
+		panelStatistics.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		tabbedPane.addTab("Statistiche", null, panelStatistics, null);
+		panelStatistics.setLayout(new BoxLayout(panelStatistics, BoxLayout.X_AXIS));
+		
+		JPanel panel_4 = new JPanel();
+		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
+		gbc_panel_4.anchor = GridBagConstraints.NORTHWEST;
+		gbc_panel_4.gridx = 0;
+		gbc_panel_4.gridy = 0;
+		panelStatistics.add(panel_4);
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		panel_4.add(lblNewLabel_1);
+		
+		JPanel panel_5 = new JPanel();
+		GridBagConstraints gbc_panel_5 = new GridBagConstraints();
+		gbc_panel_5.anchor = GridBagConstraints.NORTHWEST;
+		gbc_panel_5.gridx = 0;
+		gbc_panel_5.gridy = 0;
+		panelStatistics.add(panel_5);
+		
+		JButton btnNewButton = new JButton("New button");
+		panel_5.add(btnNewButton);
 
-		JSplitPane splitPane = new JSplitPane();
-		tabbedPane.addTab("Utenti", null, splitPane, null);
+		JSplitPane UserSplitPane = new JSplitPane();
+		tabbedPane.addTab("Utenti", null, UserSplitPane, null);
 
 		JPanel panel = new JPanel();
-		splitPane.setLeftComponent(panel);
+		UserSplitPane.setLeftComponent(panel);
 
 		userList = new JList(new MyUserListModel());
 
@@ -82,9 +113,9 @@ public class ServerGUI extends JFrame {
 		panel.add(userList);
 
 		JPanel panel_1 = new JPanel();
-		splitPane.setRightComponent(panel_1);
+		UserSplitPane.setRightComponent(panel_1);
 
-		splitPane.setDividerLocation(200);
+		UserSplitPane.setDividerLocation(200);
 
 		userProjectList = new JList(new MyProjectListModel());
 		userProjectList.addMouseListener(new MouseAdapter() {
@@ -98,10 +129,15 @@ public class ServerGUI extends JFrame {
 		;
 
 		panel_1.add(userProjectList);
-
-		projectSplittable = new JSplitPane();
-		tabbedPane.addTab("Progetti", null, projectSplittable, null);
-
+		
+		JPanel progettiPane = new JPanel();
+		tabbedPane.addTab("Progetti", null, progettiPane, null);
+		progettiPane.setLayout(null);
+		
+		splitPaneProjects = new JSplitPane();
+		splitPaneProjects.setBounds(0, 41, 833, 324);
+		progettiPane.add(splitPaneProjects);
+		
 		projectList = new JList(new MyProjectListModel());
 		projectList.addMouseListener(new MouseAdapter() {
 
@@ -111,19 +147,26 @@ public class ServerGUI extends JFrame {
 				listener.ProjectClicked(p);
 			}
 		});
-		;
-
-		projectSplittable.setLeftComponent(projectList);
-
+		splitPaneProjects.setLeftComponent(projectList);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		splitPaneProjects.setRightComponent(panel_3);
+		
+		JLabel label = new JLabel("Clicca un progetto a lato per caricare i dettagli");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setAlignmentX(0.5f);
+		panel_3.add(label);
+		splitPaneProjects.setDividerLocation(200);
+		
 		JPanel panel_2 = new JPanel();
-		projectSplittable.setRightComponent(panel_2);
+		panel_2.setBounds(0, 0, 833, 41);
+		progettiPane.add(panel_2);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		JLabel lblNewLabel = new JLabel("Clicca un progetto a lato per caricare i dettagli");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel_2.add(lblNewLabel);
-		projectSplittable.setDividerLocation(200);
+		
+		projectSummaryLabel = new JLabel("");
+		panel_2.add(projectSummaryLabel);
+		;
 
 	}
 
@@ -155,6 +198,12 @@ public class ServerGUI extends JFrame {
 	}
 
 	public void ChangeProjectInfo(ProjectInfoGui projectInfo) {
-		projectSplittable.setRightComponent(projectInfo);
+		splitPaneProjects.setRightComponent(projectInfo);
+	}
+	
+	public void ChangeProjectsSummary(int progettiAttivi, int progettiTotali)
+	{
+		String s = String.format("Ci sono %d progetti attivi su un totale di %d progetti.", progettiAttivi, progettiTotali);
+		projectSummaryLabel.setText(s);
 	}
 }
