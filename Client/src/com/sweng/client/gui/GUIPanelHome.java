@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import com.sun.javafx.scene.paint.GradientUtils.Point;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
@@ -29,7 +31,7 @@ import java.awt.event.MouseEvent;
 
 public class GUIPanelHome extends JPanel {
 	
-	MyTableModel modelFriendship;
+	MyUserTableAdapter modelFriendship;
 	MyTableModel modelActivity;
 	MyTableModel modelProject;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -38,7 +40,6 @@ public class GUIPanelHome extends JPanel {
 	private JTextField Id;
 	private JTextField UserName;
 	private JScrollPane scrollFriends;
-	private JTable table;
 	private EventListenerGUI listener;
 	
 	public GUIPanelHome(EventListenerGUI _listener) {
@@ -114,16 +115,18 @@ public class GUIPanelHome extends JPanel {
 		UserInfo.add(addFriendButton);
 		
 	
-		ArrayList<String> titleFriends = new ArrayList<String>()
-				{{
-			add("Nome");
-			add("Cognome");
-			add("Id");
-			add("UserName");
-		}};
+//		ArrayList<String> titleFriends = new ArrayList<String>()
+//				{{
+//			add("Nome");
+//			add("Cognome");
+//			add("Id");
+//			add("UserName");
+//		}};
 
-		modelFriendship = new MyTableModel(titleFriends);
+//		modelFriendship = new MyTableModel(titleFriends);
+		modelFriendship = new MyUserTableAdapter();
 		JTable tableFriends = new JTable(modelFriendship);
+		
 		tableFriends.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableFriends.setFillsViewportHeight(true);
 		JScrollPane scrollPaneFriends = new JScrollPane(tableFriends);
@@ -132,6 +135,18 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneFriends);
 	    tabbedPane.setTitleAt(1, "My Friendship");
 	    
+tableFriends.addMouseListener(new MouseAdapter() {
+			
+			public void mousePressed(MouseEvent evt)
+			{
+				int row = tableFriends.rowAtPoint(evt.getPoint());
+				if (evt.getClickCount() == 2)
+				{
+					User u = ((MyUserTableAdapter)tableFriends.getModel()).getUserAt(row);
+					JOptionPane.showMessageDialog(null, u.getName());
+				}
+			}
+		});
 	    
 	    ArrayList<String> titleActivity = new ArrayList<String>()
 				{{
@@ -182,15 +197,8 @@ public class GUIPanelHome extends JPanel {
 	
 	private void addFriendtoList(ArrayList<User> user){
 		
-	    int k = 0;
 		for(User u : user){
-			List l = new List();
-			l.add(u.getName());
-			l.add(u.getSurname());
-			l.add(String.valueOf(u.getIdUser()));
-			l.add(u.getUsername());
-			
-			modelFriendship.addRow(l);			
+			modelFriendship.addRow(u);			
 		}
 	}
 	
@@ -237,7 +245,6 @@ public class GUIPanelHome extends JPanel {
 
 	    private ArrayList<String> columnNames = new ArrayList();
 	    private ArrayList<List> data = new ArrayList();
-
 	   
 	    public MyTableModel(ArrayList<String> titoli) {
 	    	for (String t : titoli){

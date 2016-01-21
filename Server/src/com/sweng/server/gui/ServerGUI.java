@@ -94,6 +94,12 @@ public class ServerGUI extends JFrame {
 		
 		JButton btnNewButton = new JButton("New button");
 		panel_5.add(btnNewButton);
+		
+		JPanel panel_6 = new JPanel();
+		panelStatistics.add(panel_6);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		panel_6.add(lblNewLabel);
 
 		JSplitPane UserSplitPane = new JSplitPane();
 		tabbedPane.addTab("Utenti", null, UserSplitPane, null);
