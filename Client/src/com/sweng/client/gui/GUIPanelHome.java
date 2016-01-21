@@ -32,8 +32,8 @@ import java.awt.event.MouseEvent;
 public class GUIPanelHome extends JPanel {
 	
 	MyUserTableAdapter modelFriendship;
-	MyTableModel modelActivity;
-	MyTableModel modelProject;
+	MyActivityTableAdapter modelActivity;
+	MyProjectTableAdapter modelProject;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	private JTextField Name;
 	private JTextField Surname;
@@ -113,17 +113,7 @@ public class GUIPanelHome extends JPanel {
 		});
 		addFriendButton.setBounds(311, 120, 89, 23);
 		UserInfo.add(addFriendButton);
-		
 	
-//		ArrayList<String> titleFriends = new ArrayList<String>()
-//				{{
-//			add("Nome");
-//			add("Cognome");
-//			add("Id");
-//			add("UserName");
-//		}};
-
-//		modelFriendship = new MyTableModel(titleFriends);
 		modelFriendship = new MyUserTableAdapter();
 		JTable tableFriends = new JTable(modelFriendship);
 		
@@ -135,7 +125,7 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneFriends);
 	    tabbedPane.setTitleAt(1, "My Friendship");
 	    
-tableFriends.addMouseListener(new MouseAdapter() {
+	    tableFriends.addMouseListener(new MouseAdapter() {
 			
 			public void mousePressed(MouseEvent evt)
 			{
@@ -148,16 +138,9 @@ tableFriends.addMouseListener(new MouseAdapter() {
 			}
 		});
 	    
-	    ArrayList<String> titleActivity = new ArrayList<String>()
-				{{
-			add("Nome");
-			add("Luogo");
-			add("Ora");
-			add("IdAttività");
-			add("IdProgetto");
-		}};
+
 		
-		modelActivity = new MyTableModel(titleActivity);
+		modelActivity = new MyActivityTableAdapter();
 		JTable tableActivity = new JTable(modelActivity);
 		tableActivity.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableActivity.setFillsViewportHeight(true);
@@ -167,15 +150,21 @@ tableFriends.addMouseListener(new MouseAdapter() {
 	    tabbedPane.add(scrollPaneActivity);
 	    tabbedPane.setTitleAt(2, "My Activities");
 	    
-	    ArrayList<String> titleProject = new ArrayList<String>()
-				{{
-			add("Nome");
-			add("Admin");
-			add("Id");
-			add("Attivo");
-		}};
-		
-		modelProject = new MyTableModel(titleProject);
+	    tableActivity.addMouseListener(new MouseAdapter() {
+			
+	 			public void mousePressed(MouseEvent evt)
+	 			{
+	 				int row = tableActivity.rowAtPoint(evt.getPoint());
+	 				if (evt.getClickCount() == 2)
+	 				{
+	 					Activity a = ((MyActivityTableAdapter)tableActivity.getModel()).getActivityAt(row);
+	 					JOptionPane.showMessageDialog(null, a.getName());
+	 				}
+	 			}
+	 		});
+
+	    
+		modelProject = new MyProjectTableAdapter();
 		JTable tableProject = new JTable(modelProject);
 		tableProject.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableProject.setFillsViewportHeight(true);
@@ -185,6 +174,18 @@ tableFriends.addMouseListener(new MouseAdapter() {
 	    tabbedPane.add(scrollPaneProject);
 	    tabbedPane.setTitleAt(3, "My Projects");
 	
+	    tableProject.addMouseListener(new MouseAdapter() {
+			
+ 			public void mousePressed(MouseEvent evt)
+ 			{
+ 				int row = tableProject.rowAtPoint(evt.getPoint());
+ 				if (evt.getClickCount() == 2)
+ 				{
+ 					Project p = ((MyProjectTableAdapter)tableProject.getModel()).getProjectAt(row);
+ 					_listener.showProjectInfo(p);
+ 				}
+ 			}
+ 		});
 	}
 	
 	private void userInfo(User u){
@@ -204,26 +205,13 @@ tableFriends.addMouseListener(new MouseAdapter() {
 	
 	private void addActivitytoList(ArrayList<Activity> activity){
 		for(Activity a: activity){
-			List lActivity = new List();
-			lActivity.add(a.getName(), 1);
-			lActivity.add(a.getPlace(), 2);
-			lActivity.add(String.valueOf(a.getHour()), 3);
-			lActivity.add(String.valueOf(a.getIdActivity()), 4);
-			lActivity.add(String.valueOf(a.getIdProject()), 5);
-			
-			modelActivity.addRow(lActivity);
+			modelActivity.addRow(a);
 		}
 	}
 	
 	private void addProjecttoList(ArrayList<Project> project){
 		for(Project p: project){
-			List lProject = new List();
-			lProject.add(p.getName(), 1);
-			lProject.add(String.valueOf(p.getIdAdmin()), 2);
-			lProject.add(String.valueOf(p.getIdProject()), 3);
-			lProject.add(String.valueOf(p.isActive()), 4);
-			
-			modelProject.addRow(lProject);
+			modelProject.addRow(p);
 		}
 	}
 	

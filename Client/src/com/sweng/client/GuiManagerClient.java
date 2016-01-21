@@ -149,8 +149,8 @@ public class GuiManagerClient {
 		}
 
 		
-		public void showProjectInfo(int idProject, int idAdmin){
-			Project project = new Project(idProject, idAdmin, null, true);
+		public void showProjectInfo(Project p){
+			Project project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive());
 			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
 			JFrame projectInfoFrame = new JFrame();
 			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this);
@@ -158,6 +158,7 @@ public class GuiManagerClient {
 			projectInfoFrame.setSize(800, 600);
 			projectInfoFrame.setVisible(true);
 		}
+		
 		@Override
 		public void RemoveProjectPressed(ProjectInfo projectInfo) {
 			// TODO Auto-generated method stub

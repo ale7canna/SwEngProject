@@ -24,7 +24,7 @@ public interface EventListenerGUI {
 	
 	public void addFriends( ArrayList<Integer> friends);
 	
-	public void showProjectInfo(int idProject, int idAdmin);
+	public void showProjectInfo(Project p);
 	
 	public void buttonclickedAddProject(Project proj);
 	
