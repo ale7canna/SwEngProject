@@ -445,8 +445,6 @@ public class DBManager {
 		return 0;
 	}
 	
-	
-	
 	public static ActivityInfo getActivityInfo(Activity activity) throws CustomException {
 		
 		ActivityInfo activityInfo = null;
@@ -494,6 +492,58 @@ public class DBManager {
 						activity.getPlace(), activity.getHour(), activity.getIsDone());
 		
 		return activityInfo;
+	}
+	
+	public static ArrayList<Activity> getActivitiesFromProject(Project project) throws CustomException
+	{
+		ArrayList<Activity> result = null;
+		
+		String query = "SELECT * FROM attivita WHERE idProgetto = ? ORDER BY attivita.idAttivita ASC";
+		
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, project.getIdProject());
+			
+			ResultSet rs = stat.executeQuery();
+			result = new ArrayList<Activity>();
+			while (rs.next()) {
+				Date d = null;
+				Timestamp t = rs.getTimestamp("Ora");
+				if (t != null)
+					d = new Date(t.getTime());
+				
+				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), 
+									rs.getString("Luogo"), d, rs.getBoolean("Completata")); 
+						
+			
+				result.add(act);
+			}
+			
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ActivitiesNotFound);
+		}
+		
+		return result;
+	}
+	
+	public static Boolean canICompleteMyActivity(Activity activity) throws CustomException
+	{
+		Project p = new Project(activity.getIdProject());
+		ArrayList<Activity> projectActivities = getActivitiesFromProject(p);
+		
+		for (Activity act : projectActivities){
+			
+			if (act.equals(activity))
+				return true;
+			
+			if (!act.getIsDone())
+				break;			
+		}
+		
+		
+		return false;
 	}
 	
 	// METODI DI AGGIUNTA ENTRY AL DB
@@ -605,61 +655,6 @@ public class DBManager {
 		}
 	}
 
-	// METODI DI ELIMINAZIONE DAL DB
-	public static void removeProject(Project project) throws CustomException {
-		removeActivitiesFromProject(project);
-		removeParticipantsFromProject(project);
-
-		String query = "DELETE FROM progetto WHERE idProgetto = ?";
-
-		try {
-			PreparedStatement stat = connection.prepareStatement(query);
-
-			stat.setInt(1, project.getIdProject());
-			stat.executeUpdate();
-		} catch (SQLException e) {
-			throw new CustomException(Errors.ServerError);
-		}
-
-	}
-
-	public static void removeActivitiesFromProject(Project project) throws CustomException {
-		String query = "DELETE FROM responsabile_attivita WHERE idAttivita IN "
-				+ "(SELECT idAttivita FROM attivita WHERE idProgetto = ?)";
-		try {
-			PreparedStatement stat = connection.prepareStatement(query);
-
-			stat.setInt(1, project.getIdProject());
-			stat.executeUpdate();
-		} catch (SQLException e) {
-			throw new CustomException(Errors.ServerError);
-		}
-
-		query = "DELETE FROM attivita WHERE idProgetto = ?";
-
-		try {
-			PreparedStatement stat = connection.prepareStatement(query);
-
-			stat.setInt(1, project.getIdProject());
-			stat.executeUpdate();
-		} catch (SQLException e) {
-			throw new CustomException(Errors.ServerError);
-		}
-	}
-
-	public static void removeParticipantsFromProject(Project project) throws CustomException {
-		String query = "DELETE FROM partecipante WHERE idProgetto = ?";
-
-		try {
-			PreparedStatement stat = connection.prepareStatement(query);
-
-			stat.setInt(1, project.getIdProject());
-			stat.executeUpdate();
-		} catch (SQLException e) {
-			throw new CustomException(Errors.ServerError);
-		}
-	}
-
 	public static Project getProjectFromNameAndAdmin(String projectName, int idAdmin) throws CustomException {
 
 		Project result = null;
@@ -709,6 +704,65 @@ public class DBManager {
 		return result;
 	}
 
+	
+	
+	// METODI DI RIMOZIONE DA DB
+	
+
+	public static void removeProject(Project project) throws CustomException {
+		removeActivitiesFromProject(project);
+		removeParticipantsFromProject(project);
+
+		String query = "DELETE FROM progetto WHERE idProgetto = ?";
+
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+
+	}
+	
+	public static void removeParticipantsFromProject(Project project) throws CustomException {
+		String query = "DELETE FROM partecipante WHERE idProgetto = ?";
+
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+	}
+	
+	public static void removeActivitiesFromProject(Project project) throws CustomException {
+		String query = "DELETE FROM responsabile_attivita WHERE idAttivita IN "
+				+ "(SELECT idAttivita FROM attivita WHERE idProgetto = ?)";
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+
+		query = "DELETE FROM attivita WHERE idProgetto = ?";
+
+		try {
+			PreparedStatement stat = connection.prepareStatement(query);
+
+			stat.setInt(1, project.getIdProject());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+	}
+	
 	public static void removeFriendship(Friendship friendship) throws CustomException {
 		
 		String query = "DELETE FROM amicizia WHERE idUtente1 = ? AND idUtente2 = ?";
@@ -726,5 +780,7 @@ public class DBManager {
 		}
 		
 	}
+
+	
 
 }

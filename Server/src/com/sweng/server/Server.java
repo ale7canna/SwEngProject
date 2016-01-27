@@ -117,7 +117,9 @@ public class Server extends UnicastRemoteObject implements IServer{
 	@Override
 	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException, CustomException {
 		ArrayList<Activity> result = null;
-		result = DBManager.getActivityFromUser(user);		
+		result = DBManager.getActivityFromUser(user);	
+		for (Activity act : result)
+			act.setFinishable(DBManager.canICompleteMyActivity(act));
 		
 		return result;
 	}

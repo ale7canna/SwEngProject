@@ -11,8 +11,8 @@ public class Activity implements Serializable{
 	private int idActivity;
 	private int idProject;
 	private boolean isDone;
+	private boolean isFinishable;
 
-	
 
 	public Activity(int idProject, String name, String place, Date hour, boolean isDone) {
 		super();
@@ -81,6 +81,14 @@ public class Activity implements Serializable{
 		this.isDone = isDone;
 	}
 	
-	
+
+	public boolean isFinishable() {
+		return isFinishable;
+	}
+
+	public void setFinishable(boolean isFinishable) {
+		this.isFinishable = isFinishable;
+	}
+
 	
 }
