@@ -10,9 +10,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ClientGUI extends JFrame {
-	public ClientGUI() {
+	public ClientGUI(EventListenerGUI _listener) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				
+				_listener.performLogout();
+			}
+		});
 	}
 	
 

@@ -28,12 +28,13 @@ public class GuiManagerClient {
 	private static ClientGUI gui = null;
 	private static IClientManager clientManager;
 	GUIPanelHome home = null;
+	EventListenerGUI _listener = new GuiListener(); 
 	
 	public GuiManagerClient(IClientManager clientManager){
 		
 		this.clientManager = clientManager;
-		gui = new ClientGUI();
-		switchGui(new GUIPanelSignIn(new GuiListener()));
+		gui = new ClientGUI(_listener);
+		switchGui(new GUIPanelSignIn(_listener));
 	
 	}
 	
