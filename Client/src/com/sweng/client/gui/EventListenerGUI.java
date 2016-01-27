@@ -3,6 +3,7 @@ package com.sweng.client.gui;
 import java.util.Date;
 import java.util.ArrayList;
 
+import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 
@@ -22,10 +23,19 @@ public interface EventListenerGUI {
 	
 	public void addFriendsView();
 	
-	public void addFriends( ArrayList<Integer> friends);
+	public ArrayList<User> addFriends( ArrayList<Integer> friends);
 	
 	public void showProjectInfo(Project p);
 	
+	public void showActivityInfo(Activity a);
+	
 	public void buttonclickedAddProject(Project proj);
 	
+	public void removeFriend(User u);
+	
+	public ArrayList<User> getFriends();
+	
+	public ArrayList<Activity> getActivities();
+	
+	public ArrayList<Project> getProjects();
 }

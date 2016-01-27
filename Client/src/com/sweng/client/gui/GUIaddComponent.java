@@ -1,6 +1,7 @@
 package com.sweng.client.gui;
 
 import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
@@ -19,6 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SwingUtilities;
+
+import sun.swing.SwingAccessor;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import com.sweng.client.CheckBoxId;
@@ -122,18 +126,18 @@ public class GUIaddComponent extends JFrame{
 		}
 		else
 			 addProjbtn = new JButton("OK");
-		
+		Window w = SwingUtilities.getWindowAncestor(this);
 		addProjbtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(isProject&&!isAddFriends){
 					_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
-					
+
 				}
 				if(isProject&&isAddFriends){
-					ArrayList<Integer> daaggiungere = listFriends.getSelectedItems();
-					_listener.addFriends(daaggiungere);
-				
+					//ArrayList<Integer> daaggiungere = listFriends.getSelectedItems();
+					_listener.addFriends(listFriends.getSelectedItems());
+					
 				}
 				if(!isProject){
 					String ts = null;

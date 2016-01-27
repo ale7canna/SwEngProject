@@ -7,16 +7,19 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.sun.corba.se.spi.activation.Server;
 import com.sweng.client.gui.ClientGUI;
 import com.sweng.client.gui.EventListenerGUI;
 import com.sweng.client.gui.GUIPanelHome;
 import com.sweng.client.gui.GUIPanelSignIn;
 import com.sweng.client.gui.GUIaddComponent;
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.gui.ActivityInfoGui;
 import com.sweng.common.gui.ICommonGui;
 import com.sweng.common.gui.ProjectInfoGui;
 
@@ -65,7 +68,7 @@ public class GuiManagerClient {
 		ArrayList<Project> projects = null;
 		ArrayList<User> participants=null;
 		ArrayList<User> notmyfriends=null;
-			
+
 		 
 		public User SignInRequest(String username, String password) {
 			
@@ -74,6 +77,7 @@ public class GuiManagerClient {
 			return null;
 			}
 
+		//ADDING VIEW
 		public void addProjectView(){
 			
 			friendships = clientManager.getFriendships();
@@ -91,14 +95,16 @@ public class GuiManagerClient {
 		
 		public void addFriendsView() {
 			//DA CREARE QUERY PER FAR SI DI TROVARE TUTTI GLI UTENTI NON MIEI AMICI
-			notmyfriends = clientManager.getNotmyFriends();
-			addFriendsFrame = new GUIaddComponent(this, notmyfriends, true, true);
+			//notmyfriends = clientManager.getNotmyFriends();
+			addFriendsFrame = new GUIaddComponent(this, clientManager.getNotmyFriends(), true, true);
 			addFriendsFrame.setVisible(true);
 			addFriendsFrame.setSize(600, 600);
 			System.out.println("Add friends view");
 			
 		}
 
+		
+		//ADDING TO DB
 		public void addProject(String name, ArrayList<Integer> participants, boolean isActive){
 			
 			//Marzo questo project come viene creato? È quello che crea il client da inviare al server. Quindi non ha l'ID.
@@ -133,22 +139,35 @@ public class GuiManagerClient {
 					JOptionPane.showMessageDialog(null, "Activity was added correctly");
 					addActivityFrame.setVisible(false);
 					addActivityFrame.dispose();
+					addActivityView(project);
+
 				}
 
-		public void addFriends( ArrayList<Integer> friends){
-			clientManager.addFriends(friends);
+		public ArrayList<User> addFriends( ArrayList<Integer> friends){
+			if(clientManager.addFriends(friends))
+				JOptionPane.showMessageDialog(null, "Friend added correctly, please close the window");
 			
-			JOptionPane.showMessageDialog(null, "Project was added correctly, please close the window or choose add Activity to proceed");
 			addFriendsFrame.setVisible(false);
 			addFriendsFrame.dispose();
+			return clientManager.getFriendships();
+			
+		}
+
+		//REMOVING FROM DB
+		public void removeFriend(User u){
+			
+			clientManager.removeFriend(u);
+			
 		}
 		
-		public void buttonclickedAddProject(Project proj) {
-			System.out.println("Add Project");
+		@Override
+		public void RemoveProjectPressed(ProjectInfo projectInfo) {
+			// TODO Auto-generated method stub
 			
 		}
 
 		
+		//showing info
 		public void showProjectInfo(Project p){
 			Project project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive());
 			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
@@ -159,12 +178,38 @@ public class GuiManagerClient {
 			projectInfoFrame.setVisible(true);
 		}
 		
-		@Override
-		public void RemoveProjectPressed(ProjectInfo projectInfo) {
-			// TODO Auto-generated method stub
+		public void showActivityInfo(Activity a)
+		{
+			Activity activity = new Activity(a.getIdProject(), a.getIdActivity(), a.getName(), a.getPlace(), a.getHour(), a.getIsDone());
+			ActivityInfo activityInfo = clientManager.getActivityInfo(activity);
+			JFrame activityInfoFrame = new JFrame();
+			ActivityInfoGui aiGui = new ActivityInfoGui(activityInfo, this);
+			activityInfoFrame.getContentPane().add(aiGui);
+			activityInfoFrame.setSize(800, 600);
+			activityInfoFrame.setVisible(true);
 			
 		}
+		
+		
+		//GETTING ARRAYLIST
+		public ArrayList<User> getFriends(){
+			return clientManager.getFriendships();
+		}
+		
+		public ArrayList<Activity> getActivities(){
+			return clientManager.getActivity();
+		}
 
+		public ArrayList<Project> getProjects(){
+			return clientManager.getProject();
+		}
+		
+		
+
+		public void buttonclickedAddProject(Project proj) {
+			System.out.println("Add Project");
+			
+		}
 	}
 
 

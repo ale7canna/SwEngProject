@@ -99,6 +99,8 @@ public class GUIPanelHome extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listener.addProjectView();
+				addProjecttoList(_listener.getProjects());
+				addActivitytoList(_listener.getActivities());
 			}
 		});
 		AddProjectButton.setBounds(311, 25, 89, 23);
@@ -109,6 +111,8 @@ public class GUIPanelHome extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listener.addFriendsView();
+				addFriendtoList(_listener.getFriends());
+				JOptionPane.showMessageDialog(null, "dopo addfriend");
 			}
 		});
 		addFriendButton.setBounds(311, 120, 89, 23);
@@ -133,13 +137,20 @@ public class GUIPanelHome extends JPanel {
 				if (evt.getClickCount() == 2)
 				{
 					User u = ((MyUserTableAdapter)tableFriends.getModel()).getUserAt(row);
-					JOptionPane.showMessageDialog(null, u.getName());
+					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove from your friends "+ u.getName()+"?", "Remove friend", JOptionPane.YES_NO_OPTION);
+					if (scelta == JOptionPane.YES_OPTION)
+					{
+						_listener.removeFriend(u);
+						addFriendtoList(_listener.getFriends());
+						JOptionPane.showMessageDialog(null, u.getUsername()+" removed from your friends");
+						
+					}
+					else
+						JOptionPane.showMessageDialog(null, "ciao");					
 				}
 			}
 		});
 	    
-
-		
 		modelActivity = new MyActivityTableAdapter();
 		JTable tableActivity = new JTable(modelActivity);
 		tableActivity.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -158,12 +169,11 @@ public class GUIPanelHome extends JPanel {
 	 				if (evt.getClickCount() == 2)
 	 				{
 	 					Activity a = ((MyActivityTableAdapter)tableActivity.getModel()).getActivityAt(row);
-	 					JOptionPane.showMessageDialog(null, a.getName());
+	 					_listener.showActivityInfo(a);
 	 				}
 	 			}
 	 		});
-
-	    
+	        
 		modelProject = new MyProjectTableAdapter();
 		JTable tableProject = new JTable(modelProject);
 		tableProject.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -198,6 +208,7 @@ public class GUIPanelHome extends JPanel {
 	
 	private void addFriendtoList(ArrayList<User> user){
 		
+		modelFriendship.removeAll();
 		for(User u : user){
 			modelFriendship.addRow(u);			
 		}

@@ -20,6 +20,15 @@ public class MyUserTableAdapter extends AbstractTableModel {
 		columnNames.add("Cognome");
 		columnNames.add("Username");
 	}
+	
+	public void removeAll(){
+		if(data!=null)
+			data.clear();
+		if(listUser!=null)
+			listUser.clear();
+		listUser = null;
+		super.fireTableDataChanged();
+	}
 
 	public void addRow(User user) {
 		if (listUser == null)

@@ -10,6 +10,7 @@ import com.sweng.client.gui.GUIPanelHome;
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Participant;
@@ -54,6 +55,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		guiManagerClient.goToUserHomePage();
 	}
 
+	
+	//LOADING FROM DB
 	public ArrayList<User> loadFriendsfromServer(User user){
 		try{
 			friendships = server.getFriendsFromUser(user);
@@ -101,6 +104,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return notmyFriends;
 	}
 	
+	
+	//GETTER FOR GUIMANAGER
 	public ArrayList<User> getFriendships() {
 		return friendships;
 	}
@@ -136,8 +141,18 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return res;
 	}
 	
+	public ActivityInfo getActivityInfo(Activity activity){
+		ActivityInfo res = null;
+		try{
+			res = server.getActivityInfo(activity);
+		}catch (RemoteException | CustomException e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
 	// ADD METHODS
-	public Project addProject(String nameProject, int idAdmin, boolean isActive) {
+ 	public Project addProject(String nameProject, int idAdmin, boolean isActive) {
 		Project _project = new Project(idAdmin, nameProject, isActive);
 
 		try {
@@ -146,7 +161,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
-		loadProjectsfromServer(user);
+		projects = loadProjectsfromServer(user);
 		return _project;
 	}
 
@@ -157,11 +172,14 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			try {
 				_participant = new Participant(i, idProject);
 				server.addParticipant(_participant);
+				
 
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
+			
 		}
+		
 	}
 
 	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour) {
@@ -173,7 +191,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
-		loadActivitiesfromServer(user);
+		
+		activities = loadActivitiesfromServer(user);
 		return _activity;
 	}
 
@@ -186,9 +205,10 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
-	public void addFriends(ArrayList<Integer> friends) {
+	public Boolean addFriends(ArrayList<Integer> friends) {
 		Friendship _friendship = null;
 		int idUser = user.getIdUser();
 		for (Integer i : friends) {
@@ -200,7 +220,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				e.printStackTrace();
 			}
 		}
-		loadFriendsfromServer(user);
+		friendships = loadFriendsfromServer(user);
+		return true;
 	}
 
 	public void update() {
@@ -221,7 +242,18 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return user;
 	}
 
-
-
+	//REMOVE 
+	
+	public void removeFriend(User u){
+		Friendship friendship = new Friendship(user.getIdUser(), u.getIdUser());
+		try {
+			server.removeFriendship(friendship);
+		} catch (RemoteException | CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		friendships = loadFriendsfromServer(user);
+	}
+//COME GESTIAMO IL REFRESH PER I RESPONSABILI E I PARTECIPANTI????
 	
 }

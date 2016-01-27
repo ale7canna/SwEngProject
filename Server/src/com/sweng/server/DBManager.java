@@ -320,9 +320,8 @@ public class DBManager {
 			}
 
 			if (result.isEmpty())
-				throw new CustomException(Errors.ActivitiesNotFound);
-		} catch (SQLException e) {
-			e.printStackTrace();
+				throw new CustomException(Errors.UserNotFound);
+		} catch (SQLException e) {			e.printStackTrace();
 			throw new CustomException(Errors.ServerError);
 		}
 
@@ -396,7 +395,7 @@ public class DBManager {
 		}
 		
 		try {
-			query = "SELECT * FROM progetto WHERE idAttivita = ?";
+			query = "SELECT * FROM progetto as p JOIN attivita as a ON p.idProgetto = a.idProgetto WHERE idAttivita = ?";
 			PreparedStatement stat = connection.prepareStatement(query);
 			stat.setInt(1, activity.getIdActivity());
 			
@@ -635,7 +634,7 @@ public class DBManager {
 			stat.setInt(1, friendship.getIdUtente1());
 			stat.setInt(2, friendship.getIdUtente2());
 			
-			ResultSet rs = stat.executeQuery();
+			stat.executeUpdate();
 		}
 		catch (SQLException exception)
 		{
