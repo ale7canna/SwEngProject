@@ -50,6 +50,15 @@ public class MyProjectTableAdapter extends AbstractTableModel {
 			return null;
 		}
 	}
+	
+	public void removeAll(){
+		if(data!=null)
+			data.clear();
+		if(listProject!=null)
+			listProject.clear();
+		listProject= null;
+		super.fireTableDataChanged();
+	}
 
 	public Object getValueAt(int row, int col) {
 

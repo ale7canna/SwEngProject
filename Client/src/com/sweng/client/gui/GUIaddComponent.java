@@ -126,17 +126,18 @@ public class GUIaddComponent extends JFrame{
 		}
 		else
 			 addProjbtn = new JButton("OK");
-		Window w = SwingUtilities.getWindowAncestor(this);
+		
 		addProjbtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(isProject&&!isAddFriends){
 					_listener.addProject(txtProjectName.getText(), listFriends.getSelectedItems(), isActive.isSelected());
-
+					_listener.refreshAll();
 				}
 				if(isProject&&isAddFriends){
 					//ArrayList<Integer> daaggiungere = listFriends.getSelectedItems();
 					_listener.addFriends(listFriends.getSelectedItems());
+					_listener.refreshAll();
 					
 				}
 				if(!isProject){
@@ -158,6 +159,7 @@ public class GUIaddComponent extends JFrame{
 					System.out.println(dateTime);
 				
 					_listener.addActivityFinish(txtProjectName.getText(), PlaceActivityText.getText(), date , listFriends.getSelectedItems());
+					_listener.refreshAll();
 				}
 				
 			}

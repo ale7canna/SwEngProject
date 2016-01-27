@@ -27,6 +27,7 @@ public class GuiManagerClient {
 
 	private static ClientGUI gui = null;
 	private static IClientManager clientManager;
+	GUIPanelHome home = null;
 	
 	public GuiManagerClient(IClientManager clientManager){
 		
@@ -48,8 +49,11 @@ public class GuiManagerClient {
 	}
 	
 	public void goToUserHomePage() {
-		GUIPanelHome home = new GUIPanelHome(new GuiListener());
-		switchGui(home);
+		if(home==null)
+		{	home = new GUIPanelHome(new GuiListener());
+			switchGui(home);
+			}
+		
 		home.setUserInfo(clientManager.getUser(), clientManager.getFriendships(), clientManager.getActivity(), clientManager.getProject());
 		
 	}
@@ -120,7 +124,7 @@ public class GuiManagerClient {
 		
 		}
 		
-		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
+		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
 			
 			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
@@ -131,7 +135,7 @@ public class GuiManagerClient {
 			addActivityView(project);
 		}
 		
-		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
+		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity){
 					
 					activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
 					clientManager.addRespActivity(activity.getIdActivity(), respActivity);
@@ -139,13 +143,13 @@ public class GuiManagerClient {
 					JOptionPane.showMessageDialog(null, "Activity was added correctly");
 					addActivityFrame.setVisible(false);
 					addActivityFrame.dispose();
-					addActivityView(project);
+					
 
 				}
 
 		public ArrayList<User> addFriends( ArrayList<Integer> friends){
-			if(clientManager.addFriends(friends))
-				JOptionPane.showMessageDialog(null, "Friend added correctly, please close the window");
+			clientManager.addFriends(friends);
+			JOptionPane.showMessageDialog(null, "Friend added correctly, please close the window");
 			
 			addFriendsFrame.setVisible(false);
 			addFriendsFrame.dispose();
@@ -204,7 +208,10 @@ public class GuiManagerClient {
 			return clientManager.getProject();
 		}
 		
-		
+		//REFRESHING AFTER ADDING OR DELETE
+		public void refreshAll(){
+			goToUserHomePage();
+		}
 
 		public void buttonclickedAddProject(Project proj) {
 			System.out.println("Add Project");

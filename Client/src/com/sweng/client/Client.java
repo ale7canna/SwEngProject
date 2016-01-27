@@ -179,6 +179,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			}
 			
 		}
+		projects = loadProjectsfromServer(user);
 		
 	}
 
@@ -204,11 +205,13 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
+			
 		}
+		activities = loadActivitiesfromServer(user);
 		
 	}
 
-	public Boolean addFriends(ArrayList<Integer> friends) {
+	public void addFriends(ArrayList<Integer> friends) {
 		Friendship _friendship = null;
 		int idUser = user.getIdUser();
 		for (Integer i : friends) {
@@ -221,7 +224,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			}
 		}
 		friendships = loadFriendsfromServer(user);
-		return true;
+		
 	}
 
 	public void update() {

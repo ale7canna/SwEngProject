@@ -64,6 +64,15 @@ public class MyActivityTableAdapter extends AbstractTableModel {
 		return (data.get(row)).getItem(col);
 	}
 	
+	public void removeAll(){
+		if(data!=null)
+			data.clear();
+		if(listActivity!=null)
+			listActivity.clear();
+		listActivity= null;
+		super.fireTableDataChanged();
+	}
+	
 	public Activity getActivityAt(int row)
 	{
 		if (listActivity != null && listActivity.size() >= row)

@@ -111,8 +111,8 @@ public class GUIPanelHome extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listener.addFriendsView();
-				addFriendtoList(_listener.getFriends());
-				JOptionPane.showMessageDialog(null, "dopo addfriend");
+
+				
 			}
 		});
 		addFriendButton.setBounds(311, 120, 89, 23);
@@ -209,18 +209,29 @@ public class GUIPanelHome extends JPanel {
 	private void addFriendtoList(ArrayList<User> user){
 		
 		modelFriendship.removeAll();
+		if(user==null){
+			JOptionPane.showMessageDialog(null, "No user was selected, retry!");
+			return;
+			}
+			
 		for(User u : user){
 			modelFriendship.addRow(u);			
 		}
 	}
 	
 	private void addActivitytoList(ArrayList<Activity> activity){
+		
+		modelActivity.removeAll();
+		
 		for(Activity a: activity){
 			modelActivity.addRow(a);
 		}
 	}
 	
 	private void addProjecttoList(ArrayList<Project> project){
+		
+		modelProject.removeAll();
+		
 		for(Project p: project){
 			modelProject.addRow(p);
 		}
@@ -228,9 +239,11 @@ public class GUIPanelHome extends JPanel {
 	
 	public void setUserInfo(User user, ArrayList<User> friendship, ArrayList<Activity> activity, ArrayList<Project> project){
 		
-		if (user != null)
+		if (user != null){
 			userInfo(user);
-		if (friendship != null)
+		}
+		
+		if (friendship != null){
 			addFriendtoList(friendship);
 		if (activity != null)
 			addActivitytoList(activity);
@@ -296,5 +309,6 @@ public class GUIPanelHome extends JPanel {
 	        return getValueAt(0, c).getClass();
 	    
 	    	}
+	}
 	}
 }

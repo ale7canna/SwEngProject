@@ -38,4 +38,6 @@ public interface EventListenerGUI {
 	public ArrayList<Activity> getActivities();
 	
 	public ArrayList<Project> getProjects();
+	
+	public void refreshAll();
 }

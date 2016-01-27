@@ -21,7 +21,7 @@ public interface IClientManager {
 	public ArrayList<User> getParticipant(Project project);
 	public Project addProject(String nameProject, int idAdmin, boolean isActive);
 	public Activity addActivity(String nameActivity, int idProject, String place, Date hour);
-	public Boolean addFriends(ArrayList<Integer> friends);
+	public void addFriends(ArrayList<Integer> friends);
 	public void addParticipants(ArrayList<Integer> participants, int idProject);
 	public void addRespActivity(int idActivity, ArrayList<Integer> responsibles);
 	public ArrayList<User> getNotmyFriends();
