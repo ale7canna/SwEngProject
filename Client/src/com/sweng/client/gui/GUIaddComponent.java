@@ -110,7 +110,24 @@ public class GUIaddComponent extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(!isProject){
-					_listener.addActivityContinue(txtProjectName.getText(), PlaceActivityText.getText(), Date.valueOf(TimeActivityText.toString()) , listFriends.getSelectedItems());
+					String ts;
+					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+					
+					ts = format.format((java.util.Date)timeSpinner.getValue()); 
+					String dateTime= null;
+					dateTime= datePicker.getDateFormat().format(datePicker.getDate())+" "+ts;
+					java.util.Date date= null;
+					SimpleDateFormat defin= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					try {
+						date = defin.parse(dateTime);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println(dateTime);
+				
+					_listener.addActivityContinue(txtProjectName.getText(), PlaceActivityText.getText(), date, listFriends.getSelectedItems());
+					_listener.refreshAll();
 				}
 		}});
 		addActivitybtn.setBounds(119, 227, 106, 23);

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.User;
@@ -12,7 +13,7 @@ import com.sweng.common.beans.User;
 public class MyActivityTableAdapter extends AbstractTableModel {
 
 	private ArrayList<String> columnNames = new ArrayList();
-	private ArrayList<List> data = new ArrayList();
+	private ArrayList<ArrayList<Object>> data = new ArrayList();
 
 	private ArrayList<Activity> listActivity = null;
 
@@ -20,24 +21,24 @@ public class MyActivityTableAdapter extends AbstractTableModel {
 		columnNames.add("Name");
 		columnNames.add("Place");
 		columnNames.add("Date and Time");
+		columnNames.add("Finishable");
 	}
 
 	public void addRow(Activity activity) {
 		if (listActivity == null)
-			listActivity= new ArrayList<Activity>();
-		
+			listActivity = new ArrayList<Activity>();
 
 		listActivity.add(activity);
-		List rowData = new List();
+		ArrayList<Object> rowData = new ArrayList<>();
 		rowData.add(activity.getName());
 		rowData.add(activity.getPlace());
-		if(activity.getHour()!=null){
+		if (activity.getHour() != null) {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String ora = format.format(activity.getHour());
 			rowData.add(ora);
-			}
-		else 
+		} else
 			rowData.add("Date not set");
+		rowData.add(activity.isFinishable());
 
 		data.add(rowData);
 		fireTableRowsInserted(data.size() - 1, data.size() - 1);
@@ -61,25 +62,22 @@ public class MyActivityTableAdapter extends AbstractTableModel {
 
 	public Object getValueAt(int row, int col) {
 
-		return (data.get(row)).getItem(col);
+		return (data.get(row)).get(col);
 	}
-	
-	public void removeAll(){
-		if(data!=null)
+
+	public void removeAll() {
+		if (data != null)
 			data.clear();
-		if(listActivity!=null)
+		if (listActivity != null)
 			listActivity.clear();
-		listActivity= null;
+		listActivity = null;
 		super.fireTableDataChanged();
 	}
-	
-	public Activity getActivityAt(int row)
-	{
-		if (listActivity != null && listActivity.size() >= row)
-		{
+
+	public Activity getActivityAt(int row) {
+		if (listActivity != null && listActivity.size() >= row) {
 			return listActivity.get(row);
-		}
-		else
+		} else
 			return null;
 	}
 

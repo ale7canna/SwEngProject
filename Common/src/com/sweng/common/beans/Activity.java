@@ -33,6 +33,14 @@ public class Activity implements Serializable{
 		isDone = _isDone;
 	}
 
+	public Boolean equals(Activity a)
+	{
+		if (idActivity == a.getIdActivity())
+			return true;
+			
+		return false;
+	}
+	
 	public String getName() {
 		return name;
 	}
