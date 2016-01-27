@@ -491,7 +491,7 @@ public class DBManager {
 			throw new CustomException(Errors.ServerError);
 		}
 		activityInfo = new ActivityInfo(activity.getIdActivity(), responsabili, project, activity.getName(),
-						activity.getPlace(), activity.getHour(), activity.getIsDone());
+						activity.getPlace(), activity.getHour(), activity.getIsDone(), activity.isFinishable());
 		
 		return activityInfo;
 	}

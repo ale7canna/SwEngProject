@@ -13,12 +13,13 @@ public class ActivityInfo implements Serializable {
 	private Project project;
 	private ArrayList<User> responsabili;
 	private boolean isDone;
+	private boolean isFinishable;
 	
 	
 	
 	
 	public ActivityInfo(int idActivity, ArrayList<User> responsabili, Project project, String name, String place,
-			Date hour, boolean isDone) {
+			Date hour, boolean isDone, boolean isFinishable) {
 		super();
 		this.idActivity = idActivity;
 		this.responsabili = responsabili;
@@ -27,6 +28,13 @@ public class ActivityInfo implements Serializable {
 		this.place = place;
 		this.hour = hour;
 		this.isDone = isDone;
+		this.isFinishable = isFinishable;
+	}
+	public boolean isFinishable() {
+		return isFinishable;
+	}
+	public void setFinishable(boolean isFinishable) {
+		this.isFinishable = isFinishable;
 	}
 	public String getName() {
 		return name;
