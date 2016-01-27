@@ -24,7 +24,7 @@ public class MainServer {
 		{
 			guiMgr.LoadUser(DBManager.getAllUsers());
 			guiMgr.LoadProjects(DBManager.getAllProjects(), DBManager.getActiveProjectsCount(), DBManager.getTotalProjectsCount());
-			//guiMgr.LoadProjects(db.getAllProjects());
+			guiMgr.LoadActivities(DBManager.getAllActivities(), DBManager.getDoneActivitiesCount(), DBManager.getActivitiesCount());
 		}
 		catch (CustomException e)
 		{

@@ -12,6 +12,7 @@ import com.sweng.common.beans.User;
 public class MyActivityListModel extends DefaultListModel<String> {
 
 	private HashMap<Activity, User> activitiesAndUSers;
+	private ArrayList<Activity> activities;
 	
 	public void addElement(Activity a, User u)
 	{
@@ -21,12 +22,20 @@ public class MyActivityListModel extends DefaultListModel<String> {
 		activitiesAndUSers.put(a, u);
 	}
 	
-//	public Project getProjectAt(int index)
-//	{
-//		if (listaActivity != null)
-//			return listaActivity.get(index);
-//		return null;
-//	}
+	public void addElement(Activity a)
+	{
+		super.addElement(a.getName());
+		if (activities == null)
+			activities = new ArrayList<Activity>();
+		activities.add(a);
+	}
+	
+	public Activity getActivityAt(int index)
+	{
+		if (activities != null)
+			return activities.get(index);
+		return null;
+	}
 	
 	@Override
 	public void removeAllElements()
@@ -35,6 +44,11 @@ public class MyActivityListModel extends DefaultListModel<String> {
 		if (activitiesAndUSers != null)
 			activitiesAndUSers.clear();
 		activitiesAndUSers = null;
+		
+		if (activities != null)
+			activities.clear();
+		activities = null;
+			
 	}
 	
 

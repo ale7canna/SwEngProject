@@ -1,51 +1,50 @@
 package com.sweng.server.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.FontUIResource;
 
+import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.Project;
-import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.gui.ActivityInfoGui;
+import com.sweng.common.gui.MyActivityListModel;
 import com.sweng.common.gui.MyProjectListModel;
 import com.sweng.common.gui.MyUserListModel;
 import com.sweng.common.gui.ProjectInfoGui;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.border.BevelBorder;
-import javax.swing.ListModel;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Insets;
-
 public class ServerGUI extends JFrame {
-	private JList userList, userProjectList, projectList, listFriends;
+	private JList userList, userProjectList, projectList, listFriends, activityList;
 	private JPanel projectInfo;
-	private JSplitPane splitPaneProjects;
-	private JLabel projectSummaryLabel;
+	private JSplitPane splitPaneProjects, splitPaneActivity ;
+	private JLabel projectSummaryLabel, activitySummaryLabel;
 	private DefaultListModel model;
 	private int counter = 0;
 	private GUIListener listener;
@@ -235,6 +234,57 @@ public class ServerGUI extends JFrame {
 		label.setAlignmentX(0.5f);
 		panel_3.add(label);
 		splitPaneProjects.setDividerLocation(200);
+		
+		JPanel tabAttivita = new JPanel();
+		tabbedPane.addTab("Attivit\u00E0", null, tabAttivita, null);
+		GridBagLayout gbl_tabAttivita = new GridBagLayout();
+		gbl_tabAttivita.columnWidths = new int[]{833, 0};
+		gbl_tabAttivita.rowHeights = new int[]{41, 324, 0};
+		gbl_tabAttivita.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_tabAttivita.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		tabAttivita.setLayout(gbl_tabAttivita);
+		
+		JPanel panel_1 = new JPanel();
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.fill = GridBagConstraints.BOTH;
+		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_1.gridx = 0;
+		gbc_panel_1.gridy = 0;
+		tabAttivita.add(panel_1, gbc_panel_1);
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		activitySummaryLabel = new JLabel("");
+		panel_1.add(activitySummaryLabel);
+		
+		splitPaneActivity = new JSplitPane();
+		GridBagConstraints gbc_splitPane = new GridBagConstraints();
+		gbc_splitPane.fill = GridBagConstraints.BOTH;
+		gbc_splitPane.gridx = 0;
+		gbc_splitPane.gridy = 1;
+		tabAttivita.add(splitPaneActivity, gbc_splitPane);
+		
+		activityList = new JList(new MyActivityListModel());
+		activityList.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent evt) {
+				if (evt.getClickCount() == 1) {
+					Activity a = (Activity) ((MyActivityListModel) activityList.getModel())
+							.getActivityAt(activityList.getSelectedIndex());
+					listener.ActivityClicked(a);
+				}
+			}
+		});
+		splitPaneActivity.setLeftComponent(activityList);
+		
+		JPanel panel_7 = new JPanel();
+		splitPaneActivity.setRightComponent(panel_7);
+		panel_7.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel lblCliccaUnattivitA = new JLabel("Clicca un'attivit\u00E0 a lato per caricare i dettagli");
+		lblCliccaUnattivitA.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCliccaUnattivitA.setAlignmentX(0.5f);
+		panel_7.add(lblCliccaUnattivitA);
+		splitPaneActivity.setDividerLocation(200);
 
 	}
 
@@ -285,4 +335,29 @@ public class ServerGUI extends JFrame {
 				progettiTotali);
 		projectSummaryLabel.setText(s);
 	}
+	
+
+	public void AddActivitiesToList(ArrayList<Activity> activities) {
+		MyActivityListModel listModel = (MyActivityListModel) activityList.getModel();
+		listModel.removeAllElements();
+
+		// update(getGraphics());
+		if (activities != null)
+			for (Activity a : activities)
+				listModel.addElement(a);
+	}
+
+	
+	
+	public void ChangeActivityInfo(ActivityInfoGui act) {
+		splitPaneActivity.setRightComponent(act);
+	}
+
+	public void ChangeActivitiesSummary(int attivitaCompletate, int attivitaTotali) {
+		String s = String.format("Ci sono %d attività completate su un totale di %d attività.", attivitaCompletate,
+				attivitaTotali);
+		activitySummaryLabel.setText(s);
+	}
+	
+	
 }

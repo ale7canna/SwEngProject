@@ -5,5 +5,6 @@ public enum Errors {
 	WrongPassword,
 	ServerError,
 	ActivitiesNotFound,
-	ProjectsNotFound
+	ProjectsNotFound,
+	FriendsNotFound
 }

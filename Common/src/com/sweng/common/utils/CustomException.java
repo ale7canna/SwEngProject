@@ -30,6 +30,7 @@ public class CustomException extends Exception implements Serializable{
 		listaErrori.put(Errors.ServerError, "Errore da parte del server.");
 		listaErrori.put(Errors.ActivitiesNotFound, "Nessuna attività presente.");
 		listaErrori.put(Errors.ProjectsNotFound, "Nessun progetto disponibile.");
+		listaErrori.put(Errors.FriendsNotFound, "L'utente non ha nessun amico.");
 		
 			
 

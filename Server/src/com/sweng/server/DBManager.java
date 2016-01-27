@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.sweng.common.Consts;
@@ -51,8 +51,13 @@ public class DBManager {
 
 			result = new ArrayList<Activity>();
 			while (rs.next()) {
+				Date d = null;
+				Timestamp t = rs.getTimestamp("Ora");
+				if (t != null)
+					d = new Date(t.getTime());
+					
 				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
-						rs.getString("Luogo"), rs.getDate("Ora"), rs.getBoolean("Completata"));
+						rs.getString("Luogo"), d, rs.getBoolean("Completata"));
 				result.add(act);
 			}
 
@@ -209,7 +214,7 @@ public class DBManager {
 			}
 
 			if (result.isEmpty())
-				throw new CustomException(Errors.ProjectsNotFound);
+				throw new CustomException(Errors.FriendsNotFound);
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
@@ -238,8 +243,14 @@ public class DBManager {
 				boolean completa = rs.getBoolean("Completata");
 				if (completa)
 					attivitaComplete++;
+				
+				Date d = null;
+				Timestamp t = rs.getTimestamp("Ora");
+				if (t != null)
+					d = new Date(t.getTime());
+				
 				Activity act = new Activity(project.getIdProject(), rs.getInt("ar.idAttivita"),
-						rs.getString("attivita.Nome"), rs.getString("Luogo"), rs.getDate("Ora"), completa);
+						rs.getString("attivita.Nome"), rs.getString("Luogo"), d, completa);
 
 				User u = new User(rs.getInt("ar.idUtente"), rs.getString("utente.Nome"), rs.getString("Cognome"),
 						rs.getString("UserName"), null);
@@ -367,6 +378,74 @@ public class DBManager {
 		
 		return count;
 	}
+	
+	public static ArrayList<Activity> getAllActivities() throws CustomException
+	{
+		ArrayList<Activity> result = null;
+		
+		try {
+			String query = "SELECT * FROM attivita";
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+
+			ResultSet rs = stat.executeQuery();
+			result = new ArrayList<Activity>();
+			while (rs.next()) {
+				Date d = null;
+				Timestamp t = rs.getTimestamp("Ora");
+				if (t != null)
+					d = new Date(t.getTime());
+				
+				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), 
+									rs.getString("Luogo"), d, rs.getBoolean("Completata")); 
+						
+			
+				result.add(act);
+			}
+
+			if (result.isEmpty())
+				throw new CustomException(Errors.ActivitiesNotFound);
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		return result;
+	}
+	
+	public static int getDoneActivitiesCount() throws CustomException
+	{
+		try{
+			String query = "SELECT Count(*) FROM attivita WHERE Completata = 1";
+			java.sql.Statement stat = connection.createStatement();
+			ResultSet rs = stat.executeQuery(query);
+			
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ActivitiesNotFound);
+		}
+		return 0;
+	}
+	
+	public static int getActivitiesCount() throws CustomException
+	{
+		try{
+			String query = "SELECT Count(*) FROM attivita";
+			java.sql.Statement stat = connection.createStatement();
+			ResultSet rs = stat.executeQuery(query);
+			
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ActivitiesNotFound);
+		}
+		return 0;
+	}
+	
+	
 	
 	public static ActivityInfo getActivityInfo(Activity activity) throws CustomException {
 		
@@ -615,8 +694,13 @@ public class DBManager {
 			ResultSet rs = stat.executeQuery();
 
 			if (rs.next()) {
+				Date d = null;
+				Timestamp t = rs.getTimestamp("Ora");
+				if (t != null)
+					d = new Date(t.getTime());
+				
 				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
-						rs.getString("Luogo"), rs.getDate("Ora"), rs.getBoolean("Completata"));
+						rs.getString("Luogo"), d, rs.getBoolean("Completata"));
 			} else
 				throw new CustomException(Errors.ProjectsNotFound);
 		} catch (SQLException e) {

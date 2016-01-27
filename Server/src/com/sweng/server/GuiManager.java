@@ -3,10 +3,14 @@ package com.sweng.server;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
+import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.gui.ActivityInfoGui;
 import com.sweng.common.gui.ICommonGui;
 import com.sweng.common.gui.ProjectInfoGui;
 import com.sweng.common.utils.CustomException;
@@ -36,6 +40,12 @@ public class GuiManager{
 	{
 		GUI.AddProjectsToList(projects);
 		GUI.ChangeProjectsSummary(activeProjects, totalProjects);
+	}
+	
+	public void LoadActivities(ArrayList<Activity> activities, int attivitaCompletate, int attivitaTotali)
+	{
+		GUI.AddActivitiesToList(activities);
+		GUI.ChangeActivitiesSummary(attivitaCompletate, attivitaTotali);
 	}
 	
 	public void refreshInfo()
@@ -109,11 +119,23 @@ public class GuiManager{
 			try {
 				pi = DBManager.getProjectInfo(project);
 			} catch (CustomException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
 			}
 			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this);
 			GUI.ChangeProjectInfo(projectInfo);
+		}
+
+		@Override
+		public void ActivityClicked(Activity activity) {
+			ActivityInfo ai = null;
+			
+			try {
+				ai = DBManager.getActivityInfo(activity);
+			} catch (CustomException e) {
+				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
+			}
+			ActivityInfoGui activityInfoGui = new ActivityInfoGui(ai, this);
+			GUI.ChangeActivityInfo(activityInfoGui);
 		}
 
 	}
