@@ -99,8 +99,6 @@ public class GUIPanelHome extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listener.addProjectView();
-				addProjecttoList(_listener.getProjects());
-				addActivitytoList(_listener.getActivities());
 			}
 		});
 		AddProjectButton.setBounds(311, 25, 89, 23);
@@ -111,8 +109,6 @@ public class GUIPanelHome extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listener.addFriendsView();
-
-				
 			}
 		});
 		addFriendButton.setBounds(311, 120, 89, 23);
@@ -243,7 +239,7 @@ public class GUIPanelHome extends JPanel {
 			userInfo(user);
 		}
 		
-		if (friendship != null){
+		if (friendship != null)
 			addFriendtoList(friendship);
 		if (activity != null)
 			addActivitytoList(activity);
@@ -309,6 +305,5 @@ public class GUIPanelHome extends JPanel {
 	        return getValueAt(0, c).getClass();
 	    
 	    	}
-	}
 	}
 }

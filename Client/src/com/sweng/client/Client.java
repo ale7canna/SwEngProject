@@ -154,9 +154,11 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	// ADD METHODS
  	public Project addProject(String nameProject, int idAdmin, boolean isActive) {
 		Project _project = new Project(idAdmin, nameProject, isActive);
-
+		
 		try {
 			_project = server.addProject(_project);
+			Participant p = new Participant(user.getIdUser(), _project.getIdProject());
+			server.addParticipant(p);
 
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
