@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
@@ -109,7 +110,16 @@ public class Server extends UnicastRemoteObject implements IServer{
 	@Override
 	public void addObserver(IClient _client) throws RemoteException {
 		//Utente connesso alla ricezione delle notifiche
+		DBManager.addClientToObservers(_client);
+		ArrayList<IClient> utenti = DBManager.getObservers();
 		
+		for (IClient c : utenti)
+		{
+			try {
+			c.sendMessage("Ciao dal server");
+			}
+			catch (Exception e) {}
+		}
 	}
 
 	@Override
@@ -189,6 +199,51 @@ public class Server extends UnicastRemoteObject implements IServer{
 	@Override
 	public ActivityInfo getActivityInfo(Activity activity) throws RemoteException, CustomException {
 		return DBManager.getActivityInfo(activity);
+	}
+
+
+
+
+	@Override
+	public void setActivityDone(ActivityInfo activityInfo) throws RemoteException, CustomException {
+		DBManager.setActivityDone(activityInfo);
+		
+		//CONTROLLARE STATO ATTIVITA/PROGETTO PER NOTIFICHE
+		
+		ArrayList<Activity> activities = DBManager.getActivitiesFromProject(activityInfo.getProject());
+
+		Iterator iter = activities.iterator();
+		while(iter.hasNext())
+		{
+			Activity act = (Activity) iter.next();
+			if (act.equals(activityInfo))
+			{
+				if (!iter.hasNext())
+					endOfProject(activityInfo.getProject());
+				else
+					notifyNextResponsible((Activity)iter.next());
+					
+				break;
+			}
+		}
+		
+		
+	}
+
+
+
+
+	private void notifyNextResponsible(Activity activity) {
+		System.out.println("Attività completata. Notificare utente ");
+		
+	}
+
+
+
+
+	private void endOfProject(Project project) {
+		System.out.println("Progetto completato. Notificare tutti gli utenti");
+		
 	}
 
 	

@@ -138,6 +138,12 @@ public class GuiManager{
 			GUI.ChangeActivityInfo(activityInfoGui);
 		}
 
+		@Override
+		public void completeActivity(ActivityInfo activityInfo) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 

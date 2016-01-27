@@ -41,6 +41,16 @@ public class Activity implements Serializable{
 		return false;
 	}
 	
+	public Boolean equals(ActivityInfo a)
+	{
+		if (idActivity == a.getIdActivity())
+			return true;
+			
+		return false;
+	}
+	
+	
+	
 	public String getName() {
 		return name;
 	}

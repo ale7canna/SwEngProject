@@ -30,6 +30,16 @@ public class ActivityInfo implements Serializable {
 		this.isDone = isDone;
 		this.isFinishable = isFinishable;
 	}
+	
+	public Boolean equals(ActivityInfo a)
+	{
+		if (idActivity == a.getIdActivity())
+			return true;
+			
+		return false;
+	}
+	
+	
 	public boolean isFinishable() {
 		return isFinishable;
 	}

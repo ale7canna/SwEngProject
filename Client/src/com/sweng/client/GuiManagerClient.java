@@ -1,13 +1,13 @@
 package com.sweng.client;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import com.sun.corba.se.spi.activation.Server;
 import com.sweng.client.gui.ClientGUI;
 import com.sweng.client.gui.EventListenerGUI;
 import com.sweng.client.gui.GUIPanelHome;
@@ -15,7 +15,6 @@ import com.sweng.client.gui.GUIPanelSignIn;
 import com.sweng.client.gui.GUIaddComponent;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
-import com.sweng.common.beans.Friendship;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
@@ -185,8 +184,7 @@ public class GuiManagerClient {
 		
 		public void showActivityInfo(Activity a)
 		{
-			Activity activity = new Activity(a.getIdProject(), a.getIdActivity(), a.getName(), a.getPlace(), a.getHour(), a.getIsDone());
-			ActivityInfo activityInfo = clientManager.getActivityInfo(activity);
+			ActivityInfo activityInfo = clientManager.getActivityInfo(a);
 			JFrame activityInfoFrame = new JFrame();
 			ActivityInfoGui aiGui = new ActivityInfoGui(activityInfo, this);
 			activityInfoFrame.getContentPane().add(aiGui);
@@ -229,6 +227,23 @@ public class GuiManagerClient {
 			clientManager.logout();
 		}
 	 }
+
+
+	public void showMessage(String message) {
+		
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(null, "Ciao ciao");
+				}
+			});
+		}
+		
+		
+		
+		System.out.println(message);
+	}
 
 
 }

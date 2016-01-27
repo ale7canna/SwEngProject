@@ -44,6 +44,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public void SignInRequest(String username, String password) {
 		try {
 			user = server.performLogin(username, password);
+			server.addObserver(this);
 		} catch (CustomException | RemoteException e) {
 			if (e instanceof CustomException){
 				
@@ -53,6 +54,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			else
 				e.printStackTrace();
 		}
+		
 		loadFriendsfromServer(user);
 		loadActivitiesfromServer(user);
 		loadProjectsfromServer(user);
@@ -268,7 +270,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	//SET BEANS
 	public void setActivityInfoDone(ActivityInfo activityInfo){
 		
-		server.setActivityDone(activityInfo);
+		try {
+			server.setActivityDone(activityInfo);
+		} catch (RemoteException | CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void logout(){
@@ -302,5 +309,10 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			return user.getUsername();
 		else
 			return null;
+	}
+
+	@Override
+	public void sendMessage(String message) throws RemoteException {
+		guiManagerClient.showMessage(message);
 	}
 }

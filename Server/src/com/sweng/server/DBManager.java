@@ -1,5 +1,9 @@
 package com.sweng.server;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -538,8 +542,13 @@ public class DBManager {
 		for (Activity act : projectActivities){
 			
 			if (act.equals(activity))
-				return true;
-			
+			{
+				if (!act.getIsDone())
+					return true;
+				else
+					return false;
+			}
+
 			if (!act.getIsDone())
 				break;			
 		}
@@ -791,21 +800,69 @@ public class DBManager {
 	{
 		try
 		{
-			String query = "INSERT INTO utente_connesso (utente, connessione) " +
-							"VALUES (?, ?)";
+			String query = "INSERT INTO utente_connesso (utente, connessione, username, id_utente) " +
+							"VALUES (?, ?, ?, ?)";
 			PreparedStatement stat = connection.prepareStatement(query);
 			
 			stat.setObject(1, client);
 			stat.setTimestamp(2, Timestamp.from(Instant.now()));
+			stat.setString(3, client.getUsername());
+			stat.setInt(4, client.getId());
+			
+			stat.executeUpdate();
+		}
+		catch (SQLException | RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static ArrayList<IClient> getObservers() {
+		ArrayList<IClient> result = null;
+		try
+		{
+			String query = "SELECT * FROM utente_connesso";
+			
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			ResultSet rs = stat.executeQuery();
+			result = new ArrayList<>();
+			while (rs.next())
+			{
+				byte[] buf = rs.getBytes("utente");
+				ObjectInputStream objectIn = null;
+				if (buf != null)
+					objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+
+				Object deSerializedObject = objectIn.readObject();
+				IClient c  = (IClient)deSerializedObject;
+				result.add(c);
+			}
+			
+		}
+		catch (SQLException | IOException | ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static void setActivityDone(ActivityInfo activityInfo) throws CustomException {
+		try 
+		{
+			String query = "UPDATE attivita SET Completata = 1 WHERE idAttivita = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setInt(1, activityInfo.getIdActivity());
 			
 			stat.executeUpdate();
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			throw new CustomException(Errors.ServerError);
 		}
+		
 	}
 	
-	public static void 
 
 }
