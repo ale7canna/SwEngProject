@@ -6,11 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 import com.sweng.common.Consts;
+import com.sweng.common.IClient;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
@@ -782,5 +784,28 @@ public class DBManager {
 	}
 
 	
+	
+	// METODI DI GESTIONE UTENTI E forse SESSIONE
+	
+	public static void addClientToObservers(IClient client)
+	{
+		try
+		{
+			String query = "INSERT INTO utente_connesso (utente, connessione) " +
+							"VALUES (?, ?)";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setObject(1, client);
+			stat.setTimestamp(2, Timestamp.from(Instant.now()));
+			
+			stat.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void 
 
 }

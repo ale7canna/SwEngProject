@@ -1,6 +1,7 @@
 package com.sweng.server;
 
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -19,13 +20,17 @@ import com.sweng.common.utils.CustomException;
 
 public class Server extends UnicastRemoteObject implements IServer{
 
-	
-	
+
 	protected Server() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+
+	
+	
+	// IMPLEMENTAZIONE METODI REMOTI
+	
 	@Override
 	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
 		Activity result = null;
@@ -92,13 +97,18 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public User performLogin(String username, String password) throws RemoteException, CustomException {
 		User result = null;
 		result = DBManager.getUser(username, password);
-		
+		try {
+			System.out.println(getClientHost());
+		} catch (ServerNotActiveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result;
 	}
 
 	@Override
 	public void addObserver(IClient _client) throws RemoteException {
-		// TODO Auto-generated method stub
+		//Utente connesso alla ricezione delle notifiche
 		
 	}
 
