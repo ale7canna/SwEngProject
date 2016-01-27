@@ -287,4 +287,20 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 		
 	}
+
+	@Override
+	public int getId() {
+		if(user!=null)
+			return user.getIdUser();
+		else
+			return -1;
+	}
+
+	@Override
+	public String getUsername() {
+		if(user!=null)
+			return user.getUsername();
+		else
+			return null;
+	}
 }
