@@ -5,6 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import com.sweng.client.gui.ClientGUI;
 import com.sweng.client.gui.GUIPanelHome;
 import com.sweng.common.IClient;
@@ -43,8 +45,11 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		try {
 			user = server.performLogin(username, password);
 		} catch (CustomException | RemoteException e) {
-			if (e instanceof CustomException)
+			if (e instanceof CustomException){
+				
+				JOptionPane.showMessageDialog(null, e.getMessage());
 				System.out.println(e.getMessage());
+			}
 			else
 				e.printStackTrace();
 		}
@@ -259,6 +264,6 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 		friendships = loadFriendsfromServer(user);
 	}
-//COME GESTIAMO IL REFRESH PER I RESPONSABILI E I PARTECIPANTI????
+
 	
 }
