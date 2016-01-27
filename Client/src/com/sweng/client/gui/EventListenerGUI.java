@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.ArrayList;
 
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 
@@ -40,4 +41,8 @@ public interface EventListenerGUI {
 	public ArrayList<Project> getProjects();
 	
 	public void refreshAll();
+	
+	public void performLogout();
+	
+
 }

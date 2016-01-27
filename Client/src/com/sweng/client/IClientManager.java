@@ -28,4 +28,6 @@ public interface IClientManager {
 	public ProjectInfo getProjectInfo(Project project);
 	public ActivityInfo getActivityInfo(Activity activity);
 	public void removeFriend(User u);
+	public void setActivityInfoDone(ActivityInfo activityInfo);
+	public void logout();
 }

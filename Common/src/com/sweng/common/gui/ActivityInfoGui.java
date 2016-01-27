@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
@@ -36,16 +37,6 @@ public class ActivityInfoGui extends JPanel{
 		JSplitPane splitPane = new JSplitPane();
 		// getContentPane().add(splitPane);
 		add(splitPane);
-
-		JPanel panel_1 = new JPanel();
-		splitPane.setRightComponent(panel_1);
-		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
-
-		JLabel lblResponsible = new JLabel("Responsabili");
-		panel_1.add(lblResponsible);
-
-		listResponsible = new JList(new MyUserListModel());
-		panel_1.add(listResponsible);
 
 		JSplitPane splitPane_1 = new JSplitPane();
 		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -114,7 +105,21 @@ public class ActivityInfoGui extends JPanel{
 		textFieldHour.setBorder(null);
 		textFieldHour.setBounds(62, 117, 86, 20);
 		panel.add(textFieldHour);
-		textFieldHour.setColumns(10);
+		
+		if(activityInfo.isFinishable()){
+			JButton btnCompleteActivity = new JButton("Complete Activity\r\n");
+			btnCompleteActivity.setBounds(297, 119, 89, 23);
+			btnCompleteActivity.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent evt){
+					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to complete this activity?", "Complete Activity", JOptionPane.YES_NO_OPTION);
+					if (scelta == JOptionPane.YES_OPTION){
+						_listener.completeActivity(activityInfo);
+					}
+				}
+			});
+			panel.add(btnCompleteActivity);
+			textFieldHour.setColumns(10);
+		}
 
 //		JLabel lblUsernameAdmin = new JLabel("Username Admin:");
 //		lblUsernameAdmin.setBounds(29, 134, 139, 20);
@@ -143,6 +148,9 @@ public class ActivityInfoGui extends JPanel{
 
 		JLabel lblAttivit = new JLabel("");
 		panel_2.add(lblAttivit);
+		
+				JLabel lblResponsible = new JLabel("Responsabili");
+				panel_2.add(lblResponsible);
 
 		listResponsible = new JList(new MyUserListModel());
 		panel_2.add(listResponsible);

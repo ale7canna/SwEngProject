@@ -208,6 +208,12 @@ public class GuiManagerClient {
 			return clientManager.getProject();
 		}
 		
+		//SET COMPLETED
+		public void completeActivity(ActivityInfo activityInfo)
+		{
+			clientManager.setActivityInfoDone(activityInfo);
+		}
+		
 		//REFRESHING AFTER ADDING OR DELETE
 		public void refreshAll(){
 			goToUserHomePage();
@@ -217,7 +223,11 @@ public class GuiManagerClient {
 			System.out.println("Add Project");
 			
 		}
-	}
+	
+		public void performLogout(){
+			clientManager.logout();
+		}
+	 }
 
 
 }

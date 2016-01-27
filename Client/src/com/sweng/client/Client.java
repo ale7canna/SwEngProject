@@ -265,5 +265,26 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		friendships = loadFriendsfromServer(user);
 	}
 
-	
+	//SET BEANS
+	public void setActivityInfoDone(ActivityInfo activityInfo){
+		
+		server.setActivityDone(activityInfo);
+	}
+
+	public void logout(){
+		friendships.clear();
+		activities.clear();
+		notmyFriends.clear();
+		participants.clear();
+		projects.clear();
+		responsible.clear();
+		user = null;
+		try {
+			server.removeObserver(this);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

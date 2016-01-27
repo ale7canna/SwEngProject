@@ -28,6 +28,8 @@ import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GUIPanelHome extends JPanel {
 	
@@ -95,13 +97,17 @@ public class GUIPanelHome extends JPanel {
 		UserInfo.add(UserNameLabel);
 		
 		JButton AddProjectButton = new JButton("Add Project\r\n");
+		AddProjectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		AddProjectButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				listener.addProjectView();
 			}
 		});
-		AddProjectButton.setBounds(311, 25, 89, 23);
+		AddProjectButton.setBounds(311, 41, 89, 23);
 		UserInfo.add(AddProjectButton);
 		
 		JButton addFriendButton = new JButton("Add Friends");
@@ -113,6 +119,17 @@ public class GUIPanelHome extends JPanel {
 		});
 		addFriendButton.setBounds(311, 120, 89, 23);
 		UserInfo.add(addFriendButton);
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				_listener.performLogout();
+			}
+		});
+		btnLogout.setBounds(311, 173, 89, 23);
+		UserInfo.add(btnLogout);
 	
 		modelFriendship = new MyUserTableAdapter();
 		JTable tableFriends = new JTable(modelFriendship);
