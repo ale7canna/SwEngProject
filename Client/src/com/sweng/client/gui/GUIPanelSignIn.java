@@ -2,6 +2,7 @@ package com.sweng.client.gui;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -37,6 +38,8 @@ public class GUIPanelSignIn extends JPanel{
 				String password = String.copyValueOf(textSignInPassword.getPassword());
 				if (!username.isEmpty() && !password.isEmpty())
 					listener.SignInRequest(username, password);
+				else 
+					JOptionPane.showMessageDialog(null, "Please complete in the correct way the Signin form");
 			}
 		});
 		button.setBounds(72, 170, 89, 23);

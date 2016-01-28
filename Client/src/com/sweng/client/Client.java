@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.sweng.client.gui.ClientGUI;
 import com.sweng.client.gui.GUIPanelHome;
@@ -47,6 +48,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		try {
 			user = server.performLogin(username, password);
 			server.addObserver(this);
+			loadFriendsfromServer(user);
+			loadActivitiesfromServer(user);
+			loadProjectsfromServer(user);
+			
+			guiManagerClient.goToUserHomePage();
+			
 		} catch (CustomException | RemoteException e) {
 			if (e instanceof CustomException){
 				
@@ -57,11 +64,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				e.printStackTrace();
 		}
 		
-		loadFriendsfromServer(user);
-		loadActivitiesfromServer(user);
-		loadProjectsfromServer(user);
-		
-		guiManagerClient.goToUserHomePage();
+	
 	}
 
 	
@@ -345,8 +348,14 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 
 	@Override
 	public void update(Notice notice) throws RemoteException {
-		guiManagerClient.notifyPopUser(notice);
-		notices = loadNotice(user);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				guiManagerClient.notifyPopUser(notice);
+				notices = loadNotice(user);
+			}
+		});
+		
 	}
 
 

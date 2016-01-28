@@ -89,7 +89,7 @@ public class GuiManagerClient {
 		ArrayList<User> notmyfriends = null;
 
 		public User SignInRequest(String username, String password) {
-
+			
 			clientManager.SignInRequest(username, password);
 
 			return null;
@@ -263,9 +263,10 @@ public class GuiManagerClient {
 			
 		}
 	}
-
+	
 	public void notifyPopUser(Notice notice) {
-		int scelta = JOptionPane.showConfirmDialog(null, "A new notice is arrived"+ notice.getTitle(), "Notice", JOptionPane.YES_NO_OPTION);
+		
+		int scelta = JOptionPane.showConfirmDialog(null, "A new notice is arrived "+ notice.getTitle(), "Notice", JOptionPane.YES_NO_OPTION);
 		if (scelta == JOptionPane.YES_OPTION){
 			
 		}
