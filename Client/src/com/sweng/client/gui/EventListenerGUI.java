@@ -44,5 +44,7 @@ public interface EventListenerGUI {
 	
 	public void performLogout();
 	
+	public void closeLogout();
+	
 
 }

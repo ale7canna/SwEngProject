@@ -44,14 +44,15 @@ public class GuiManagerClient {
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gui.setVisible(true);
 		gui.setSize(600, 400);
+		SwingUtilities.updateComponentTreeUI(gui);
 	}
 
 	public void goToUserHomePage() {
 		if (home == null) {
 			home = new GUIPanelHome(new GuiListener());
-			switchGui(home);
 		}
 
+		switchGui(home);
 		home.setUserInfo(clientManager.getUser(), clientManager.getFriendships(), clientManager.getActivity(),
 				clientManager.getProject());
 
@@ -221,12 +222,19 @@ public class GuiManagerClient {
 			if (clientManager.getUser() != null) {
 				clientManager.logout();
 				JOptionPane.showMessageDialog(null, "Logout performed");
-				gui.setVisible(false);
-				gui.dispose();
-				gui = null;
-				gui = new ClientGUI(_listener);
 				switchGui(new GUIPanelSignIn(_listener));
 			}
+		}
+		
+		public void closeLogout(){
+			if(clientManager.getUser()!=null){
+				clientManager.logout();
+			}
+			JOptionPane.showMessageDialog(null, "Logout performed");
+			gui.setVisible(false);
+			gui.dispose();
+			
+			
 		}
 	}
 
