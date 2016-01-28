@@ -1,5 +1,6 @@
 package com.sweng.client.gui;
 
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -45,6 +46,8 @@ public interface EventListenerGUI {
 	public void performLogout();
 	
 	public void closeLogout();
+
+	public void performSignUp(String username, String password, String name, String surname);
 	
 
 }

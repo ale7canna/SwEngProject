@@ -1,5 +1,6 @@
 package com.sweng.client;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -58,6 +59,20 @@ public class GuiManagerClient {
 
 	}
 
+	public void showMessage(String message) {
+
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(null, "Ciao ciao");
+				}
+			});
+		}
+
+		System.out.println(message);
+	}
+	
 	class GuiListener implements EventListenerGUI, ICommonGui {
 
 		GUIaddComponent addProjectFrame = null;
@@ -229,27 +244,25 @@ public class GuiManagerClient {
 		public void closeLogout(){
 			if(clientManager.getUser()!=null){
 				clientManager.logout();
+				JOptionPane.showMessageDialog(null, "Logout performed");
 			}
-			JOptionPane.showMessageDialog(null, "Logout performed");
+			
 			gui.setVisible(false);
 			gui.dispose();
+			System.out.println("GuiClient chiuso");
 			
+		}
+
+		@Override
+		public void performSignUp(String username, String password, String name, String surname) {
+			if(username.isEmpty() || password.isEmpty()|| surname.isEmpty() || name.isEmpty() || username == null || password==null|| surname==null || name==null)
+				JOptionPane.showMessageDialog(null, "Please complete in correct way the Signup form!");
+			else
+				clientManager.performRegistration (username, password, name, surname);
 			
 		}
 	}
 
-	public void showMessage(String message) {
 
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					JOptionPane.showMessageDialog(null, "Ciao ciao");
-				}
-			});
-		}
-
-		System.out.println(message);
-	}
 
 }

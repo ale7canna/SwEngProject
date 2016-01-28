@@ -30,4 +30,5 @@ public interface IClientManager {
 	public void removeFriend(User u);
 	public void setActivityInfoDone(ActivityInfo activityInfo);
 	public void logout();
+	public void performRegistration(String username, String password, String name, String surname);
 }

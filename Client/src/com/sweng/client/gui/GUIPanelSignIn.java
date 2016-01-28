@@ -12,10 +12,10 @@ import java.awt.event.MouseEvent;
 public class GUIPanelSignIn extends JPanel{
 		
 	private JTextField textSignInUserName;
+	private JPasswordField textSignInPassword;
 	private JTextField textSignUpName;
 	private JTextField textSignUpUserName;
 	private JTextField textSignUpSurname;
-	private JPasswordField textSignInPassword;
 	private JPasswordField textSignUpPassword;
 	
 	private EventListenerGUI listener;
@@ -81,9 +81,19 @@ public class GUIPanelSignIn extends JPanel{
 		textSignUpSurname.setBounds(255, 216, 86, 20);
 		add(textSignUpSurname);
 		
-		JButton button_1 = new JButton("SignUp");
-		button_1.setBounds(296, 266, 89, 23);
-		add(button_1);
+		JButton btnSignUp = new JButton("SignUp");
+		btnSignUp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String username = textSignUpUserName.getText();
+				String password = String.copyValueOf(textSignUpPassword.getPassword());
+				String surname = textSignUpSurname.getText();
+				String name = textSignUpName.getText();
+				_listener.performSignUp(username, password, name, surname);
+			}
+		});
+		btnSignUp.setBounds(296, 266, 89, 23);
+		add(btnSignUp);
 		
 		textSignInPassword = new JPasswordField();
 		textSignInPassword.setBounds(32, 129, 86, 20);

@@ -323,4 +323,22 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public void sendMessage(String message) throws RemoteException {
 		guiManagerClient.showMessage(message);
 	}
+
+	@Override
+	public void performRegistration(String username, String password, String name, String surname){
+		if(user==null){
+			user = new User(name, surname, username, password);
+			try {
+				server.addUser(user);
+				SignInRequest(username, password);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+	}
 }
