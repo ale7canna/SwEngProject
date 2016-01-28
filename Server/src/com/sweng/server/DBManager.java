@@ -863,6 +863,23 @@ public class DBManager {
 		}
 		
 	}
+
+	public static void removeObserver(IClient _client) throws CustomException {
+		try
+		{
+			String query = "DELETE FROM utente_connesso WHERE id_utente = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, _client.getId());
+			
+			stat.executeUpdate();			
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.UserNotFound);
+		} catch (RemoteException e) {
+			throw new CustomException(Errors.NetworkError);
+		}
+	}
 	
 
 }

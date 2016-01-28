@@ -115,17 +115,30 @@ public class Server extends UnicastRemoteObject implements IServer{
 		
 		for (IClient c : utenti)
 		{
-			try {
-			c.sendMessage("Ciao dal server");
-			}
-			catch (Exception e) {}
+				Thread t = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							c.sendMessage("Ciao dal server");
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				t.start();
 		}
 	}
 
 	@Override
 	public void removeObserver(IClient _client) throws RemoteException {
-		// TODO Auto-generated method stub
-		
+		try {
+			DBManager.removeObserver(_client);
+			System.out.println("Utente rimosso");
+		} catch (CustomException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
@@ -227,7 +240,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 			}
 		}
 		
-		
 	}
 
 
@@ -235,6 +247,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 
 	private void notifyNextResponsible(Activity activity) {
 		System.out.println("Attività completata. Notificare utente ");
+		
+		
 		
 	}
 

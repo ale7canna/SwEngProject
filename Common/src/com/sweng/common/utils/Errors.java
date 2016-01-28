@@ -6,5 +6,6 @@ public enum Errors {
 	ServerError,
 	ActivitiesNotFound,
 	ProjectsNotFound,
-	FriendsNotFound
+	FriendsNotFound, 
+	NetworkError
 }
