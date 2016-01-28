@@ -10,6 +10,7 @@ import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.Notice;
 
 public interface IClientManager {
 	
@@ -31,4 +32,5 @@ public interface IClientManager {
 	public void setActivityInfoDone(ActivityInfo activityInfo);
 	public void logout();
 	public void performRegistration(String username, String password, String name, String surname);
+	public Notice getNoticeInfo(Notice n);
 }

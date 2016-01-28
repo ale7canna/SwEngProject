@@ -1,41 +1,34 @@
 package com.sweng.client.gui;
 
-import java.util.ArrayList;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-
-import com.sun.javafx.scene.paint.GradientUtils.Point;
-import com.sweng.common.beans.Activity;
-import com.sweng.common.beans.Friendship;
-import com.sweng.common.beans.Project;
-import com.sweng.common.beans.User;
-
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
-
 import java.awt.Dimension;
 import java.awt.List;
-
-import javax.swing.JLabel;
-import javax.swing.JButton;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.AbstractTableModel;
+
+import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.Project;
+import com.sweng.common.beans.User;
+import com.sweng.common.notice.Notice;
 
 public class GUIPanelHome extends JPanel {
 	
 	MyUserTableAdapter modelFriendship;
 	MyActivityTableAdapter modelActivity;
 	MyProjectTableAdapter modelProject;
+	MyNoticeTableAdapter modelNotice;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	private JTextField Name;
 	private JTextField Surname;
@@ -210,6 +203,31 @@ public class GUIPanelHome extends JPanel {
  				}
  			}
  		});
+	
+	    
+	    
+	    modelNotice = new MyNoticeTableAdapter();
+		JTable tableNotice = new JTable(modelNotice);
+		
+		tableNotice.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		tableNotice.setFillsViewportHeight(true);
+		JScrollPane scrollPaneNotice = new JScrollPane(tableNotice);
+	    scrollPaneNotice.setBounds(5, 218, 884, 194);		
+	    tabbedPane.add(scrollPaneNotice);
+	    tabbedPane.setTitleAt(4, "My Notices");
+	    
+		tableNotice.addMouseListener(new MouseAdapter() {
+					
+		 			public void mousePressed(MouseEvent evt)
+		 			{
+		 				int row = tableNotice.rowAtPoint(evt.getPoint());
+		 				if (evt.getClickCount() == 2)
+		 				{
+		 					Notice n= ((MyNoticeTableAdapter)tableNotice.getModel()).getNoticeAt(row);
+		 					_listener.showNoticeInfo(n);
+		 				}
+		 			}
+		 		});
 	}
 	
 	private void userInfo(User u){

@@ -27,6 +27,7 @@ public class MainClient {
 		Registry registry;
 		try {
 			registry = LocateRegistry.getRegistry("localhost", Consts.RMI_PORT);
+//			registry = LocateRegistry.getRegistry("192.168.17.1", Consts.RMI_PORT);
 			server = (IServer)registry.lookup(Consts.RMI_ID);
 			
 		} catch (RemoteException | NotBoundException e) {
