@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import com.sweng.common.notice.Notice;
+
 public interface IClient extends Remote, Serializable {
-	public void update() throws RemoteException;
+	public void update(Notice notice) throws RemoteException;
 	
 	public void sendMessage(String message) throws RemoteException;
 	

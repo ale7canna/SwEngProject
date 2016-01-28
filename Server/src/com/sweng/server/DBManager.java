@@ -715,6 +715,23 @@ public class DBManager {
 		return result;
 	}
 
+	public static void setActivityDone(ActivityInfo activityInfo) throws CustomException {
+		try 
+		{
+			String query = "UPDATE attivita SET Completata = 1 WHERE idAttivita = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setInt(1, activityInfo.getIdActivity());
+			
+			stat.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
+	}
+
 	
 	
 	// METODI DI RIMOZIONE DA DB
@@ -829,41 +846,41 @@ public class DBManager {
 			result = new ArrayList<>();
 			while (rs.next())
 			{
-				byte[] buf = rs.getBytes("utente");
-				ObjectInputStream objectIn = null;
-				if (buf != null)
-					objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
-
-				Object deSerializedObject = objectIn.readObject();
-				IClient c  = (IClient)deSerializedObject;
+				IClient c  = getClientFromBytes(rs.getBytes("utente"));
 				result.add(c);
 			}
 			
 		}
-		catch (SQLException | IOException | ClassNotFoundException e)
+		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	public static void setActivityDone(ActivityInfo activityInfo) throws CustomException {
-		try 
-		{
-			String query = "UPDATE attivita SET Completata = 1 WHERE idAttivita = ?";
+
+	public static IClient getConnectedUserByUserId(int id) throws CustomException
+	{
+		try {
+			String query = "SELECT utente FROM utente_connesso WHERE id_utente = ? ";
 			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, id);
+			ResultSet rs = stat.executeQuery();
 			
-			stat.setInt(1, activityInfo.getIdActivity());
-			
-			stat.executeUpdate();
+			if (rs.next())
+				return getClientFromBytes(rs.getBytes("utente"));
+				
 		}
 		catch (SQLException e)
 		{
 			throw new CustomException(Errors.ServerError);
 		}
 		
+		return null;
+		
 	}
-
+	
+	
 	public static void removeObserver(IClient _client) throws CustomException {
 		try
 		{
@@ -882,4 +899,30 @@ public class DBManager {
 	}
 	
 
+	
+	
+	private static IClient getClientFromBytes(byte[] buffer){
+
+		ObjectInputStream objectIn = null;
+		if (buffer != null)
+			try {
+				objectIn = new ObjectInputStream(new ByteArrayInputStream(buffer));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		Object deSerializedObject = null;
+		try {
+			deSerializedObject = objectIn.readObject();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (IClient)deSerializedObject;
+
+	}
 }
