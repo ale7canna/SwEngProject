@@ -25,6 +25,7 @@ import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.Notice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.common.utils.Errors;
 
@@ -846,7 +847,8 @@ public class DBManager {
 			result = new ArrayList<>();
 			while (rs.next())
 			{
-				IClient c  = getClientFromBytes(rs.getBytes("utente"));
+//				IClient c  = getClientFromBytes(rs.getBytes("utente"));
+				IClient c = getObjectFromBytes(rs.getBytes("utente"));
 				result.add(c);
 			}
 			
@@ -868,7 +870,7 @@ public class DBManager {
 			ResultSet rs = stat.executeQuery();
 			
 			if (rs.next())
-				return getClientFromBytes(rs.getBytes("utente"));
+				return getObjectFromBytes(rs.getBytes("utente"));
 				
 		}
 		catch (SQLException e)
@@ -898,11 +900,74 @@ public class DBManager {
 		}
 	}
 	
-
+	public static void storeNotices(Notice notice, int userId)
+	{
+		try
+		{
+			String query = "INSERT INTO notifica (notifica, notifica_class) VALUES (?, ?)";
+			PreparedStatement stat = connection.prepareStatement(query, new String[] { "id"});
+			stat.setObject(1, notice);
+			stat.setString(2, notice.getClass().getName());
+			
+			stat.executeUpdate();
+			
+			ResultSet rs = stat.getGeneratedKeys();
+			int idNotice = -1; 
+			if (rs.next())
+				idNotice = rs.getInt(1);
+			
+			query = "INSERT INTO notifica_utente (id_utente, id_notifica) VALUES (?, ?)";
+			stat = connection.prepareStatement(query);
+			stat.setInt(1, userId);
+			stat.setInt(2, idNotice);
+			stat.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
+	public static ArrayList<Notice> getNoticesByUserId(int userId)
+	{
+		ArrayList<Notice> result = null;
+		
+		try
+		{
+			String query = "SELECT notifica, notifica_class FROM notifica AS n JOIN notifica_utente AS nu ON n.id = nu.id_notifica " +
+							"WHERE nu.id_utente = ?";
+			
+			PreparedStatement stat  = connection.prepareStatement(query);
+			stat.setInt(1, userId);
+			
+			ResultSet rs = stat.executeQuery();
+			result = new ArrayList<>();
+			while (rs.next())
+			{
+				byte[] buffer = rs.getBytes("notifica");
+				String className = rs.getString("notifica_class");
+				try {
+					Class specificNotice = Class.forName(className);
+					Notice n = (Notice)specificNotice.cast(getObjectFromBytes(buffer));
+					result.add(n);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//Notice n = getNoticeFromBytes(buffer, className);
+			}
+			
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
-	private static IClient getClientFromBytes(byte[] buffer){
-
+	private static <T> T getObjectFromBytes(byte[] buffer)
+	{
 		ObjectInputStream objectIn = null;
 		if (buffer != null)
 			try {
@@ -922,7 +987,104 @@ public class DBManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return (IClient)deSerializedObject;
-
+		
+		
+		return (T)deSerializedObject;
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	private static IClient getClientFromBytes(byte[] buffer){
+//
+//		ObjectInputStream objectIn = null;
+//		if (buffer != null)
+//			try {
+//				objectIn = new ObjectInputStream(new ByteArrayInputStream(buffer));
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//
+//		Object deSerializedObject = null;
+//		try {
+//			deSerializedObject = objectIn.readObject();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return (IClient)deSerializedObject;
+//
+//	}
+//	
+//	
+//
+//	private static Notice getNoticeFromBytes(byte[] buffer, String className){
+//
+//		ObjectInputStream objectIn = null;
+//		if (buffer != null)
+//			try {
+//				objectIn = new ObjectInputStream(new ByteArrayInputStream(buffer));
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//
+//		Object deSerializedObject = null;
+//		try {
+//			deSerializedObject = objectIn.readObject();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		Class myNotice;
+//		Notice notice = null;
+//		try {
+//			myNotice = Class.forName(className);
+//			notice = (Notice)myNotice.cast(deSerializedObject);
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		return notice;
+//
+//	}
+//	
+//	
 }

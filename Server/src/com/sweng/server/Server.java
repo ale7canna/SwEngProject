@@ -6,7 +6,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
@@ -33,11 +35,14 @@ public class Server extends UnicastRemoteObject implements IServer {
 	// IMPLEMENTAZIONE METODI REMOTI
 	
 	@Override
-	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
+	public Activity addActivity(Activity _activity, boolean _isLast) throws RemoteException, CustomException {
 		
 		Activity result = null;
 		DBManager.addActivity(_activity);
 		result = DBManager.getActivityFromNameAndProject(_activity.getName(), _activity.getIdProject());
+		
+		if (_isLast)
+			NotifyFirstActivityResponsible(_activity.getIdProject());
 		
 		return result;
 	}
@@ -84,7 +89,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		Project result = null;
 		DBManager.addProject(_project);
 		result = DBManager.getProjectFromNameAndAdmin(_project.getName(), _project.getIdAdmin());
-		
+				
 		return result;
 	}
 	
@@ -253,35 +258,81 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 	}
 	
-	private void notifyNextResponsible(Activity activity) {
-		System.out.println("Attività completata. Notificare utente ");
-
+	private void NotifyFirstActivityResponsible(int idProject)
+	{
 		try {
-			ArrayList<User> responsibles = DBManager.getActivityInfo(activity).getResponsabili();
-			for (User r : responsibles)
-			{
-				IClient client = DBManager.getConnectedUserByUserId(r.getIdUser());
-				Date date = Date.from(Instant.now());
-				String title = DefaultMessages.UnlockedActivityTitle.toString();
-				String message = DefaultMessages.UnlockedActivity.toString();
-				client.update(new UnlockedActivityNotice(date, title, message, activity));
-			}
-				
-				
+			ArrayList<Activity> activities = DBManager.getActivitiesFromProject(new Project(idProject));
+			ActivityInfo activityInfo = DBManager.getActivityInfo(activities.get(0));
+			
+			Date date = Date.from(Instant.now());
+			String title = DefaultMessages.UnlockedActivityTitle.toString();
+			String message = DefaultMessages.UnlockedActivity.toString();
+			UnlockedActivityNotice n = new UnlockedActivityNotice(date, title, message, activities.get(0));
+			for (User r : activityInfo.getResponsabili())
+				NotifyUser(n, r);
+			
 		} catch (CustomException e) {
-			System.out.println(e.getMessage());
-		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void notifyNextResponsible(Activity activity) {
+		System.out.println("Attività completata. Notificare utente ");
+		
+			try {
+				
+				ArrayList<User> responsibles = DBManager.getActivityInfo(activity).getResponsabili();
+				for (User r : responsibles)
+				{
+					Date date = Date.from(Instant.now());
+					String title = DefaultMessages.UnlockedActivityTitle.toString();
+					String message = DefaultMessages.UnlockedActivity.toString();
+					Notice n = new UnlockedActivityNotice(date, title, message, activity);
 
+					NotifyUser(n, r);
+				}
+			} catch (CustomException e) {
+
+				System.out.println(e.getMessage());
+			}
+			
+
+			
+	}
+	
+	private void NotifyUser(Notice notice, User user)
+	{
+		IClient client;
+		try {
+			client = DBManager.getConnectedUserByUserId(user.getIdUser());
+			if (client != null)
+				client.update(notice);
+			
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DBManager.storeNotices(notice, user.getIdUser());
 	}
 	
 	private void endOfProject(Project project) {
 		
 		System.out.println("Progetto completato. Notificare tutti gli utenti");
 		
+	}
+
+	@Override
+	public ArrayList<Notice> getNoticeFromUser(User user) throws CustomException, RemoteException {
+		
+		ArrayList<Notice> result = null;
+		result = DBManager.getNoticesByUserId(user.getIdUser());
+		
+		return result;
 	}
 	
 }

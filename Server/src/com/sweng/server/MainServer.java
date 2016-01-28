@@ -5,8 +5,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.util.Date;
 
 import com.sweng.common.Consts;
+import com.sweng.common.notice.SimpleNotice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.server.gui.ServerGUI;
 
@@ -42,6 +45,14 @@ public class MainServer {
 			e.printStackTrace();
 		}
 		
+		
+		SimpleNotice n = new SimpleNotice(Date.from(Instant.now()), "Not", "Prima notifica");
+//		
+//		DBManager.storeNotices(n, 2);
+//
+//		DBManager.storeNotices(n, 1);
+		
+		DBManager.getNoticesByUserId(2);
 	}
 	
 }
