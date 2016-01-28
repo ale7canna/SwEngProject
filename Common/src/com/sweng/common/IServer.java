@@ -18,7 +18,7 @@ import com.sweng.common.utils.CustomException;
 public interface IServer extends Remote{
 
 	//REMOTE METHODS
-	public Activity addActivity(Activity _activity) throws RemoteException, CustomException;
+	public Activity addActivity(Activity _activity, boolean isLast) throws RemoteException, CustomException;
 	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException;
 	public void addFriendship(Friendship _friendship) throws RemoteException;
 	public void addParticipant(Participant _participant) throws RemoteException; 

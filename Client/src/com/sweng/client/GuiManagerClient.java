@@ -142,7 +142,7 @@ public class GuiManagerClient {
 
 		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, false);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 
 			JOptionPane.showMessageDialog(null, "Activity was added correctly");
@@ -153,7 +153,7 @@ public class GuiManagerClient {
 
 		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, true);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 
 			JOptionPane.showMessageDialog(null, "Activity was added correctly");

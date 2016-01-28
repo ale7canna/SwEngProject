@@ -20,7 +20,7 @@ public interface IClientManager {
 	public ArrayList<Project> getProject();
 	public ArrayList<User> getParticipant(Project project);
 	public Project addProject(String nameProject, int idAdmin, boolean isActive);
-	public Activity addActivity(String nameActivity, int idProject, String place, Date hour);
+	public Activity addActivity(String nameActivity, int idProject, String place, Date hour, boolean isLast);
 	public void addFriends(ArrayList<Integer> friends);
 	public void addParticipants(ArrayList<Integer> participants, int idProject);
 	public void addRespActivity(int idActivity, ArrayList<Integer> responsibles);

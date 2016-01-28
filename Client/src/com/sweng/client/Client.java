@@ -206,12 +206,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 	}
 
-	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour) {
+	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour, boolean isLast) {
 
 		Activity _activity = new Activity(idProject, nameActivity, place, hour, false);
 
 		try {
-			_activity = server.addActivity(_activity);
+			_activity = server.addActivity(_activity, isLast);
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
