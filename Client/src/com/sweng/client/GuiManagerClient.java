@@ -22,6 +22,7 @@ import com.sweng.common.beans.User;
 import com.sweng.common.gui.ActivityInfoGui;
 import com.sweng.common.gui.ICommonGui;
 import com.sweng.common.gui.ProjectInfoGui;
+import com.sweng.common.notice.Notice;
 
 public class GuiManagerClient {
 
@@ -261,6 +262,14 @@ public class GuiManagerClient {
 				clientManager.performRegistration (username, password, name, surname);
 			
 		}
+	}
+
+	public void notifyPopUser(Notice notice) {
+		int scelta = JOptionPane.showConfirmDialog(null, "A new notice is arrived"+ notice.getTitle(), "Notice", JOptionPane.YES_NO_OPTION);
+		if (scelta == JOptionPane.YES_OPTION){
+			
+		}
+		
 	}
 
 

@@ -19,6 +19,7 @@ import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.Notice;
 import com.sweng.common.utils.CustomException;
 
 public class Client extends UnicastRemoteObject implements IClient, IClientManager {
@@ -32,6 +33,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	ArrayList<User> participants = null;
 	ArrayList<User> notmyFriends = null;
 	ArrayList<User> responsible=null;
+	ArrayList<Notice> notices = null;
 
 	protected Client(IServer server) throws RemoteException {
 		super();
@@ -111,6 +113,14 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return notmyFriends;
 	}
 	
+	public ArrayList<Notice> loadNotice(User user) {
+		try{
+			notices = server.getNoticeFromUser(user);
+		}catch (RemoteException|CustomException e){
+			e.printStackTrace();
+		}
+		return notices;
+	}
 	
 	//GETTER FOR GUIMANAGER
 	public ArrayList<User> getFriendships() {
@@ -156,6 +166,10 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	public ArrayList<Notice> getNotice(User user){
+		return notices;
 	}
 	
 	// ADD METHODS
@@ -234,19 +248,6 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 		friendships = loadFriendsfromServer(user);
 		
-	}
-
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void signUp() {
-
-	}
-
-	public void signIn() {
-
 	}
 	
 	@Override
@@ -341,4 +342,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 		
 	}
+
+	@Override
+	public void update(Notice notice) throws RemoteException {
+		guiManagerClient.notifyPopUser(notice);
+		notices = loadNotice(user);
+	}
+
+
 }
