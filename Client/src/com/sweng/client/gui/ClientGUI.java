@@ -18,7 +18,7 @@ public class ClientGUI extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent arg0) {
-				
+				System.out.println("Chiusura in corso");
 				_listener.performLogout();
 			}
 		});

@@ -122,8 +122,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 						try {
 							c.sendMessage("Ciao dal server");
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							System.out.println(e.getMessage());
 						}
 					}
 				});
