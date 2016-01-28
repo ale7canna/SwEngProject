@@ -126,6 +126,7 @@ public class GUIPanelHome extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				
 				_listener.performLogout();
+				
 			}
 		});
 		btnLogout.setBounds(311, 173, 89, 23);

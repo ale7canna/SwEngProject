@@ -279,12 +279,18 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	}
 
 	public void logout(){
-		friendships.clear();
-		activities.clear();
-		notmyFriends.clear();
-		participants.clear();
-		projects.clear();
-		responsible.clear();
+		if(friendships!=null)
+			friendships.clear();
+		if(activities!=null)
+			activities.clear();
+		if(notmyFriends!=null)	
+			notmyFriends.clear();
+		if(participants!=null)
+			participants.clear();
+		if(projects!=null)
+			projects.clear();
+		if(responsible!=null)
+			responsible.clear();
 		user = null;
 		try {
 			server.removeObserver(this);

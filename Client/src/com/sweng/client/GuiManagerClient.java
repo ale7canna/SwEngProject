@@ -225,6 +225,12 @@ public class GuiManagerClient {
 	
 		public void performLogout(){
 			clientManager.logout();
+			JOptionPane.showMessageDialog(null, "Logout performed");
+			gui.setVisible(false);
+			gui.dispose();
+			gui = null;
+			gui = new ClientGUI(_listener);
+			switchGui(new GUIPanelSignIn(_listener));
 		}
 	 }
 
