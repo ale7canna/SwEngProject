@@ -279,6 +279,13 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	}
 
 	public void logout(){
+		try {
+			server.removeObserver(this);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(friendships!=null)
 			friendships.clear();
 		if(activities!=null)
@@ -292,12 +299,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		if(responsible!=null)
 			responsible.clear();
 		user = null;
-		try {
-			server.removeObserver(this);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 		
 	}
 
