@@ -132,6 +132,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 				public void run() {
 					
 					try {
+						System.out.println(c.getUsername() + " Avvisato");
 						c.sendMessage("Ciao dal server");
 					} catch (RemoteException e) {
 						System.out.println(e.getMessage());
