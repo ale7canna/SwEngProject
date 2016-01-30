@@ -8,6 +8,7 @@ import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.Notice;
 
 public interface EventListenerGUI {
 
@@ -48,6 +49,8 @@ public interface EventListenerGUI {
 	public void closeLogout();
 
 	public void performSignUp(String username, String password, String name, String surname);
+
+	public void showNoticeInfo(Notice n);
 	
 
 }

@@ -1,6 +1,5 @@
 package com.sweng.client;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,6 +20,7 @@ import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.gui.ActivityInfoGui;
 import com.sweng.common.gui.ICommonGui;
+import com.sweng.common.gui.NoticeInfoGui;
 import com.sweng.common.gui.ProjectInfoGui;
 import com.sweng.common.notice.Notice;
 
@@ -89,7 +89,7 @@ public class GuiManagerClient {
 		ArrayList<User> notmyfriends = null;
 
 		public User SignInRequest(String username, String password) {
-
+			
 			clientManager.SignInRequest(username, password);
 
 			return null;
@@ -206,6 +206,18 @@ public class GuiManagerClient {
 
 		}
 
+		@Override
+		public void showNoticeInfo(Notice n) {
+			Notice notice = clientManager.getNoticeInfo(n);
+			JFrame noticeInfoFrame = new JFrame();
+			NoticeInfoGui aiGui = new NoticeInfoGui(notice, this);
+			noticeInfoFrame.getContentPane().add(aiGui);
+			noticeInfoFrame.setSize(800, 600);
+			noticeInfoFrame.setVisible(true);
+			
+		}
+		
+		
 		// GETTING ARRAYLIST
 		public ArrayList<User> getFriends() {
 			return clientManager.getFriendships();
@@ -262,10 +274,13 @@ public class GuiManagerClient {
 				clientManager.performRegistration (username, password, name, surname);
 			
 		}
-	}
 
+	
+	}
+	
 	public void notifyPopUser(Notice notice) {
-		int scelta = JOptionPane.showConfirmDialog(null, "A new notice is arrived"+ notice.getTitle(), "Notice", JOptionPane.YES_NO_OPTION);
+		
+		int scelta = JOptionPane.showConfirmDialog(null, "A new notice is arrived "+ notice.getTitle(), "Notice", JOptionPane.YES_NO_OPTION);
 		if (scelta == JOptionPane.YES_OPTION){
 			
 		}
