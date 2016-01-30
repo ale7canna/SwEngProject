@@ -39,7 +39,7 @@ public class DBManager {
 			connection = (Connection) DriverManager.getConnection(Consts.DB_URL, Consts.DB_USERNAME,
 					Consts.DB_PASSWORD);
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
+			// TODO Gestire classe non trovata. Ma anche no
 			e.printStackTrace();
 		}
 	}

@@ -1,6 +1,7 @@
 package com.sweng.common.notice;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 public abstract class Notice implements Serializable {
@@ -13,8 +14,8 @@ public abstract class Notice implements Serializable {
 	String title;
 	String message;
 	
-	public Notice(Date _date, String _title, String _message) {
-		date = _date;
+	public Notice(String _title, String _message) {
+		date = Date.from(Instant.now());
 		title = _title;
 		message = _message;
 		

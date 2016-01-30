@@ -56,7 +56,14 @@ public class GuiManagerClient {
 
 		switchGui(home);
 		home.setUserInfo(clientManager.getUser(), clientManager.getFriendships(), clientManager.getActivity(),
-				clientManager.getProject());
+				clientManager.getProject(), clientManager.getNotices());
+
+	}
+	
+	public void refreshHomeContent()
+	{
+		home.setUserInfo(clientManager.getUser(), clientManager.getFriendships(), clientManager.getActivity(),
+				clientManager.getProject(), clientManager.getNotices());
 
 	}
 
@@ -208,9 +215,9 @@ public class GuiManagerClient {
 
 		@Override
 		public void showNoticeInfo(Notice n) {
-			Notice notice = clientManager.getNoticeInfo(n);
+			
 			JFrame noticeInfoFrame = new JFrame();
-			NoticeInfoGui aiGui = new NoticeInfoGui(notice, this);
+			NoticeInfoGui aiGui = new NoticeInfoGui(n, this);
 			noticeInfoFrame.getContentPane().add(aiGui);
 			noticeInfoFrame.setSize(800, 600);
 			noticeInfoFrame.setVisible(true);

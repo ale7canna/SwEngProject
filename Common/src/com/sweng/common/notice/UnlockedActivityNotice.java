@@ -3,6 +3,7 @@ package com.sweng.common.notice;
 import java.util.Date;
 
 import com.sweng.common.beans.Activity;
+import com.sweng.common.utils.DefaultMessages;
 
 public class UnlockedActivityNotice extends Notice {
 
@@ -13,8 +14,8 @@ public class UnlockedActivityNotice extends Notice {
 
 	private Activity activity;
 	
-	public UnlockedActivityNotice(Date _date, String _title, String _message, Activity _activity) {
-		super(_date, _title, _message);
+	public UnlockedActivityNotice(Activity _activity) {
+		super(DefaultMessages.UnlockedActivityTitle.toString(), DefaultMessages.UnlockedActivity.toString());
 		activity = _activity;
 	}
 	

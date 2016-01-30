@@ -21,6 +21,7 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
+import com.sweng.common.notice.StartedProjNotice;
 import com.sweng.common.notice.UnlockedActivityNotice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.common.utils.DefaultMessages;
@@ -42,7 +43,10 @@ public class Server extends UnicastRemoteObject implements IServer {
 		result = DBManager.getActivityFromNameAndProject(_activity.getName(), _activity.getIdProject());
 		
 		if (_isLast)
+		{
 			NotifyFirstActivityResponsible(_activity.getIdProject());
+			NotifyAllParticipants(_activity.getIdProject());
+		}
 		
 		return result;
 	}
@@ -268,7 +272,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 			Date date = Date.from(Instant.now());
 			String title = DefaultMessages.UnlockedActivityTitle.toString();
 			String message = DefaultMessages.UnlockedActivity.toString();
-			UnlockedActivityNotice n = new UnlockedActivityNotice(date, title, message, activities.get(0));
+			UnlockedActivityNotice n = new UnlockedActivityNotice(activities.get(0));
 			for (User r : activityInfo.getResponsabili())
 				NotifyUser(n, r);
 			
@@ -290,7 +294,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 					Date date = Date.from(Instant.now());
 					String title = DefaultMessages.UnlockedActivityTitle.toString();
 					String message = DefaultMessages.UnlockedActivity.toString();
-					Notice n = new UnlockedActivityNotice(date, title, message, activity);
+					Notice n = new UnlockedActivityNotice(activity);
 
 					NotifyUser(n, r);
 				}
@@ -301,6 +305,22 @@ public class Server extends UnicastRemoteObject implements IServer {
 			
 
 			
+	}
+	
+	private void NotifyAllParticipants(int idProject)
+	{
+		try {
+			ProjectInfo projectInfo = DBManager.getProjectInfo(new Project(idProject));
+			ArrayList<User> participants = DBManager.getParticipantsFromProject(new Project(idProject));
+			
+			StartedProjNotice notice = new StartedProjNotice(projectInfo);
+			
+			for (User p : participants)
+				NotifyUser(notice, p);
+			
+		} catch (CustomException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	private void NotifyUser(Notice notice, User user)
@@ -315,8 +335,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Errore di connessione a " + user.getUsername() + "\n" + e.getMessage());
 		}
 		DBManager.storeNotices(notice, user.getIdUser());
 	}

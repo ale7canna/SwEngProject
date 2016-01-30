@@ -51,6 +51,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			loadFriendsfromServer(user);
 			loadActivitiesfromServer(user);
 			loadProjectsfromServer(user);
+			loadNotice(user);
 			
 			guiManagerClient.goToUserHomePage();
 			
@@ -138,7 +139,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return projects;
 	}
 
-	public ArrayList<User> getParticipant(Project project) {
+	public ArrayList<Notice> getNotices()
+	{
+		return notices;
+	}
+	
+ 	public ArrayList<User> getParticipant(Project project) {
 		try{
 			participants = server.getParticipantsFromProject(project);
 		} catch (CustomException | RemoteException e) {
@@ -155,7 +161,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		try {
 			res= server.getProjectInfo(project);
 		} catch (RemoteException | CustomException e) {
-			// TODO Auto-generated catch block
+			// TODO Gestire Eccezione
 			e.printStackTrace();
 		}
 		return res;
@@ -265,7 +271,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		try {
 			server.removeFriendship(friendship);
 		} catch (RemoteException | CustomException e) {
-			// TODO Auto-generated catch block
+			// TODO Gestire Eccezione
 			e.printStackTrace();
 		}
 		friendships = loadFriendsfromServer(user);
@@ -355,7 +361,15 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				notices = loadNotice(user);
 			}
 		});
-		
+		loadNotice(user);
+		guiManagerClient.refreshHomeContent();
+	}
+
+	@Override
+	public Notice getNoticeInfo(Notice n) {
+		// TODO: Marzo questo metodo (messo qua) mi fa pensare che tu stia per andare al server a chiedere notice Info.
+		// 			Ma tutto ciò che serve è già in notice. Dipenderà dalla classe.
+		return null;
 	}
 
 

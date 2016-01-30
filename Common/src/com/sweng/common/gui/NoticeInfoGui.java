@@ -86,7 +86,7 @@ public class NoticeInfoGui extends JPanel{
 		textNoticeMessage.setBounds(126, 128, 250, 106);
 		panel.add(textNoticeMessage);
 		
-		JButton btnSetNoticeRed = new JButton("Set notice red");
+		JButton btnSetNoticeRed = new JButton("Set notice read");
 		btnSetNoticeRed.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

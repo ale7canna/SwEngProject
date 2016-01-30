@@ -46,13 +46,11 @@ public class MainServer {
 		}
 		
 		
-		SimpleNotice n = new SimpleNotice(Date.from(Instant.now()), "Not", "Prima notifica");
+//		SimpleNotice n = new SimpleNotice(Date.from(Instant.now()), "Not", "Prima notifica");
 //		
 //		DBManager.storeNotices(n, 2);
 //
 //		DBManager.storeNotices(n, 1);
-		
-		DBManager.getNoticesByUserId(2);
 	}
 	
 }

@@ -10,7 +10,7 @@ public class FinishedActivityNotice extends Notice {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FinishedActivityNotice(Date _date, String _title, String _message) {
-		super(_date, _title, _message);
+	public FinishedActivityNotice(String _title, String _message) {
+		super(_title, _message);
 	}
 }

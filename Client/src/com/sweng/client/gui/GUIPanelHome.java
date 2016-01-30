@@ -140,6 +140,8 @@ public class GUIPanelHome extends JPanel {
 			
 			public void mousePressed(MouseEvent evt)
 			{
+				//TODO: E se la tabella degli amici è vuota? Da gestire
+				//		Idem per progetti amicizie attività e notifiche
 				int row = tableFriends.rowAtPoint(evt.getPoint());
 				if (evt.getClickCount() == 2)
 				{
@@ -269,7 +271,15 @@ public class GUIPanelHome extends JPanel {
 		}
 	}
 	
-	public void setUserInfo(User user, ArrayList<User> friendship, ArrayList<Activity> activity, ArrayList<Project> project){
+	private void addNoticesToList(ArrayList<Notice> notices)
+	{
+		modelNotice.removeAll();
+		
+		for (Notice n : notices)
+			modelNotice.addRow(n);
+	}
+	
+	public void setUserInfo(User user, ArrayList<User> friendship, ArrayList<Activity> activity, ArrayList<Project> project, ArrayList<Notice> notices){
 		
 		if (user != null){
 			userInfo(user);
@@ -281,6 +291,8 @@ public class GUIPanelHome extends JPanel {
 			addActivitytoList(activity);
 		if (project != null)
 			addProjecttoList(project);
+		if (notices != null)
+			addNoticesToList(notices);
 		
 	}
 	
