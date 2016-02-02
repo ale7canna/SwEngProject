@@ -143,9 +143,9 @@ public class GUIPanelHome extends JPanel {
 			{
 				//TODO: E se la tabella degli amici è vuota? Da gestire
 				//		Idem per progetti amicizie attività e notifiche
-				//aggiunto controllo sul conteggio di riga!=0
+				//aggiunto controllo sul conteggio di riga!=-1 
 				int row = tableFriends.rowAtPoint(evt.getPoint());
-				if (evt.getClickCount() == 2)
+				if (evt.getClickCount() == 2&& row!=-1)
 				{
 					User u = ((MyUserTableAdapter)tableFriends.getModel()).getUserAt(row);
 					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove from your friends "+ u.getName()+"?", "Remove friend", JOptionPane.YES_NO_OPTION);
@@ -179,7 +179,7 @@ public class GUIPanelHome extends JPanel {
 	 			public void mousePressed(MouseEvent evt)
 	 			{
 	 				int row = tableActivity.rowAtPoint(evt.getPoint());
-	 				if (evt.getClickCount() == 2)
+	 				if (evt.getClickCount() == 2 &&  row!=-1)
 	 				{
 	 					Activity a = ((MyActivityTableAdapter)tableActivity.getModel()).getActivityAt(row);
 	 					_listener.showActivityInfo(a);
@@ -204,7 +204,7 @@ public class GUIPanelHome extends JPanel {
  			public void mousePressed(MouseEvent evt)
  			{
  				int row = tableProject.rowAtPoint(evt.getPoint());
- 				if (evt.getClickCount() == 2)
+ 				if (evt.getClickCount() == 2 &&  row!=-1)
  				{
  					Project p = ((MyProjectTableAdapter)tableProject.getModel()).getProjectAt(row);
  					_listener.showProjectInfo(p);
@@ -230,7 +230,7 @@ public class GUIPanelHome extends JPanel {
 		 			public void mousePressed(MouseEvent evt)
 		 			{
 		 				int row = tableNotice.rowAtPoint(evt.getPoint());
-		 				if (evt.getClickCount() == 2)
+		 				if (evt.getClickCount() == 2 &&  row!=-1)
 		 				{
 		 					Notice n= ((MyNoticeTableAdapter)tableNotice.getModel()).getNoticeAt(row);
 		 					_listener.showNoticeInfo(n);
