@@ -86,6 +86,10 @@ public class GuiManagerClient {
 		GUIaddComponent addProjectFrame = null;
 		GUIaddComponent addActivityFrame = null;
 		GUIaddComponent addFriendsFrame = null;
+		JFrame activityInfoFrame = null;
+		JFrame projectInfoFrame = null;
+		JFrame noticeInfoFrame = null;
+		
 		Project project = null;
 		Activity activity = null;
 
@@ -189,14 +193,15 @@ public class GuiManagerClient {
 		@Override
 		public void RemoveProjectPressed(ProjectInfo projectInfo) {
 			// TODO Auto-generated method stub
-
+			clientManager.removeProject(projectInfo);
+			projectInfoFrame.setVisible(false);
 		}
 
 		// showing info
 		public void showProjectInfo(Project p) {
 			Project project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive());
 			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
-			JFrame projectInfoFrame = new JFrame();
+			projectInfoFrame = new JFrame();
 			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this);
 			projectInfoFrame.getContentPane().add(piGui);
 			projectInfoFrame.setSize(800, 600);
@@ -205,7 +210,7 @@ public class GuiManagerClient {
 
 		public void showActivityInfo(Activity a) {
 			ActivityInfo activityInfo = clientManager.getActivityInfo(a);
-			JFrame activityInfoFrame = new JFrame();
+			activityInfoFrame = new JFrame();
 			ActivityInfoGui aiGui = new ActivityInfoGui(activityInfo, this);
 			activityInfoFrame.getContentPane().add(aiGui);
 			activityInfoFrame.setSize(800, 600);
@@ -216,9 +221,9 @@ public class GuiManagerClient {
 		@Override
 		public void showNoticeInfo(Notice n) {
 			
-			JFrame noticeInfoFrame = new JFrame();
-			NoticeInfoGui aiGui = new NoticeInfoGui(n, this);
-			noticeInfoFrame.getContentPane().add(aiGui);
+			noticeInfoFrame = new JFrame();
+			NoticeInfoGui niGui = new NoticeInfoGui(n, this);
+			noticeInfoFrame.getContentPane().add(niGui);
 			noticeInfoFrame.setSize(800, 600);
 			noticeInfoFrame.setVisible(true);
 			
@@ -241,6 +246,7 @@ public class GuiManagerClient {
 		// SET COMPLETED
 		public void completeActivity(ActivityInfo activityInfo) {
 			clientManager.setActivityInfoDone(activityInfo);
+			activityInfoFrame.setVisible(false);
 		}
 
 		// REFRESHING AFTER ADDING OR DELETE
@@ -294,6 +300,18 @@ public class GuiManagerClient {
 		
 	}
 
+	public void showError(String message){
+		
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(null, message+ ". Please try again! ");
+				}
+			});
+		}
 
+		System.out.println(message);
+	}
 
 }

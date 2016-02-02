@@ -8,6 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
@@ -18,12 +19,16 @@ import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 
 
+
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Window;
 
 public class ProjectInfoGui extends JPanel {
 	private JTextField txtProjectName;
@@ -109,7 +114,14 @@ public class ProjectInfoGui extends JPanel {
 		btnRemove.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				_listener.RemoveProjectPressed(projectInfo);
+				int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove from your friends "+ projectInfo.getName()+"?", "Remove Project", JOptionPane.YES_NO_OPTION);
+				if (scelta == JOptionPane.YES_OPTION)
+					{
+					_listener.RemoveProjectPressed(projectInfo);
+					JOptionPane.showMessageDialog(null, "The Project was correctly removed.");
+					_listener.refreshAll();
+					}
+							
 			}
 		});
 		btnRemove.setBounds(271, 12, 115, 29);

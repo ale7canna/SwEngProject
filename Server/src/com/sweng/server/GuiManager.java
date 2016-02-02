@@ -144,6 +144,12 @@ public class GuiManager{
 			
 		}
 
+		@Override
+		public void refreshAll() {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 

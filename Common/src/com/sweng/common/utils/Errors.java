@@ -7,5 +7,6 @@ public enum Errors {
 	ActivitiesNotFound,
 	ProjectsNotFound,
 	FriendsNotFound, 
-	NetworkError
+	NetworkError,
+
 }

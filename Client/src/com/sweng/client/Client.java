@@ -22,6 +22,7 @@ import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
 import com.sweng.common.utils.CustomException;
+import com.sweng.common.utils.Errors;
 
 public class Client extends UnicastRemoteObject implements IClient, IClientManager {
 
@@ -57,7 +58,6 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			
 		} catch (CustomException | RemoteException e) {
 			if (e instanceof CustomException){
-				
 				JOptionPane.showMessageDialog(null, e.getMessage());
 				System.out.println(e.getMessage());
 			}
@@ -162,6 +162,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			res= server.getProjectInfo(project);
 		} catch (RemoteException | CustomException e) {
 			// TODO Gestire Eccezione
+			if (e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage()+ ". May the Server had problems loading the Project Info.");
 			e.printStackTrace();
 		}
 		return res;
@@ -272,11 +274,27 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			server.removeFriendship(friendship);
 		} catch (RemoteException | CustomException e) {
 			// TODO Gestire Eccezione
+			if(e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
 			e.printStackTrace();
 		}
 		friendships = loadFriendsfromServer(user);
 	}
 
+	public void removeProject(ProjectInfo p){
+		
+		try {
+			Project proj = new Project(p.getIdProject(), p.getAdmin().getIdUser(), p.getName(), p.isActive());
+			server.removeProject(proj);
+		} catch (RemoteException | CustomException e) {
+			// TODO Auto-generated catch block
+			if(e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		projects = loadProjectsfromServer(user);
+	}
 	//SET BEANS
 	public void setActivityInfoDone(ActivityInfo activityInfo){
 		
@@ -284,8 +302,13 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			server.setActivityDone(activityInfo);
 		} catch (RemoteException | CustomException e) {
 			// TODO Auto-generated catch block
+			if (e instanceof CustomException){
+
+				guiManagerClient.showError(e.getMessage()+ ". Error while loading of Activity Info.");
+				}
 			e.printStackTrace();
 		}
+		activities = loadActivitiesfromServer(user);
 	}
 
 	public void logout(){
@@ -293,6 +316,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			server.removeObserver(this);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
+			
+			guiManagerClient.showError(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -343,6 +368,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				SignInRequest(username, password);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
+			
+				guiManagerClient.showError(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -368,7 +395,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	@Override
 	public Notice getNoticeInfo(Notice n) {
 		// TODO: Marzo questo metodo (messo qua) mi fa pensare che tu stia per andare al server a chiedere notice Info.
-		// 			Ma tutto ciò che serve è già in notice. Dipenderà dalla classe.
+		// 			Ma tutto ciò che serve è già in notice. Dipenderà dalla classe. NON LO SO :)ERA PER CREARE LANOTICE INFO MA DIFATTI E INUTILE
 		return null;
 	}
 

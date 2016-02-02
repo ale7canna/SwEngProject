@@ -25,13 +25,13 @@ public class CustomException extends Exception implements Serializable{
 	{
 		listaErrori = new HashMap<Errors, String>();
 	
-		listaErrori.put(Errors.UserNotFound, "Utente non esistente.");
-		listaErrori.put(Errors.WrongPassword, "Utente esistente, ma password sbagliata.");
-		listaErrori.put(Errors.ServerError, "Errore da parte del server.");
-		listaErrori.put(Errors.ActivitiesNotFound, "Nessuna attività presente.");
-		listaErrori.put(Errors.ProjectsNotFound, "Nessun progetto disponibile.");
-		listaErrori.put(Errors.FriendsNotFound, "L'utente non ha nessun amico.");
-		listaErrori.put(Errors.NetworkError, "Errore di rete.");
+		listaErrori.put(Errors.UserNotFound, "Utente non esistente. User does not exists.");
+		listaErrori.put(Errors.WrongPassword, "Utente esistente, ma password sbagliata. User exists, but the password is  wrong.");
+		listaErrori.put(Errors.ServerError, "Errore da parte del server. Error from the server.");
+		listaErrori.put(Errors.ActivitiesNotFound, "Nessuna attività presente. There is no available activity.");
+		listaErrori.put(Errors.ProjectsNotFound, "Nessun progetto disponibile. There is no available project.");
+		listaErrori.put(Errors.FriendsNotFound, "L'utente non ha nessun amico. The user do not have any friend.");
+		listaErrori.put(Errors.NetworkError, "Errore di rete. Error from the Network.");
 		
 
 //		listaErrori.put(Errors.MaxHumidity, "L'umidità si trova già al massimo");

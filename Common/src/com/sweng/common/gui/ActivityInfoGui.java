@@ -114,6 +114,8 @@ public class ActivityInfoGui extends JPanel{
 					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to complete this activity?", "Complete Activity", JOptionPane.YES_NO_OPTION);
 					if (scelta == JOptionPane.YES_OPTION){
 						_listener.completeActivity(activityInfo);
+						JOptionPane.showMessageDialog(null, activityInfo.getName() + " was correctly completed!");
+						_listener.refreshAll();
 					}
 				}
 			});

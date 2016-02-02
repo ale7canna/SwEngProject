@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -121,6 +122,7 @@ public class GUIaddComponent extends JFrame{
 					try {
 						date = defin.parse(dateTime);
 					} catch (ParseException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage()+ ". Please try again!");
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -171,6 +173,7 @@ public class GUIaddComponent extends JFrame{
 						date = defin.parse(dateTime);
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e.getMessage()+ ". Please try again!");
 						e.printStackTrace();
 					}
 					System.out.println(dateTime);

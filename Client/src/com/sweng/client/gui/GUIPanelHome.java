@@ -136,12 +136,14 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneFriends);
 	    tabbedPane.setTitleAt(1, "My Friendship");
 	    
-	    tableFriends.addMouseListener(new MouseAdapter() {
-			
+	 
+	    	tableFriends.addMouseListener(new MouseAdapter() {
+		
 			public void mousePressed(MouseEvent evt)
 			{
 				//TODO: E se la tabella degli amici è vuota? Da gestire
 				//		Idem per progetti amicizie attività e notifiche
+				//aggiunto controllo sul conteggio di riga!=0
 				int row = tableFriends.rowAtPoint(evt.getPoint());
 				if (evt.getClickCount() == 2)
 				{
@@ -160,6 +162,7 @@ public class GUIPanelHome extends JPanel {
 			}
 		});
 	    
+	    
 		modelActivity = new MyActivityTableAdapter();
 		JTable tableActivity = new JTable(modelActivity);
 		tableActivity.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -170,7 +173,8 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneActivity);
 	    tabbedPane.setTitleAt(2, "My Activities");
 	    
-	    tableActivity.addMouseListener(new MouseAdapter() {
+	    
+	    	tableActivity.addMouseListener(new MouseAdapter() {
 			
 	 			public void mousePressed(MouseEvent evt)
 	 			{
@@ -182,7 +186,8 @@ public class GUIPanelHome extends JPanel {
 	 				}
 	 			}
 	 		});
-	        
+	    
+	    
 		modelProject = new MyProjectTableAdapter();
 		JTable tableProject = new JTable(modelProject);
 		tableProject.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -193,7 +198,8 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneProject);
 	    tabbedPane.setTitleAt(3, "My Projects");
 	
-	    tableProject.addMouseListener(new MouseAdapter() {
+	    
+	    	tableProject.addMouseListener(new MouseAdapter() {
 			
  			public void mousePressed(MouseEvent evt)
  			{
@@ -205,7 +211,7 @@ public class GUIPanelHome extends JPanel {
  				}
  			}
  		});
-	
+	    
 	    
 	    
 	    modelNotice = new MyNoticeTableAdapter();
@@ -218,7 +224,8 @@ public class GUIPanelHome extends JPanel {
 	    tabbedPane.add(scrollPaneNotice);
 	    tabbedPane.setTitleAt(4, "My Notices");
 	    
-		tableNotice.addMouseListener(new MouseAdapter() {
+	   
+	    	tableNotice.addMouseListener(new MouseAdapter() {
 					
 		 			public void mousePressed(MouseEvent evt)
 		 			{
@@ -230,8 +237,9 @@ public class GUIPanelHome extends JPanel {
 		 				}
 		 			}
 		 		});
-	}
 	
+	   
+	}
 	private void userInfo(User u){
 		Name.setText(u.getName());
 		Surname.setText(u.getSurname());

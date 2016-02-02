@@ -30,6 +30,7 @@ public interface IClientManager {
 	public ProjectInfo getProjectInfo(Project project);
 	public ActivityInfo getActivityInfo(Activity activity);
 	public void removeFriend(User u);
+	public void removeProject(ProjectInfo p);
 	public void setActivityInfoDone(ActivityInfo activityInfo);
 	public void logout();
 	public void performRegistration(String username, String password, String name, String surname);

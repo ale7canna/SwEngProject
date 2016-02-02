@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.sweng.client.gui.ClientGUI;
 import com.sweng.common.Consts;
@@ -32,6 +33,7 @@ public class MainClient {
 			
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Error from Server. Please try again and be patient!s");
 			e.printStackTrace();
 			return;
 		}
