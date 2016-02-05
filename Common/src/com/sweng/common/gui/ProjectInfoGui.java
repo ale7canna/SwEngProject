@@ -3,6 +3,7 @@ package com.sweng.common.gui;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,8 +20,10 @@ import javax.swing.JTextField;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Participant;
+import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.utils.CustomException;
 
 public class ProjectInfoGui extends JPanel {
 	private JTextField txtProjectName;
@@ -101,6 +104,9 @@ public class ProjectInfoGui extends JPanel {
 		txtAdmin.setColumns(10);
 		txtAdmin.setBounds(240, 131, 146, 26);
 		panel.add(txtAdmin);
+		
+		
+		
 
 		if(isAdmin){
 			JButton btnRemove = new JButton("Remove");
@@ -121,6 +127,23 @@ public class ProjectInfoGui extends JPanel {
 			panel.add(btnRemove);
 			
 		
+			if(!projectInfo.isActive()){
+				JButton btnNewButton = new JButton("Start Project");
+				btnNewButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						Project project = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive());
+						try {
+							_listener.startProject(project);
+						} catch (RemoteException | CustomException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				btnNewButton.setBounds(285, 133, 89, 23);
+				panel.add(btnNewButton);
+			}
 		}
 
 		JPanel panel_2 = new JPanel();
