@@ -13,8 +13,8 @@ public class FinishedProjNotice extends Notice {
 	private static final long serialVersionUID = 1L;
 
 	private ProjectInfo projectInfo; 
-	public FinishedProjNotice(Integer _id, ProjectInfo _projectInfo) {
-		super(_id, DefaultMessages.FinishedProjectTitle.toString(), DefaultMessages.FinishedProject.toString());
+	public FinishedProjNotice(ProjectInfo _projectInfo) {
+		super(DefaultMessages.FinishedProjectTitle.toString(), DefaultMessages.FinishedProject.toString());
 		projectInfo = _projectInfo;
 	}
 	

@@ -14,9 +14,9 @@ public class StartedProjNotice extends Notice {
 	
 	private ProjectInfo projectInfo;
 	
-	public StartedProjNotice(Integer _id, ProjectInfo _projectInfo) {
+	public StartedProjNotice(ProjectInfo _projectInfo) {
 		
-		super(_id, DefaultMessages.StartedProjTitle.toString(), DefaultMessages.StartedProj.toString());
+		super(DefaultMessages.StartedProjTitle.toString(), DefaultMessages.StartedProj.toString());
 		projectInfo = _projectInfo;
 	}
 	

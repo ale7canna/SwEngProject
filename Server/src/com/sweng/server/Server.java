@@ -19,6 +19,7 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.FinishedProjNotice;
+import com.sweng.common.notice.FriendshipAdded;
 import com.sweng.common.notice.Notice;
 import com.sweng.common.notice.StartedProjNotice;
 import com.sweng.common.notice.UnlockedActivityNotice;
@@ -67,6 +68,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		try {
 			DBManager.addFriendship(_friendship);
+			User u = DBManager.getUser(_friendship.getIdUtente2());
+			
+			Notice n = new FriendshipAdded(DBManager.getUser(_friendship.getIdUtente1()));
+			NotifyUser(n, u);
+			
 		} catch (CustomException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -271,7 +277,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 			Date date = Date.from(Instant.now());
 			String title = DefaultMessages.UnlockedActivityTitle.toString();
 			String message = DefaultMessages.UnlockedActivity.toString();
-			UnlockedActivityNotice n = new UnlockedActivityNotice(0, activities.get(0));
+			UnlockedActivityNotice n = new UnlockedActivityNotice(activities.get(0));
 			for (User r : activityInfo.getResponsabili())
 				NotifyUser(n, r);
 			
@@ -293,7 +299,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 					Date date = Date.from(Instant.now());
 					String title = DefaultMessages.UnlockedActivityTitle.toString();
 					String message = DefaultMessages.UnlockedActivity.toString();
-					Notice n = new UnlockedActivityNotice(0, activity);
+					Notice n = new UnlockedActivityNotice(activity);
 
 					NotifyUser(n, r);
 				}
@@ -314,15 +320,39 @@ public class Server extends UnicastRemoteObject implements IServer {
 			
 			Notice notice = null;
 			if (isStarted)
-				notice = new StartedProjNotice(0, projectInfo);
+				notice = new StartedProjNotice(projectInfo);
 			else
-				notice = new FinishedProjNotice(0, projectInfo);
+				notice = new FinishedProjNotice(projectInfo);
 			
-			for (User p : participants)
-				NotifyUser(notice, p);
+			NotifyUser(notice, participants);
 			
 		} catch (CustomException e) {
 			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void NotifyUser(Notice notice, ArrayList<User> users)
+	{
+		IClient client;
+
+		try {
+			int idNotifica = DBManager.storeNotice(notice);
+			notice.setId(idNotifica);
+			
+			for (User u : users)
+			{
+				DBManager.storeUserNotices(notice, u.getIdUser());
+				
+				client = DBManager.getConnectedUserByUserId(u.getIdUser());
+				if (client != null)
+					client.update(notice);
+			}
+			
+		} catch (CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
 		}
 	}
 	
@@ -331,18 +361,20 @@ public class Server extends UnicastRemoteObject implements IServer {
 		IClient client;
 
 		try {
-			int idNotifica = DBManager.storeNotices(notice, user.getIdUser());
+			int idNotifica = DBManager.storeNotice(notice);
 			notice.setId(idNotifica);
+			
+			DBManager.storeUserNotices(notice, user.getIdUser());
 			
 			client = DBManager.getConnectedUserByUserId(user.getIdUser());
 			if (client != null)
 				client.update(notice);
-			
+				
 		} catch (CustomException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (RemoteException e) {
-			System.out.println("Errore di connessione a " + user.getUsername() + "\n" + e.getMessage());
+			System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
 		}
 	}
 	
@@ -371,6 +403,13 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		DBManager.removeParticipant(participant);
 		return DBManager.getParticipantsFromProject(new Project(participant.getIdProject()));
+	}
+
+	@Override
+	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException {
+		
+		DBManager.removeActivityResponsible(resp);
+		return DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 	}
 	
 }

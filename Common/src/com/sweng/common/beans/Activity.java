@@ -33,6 +33,10 @@ public class Activity implements Serializable{
 		isDone = _isDone;
 	}
 
+	public Activity(int _idActivity) {
+		idActivity = _idActivity;
+	}
+
 	public Boolean equals(Activity a)
 	{
 		if (idActivity == a.getIdActivity())

@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
@@ -159,6 +160,17 @@ public class GuiManager{
 
 		@Override
 		public ArrayList<User> removeParticipant(Participant part) {
+			return null;
+		}
+
+		@Override
+		public void showActivityInfo(Activity a) {
+						
+		}
+
+		@Override
+		public ArrayList<User> removeResponsible(ActivityResponsible resp) {
+
 			return null;
 		}
 

@@ -9,7 +9,8 @@ public enum DefaultMessages {
 	UnlockedActivity("La tua attività è stata sbloccata ed è pronta per essere eseguita."),
 	UnlockedActivityTitle("Attività sbloccata"),
 	FinishedProjectTitle("Progetto completato."),
-	FinishedProject("Il progetto è pronto per essere eseguito.");
+	FinishedProject("Il progetto è pronto per essere eseguito."),
+	FriendShipAddedTitle("Friendship added");
 	
 	private String message;
 	

@@ -900,37 +900,6 @@ public class DBManager {
 		}
 	}
 	
-	public static int storeNotices(Notice notice, int userId)
-	{
-		try
-		{
-			String query = "INSERT INTO notifica (notifica, notifica_class) VALUES (?, ?)";
-			PreparedStatement stat = connection.prepareStatement(query, new String[] { "id"});
-			stat.setObject(1, notice);
-			stat.setString(2, notice.getClass().getName());
-			
-			stat.executeUpdate();
-			
-			ResultSet rs = stat.getGeneratedKeys();
-			int idNotice = -1; 
-			if (rs.next())
-				idNotice = rs.getInt(1);
-			
-			query = "INSERT INTO notifica_utente (id_utente, id_notifica) VALUES (?, ?)";
-			stat = connection.prepareStatement(query);
-			stat.setInt(1, userId);
-			stat.setInt(2, idNotice);
-			stat.executeUpdate();
-			
-			return idNotice;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	
 	public static ArrayList<Notice> getNoticesByUserId(int userId)
 	{
 		ArrayList<Notice> result = null;
@@ -1046,6 +1015,64 @@ public class DBManager {
 		catch (SQLException e)
 		{
 			throw new CustomException(Errors.ServerError);
+		}
+	}
+
+	
+	public static void removeActivityResponsible(ActivityResponsible resp) throws CustomException {
+		try {
+			String query = "DELETE FROM responsabile_attivita WHERE idUtente = ? AND idAttivita = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setInt(1, resp.getIdUser());
+			stat.setInt(2, resp.getIdActivity());
+			
+			stat.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+	}
+
+	public static int storeNotice(Notice notice) {
+		
+		try
+		{
+			String query = "INSERT INTO notifica (notifica, notifica_class) VALUES (?, ?)";
+			PreparedStatement stat = connection.prepareStatement(query, new String[] { "id"});
+			stat.setObject(1, notice);
+			stat.setString(2, notice.getClass().getName());
+			
+			stat.executeUpdate();
+			
+			ResultSet rs = stat.getGeneratedKeys();
+			int idNotice = -1; 
+			if (rs.next())
+				idNotice = rs.getInt(1);
+			
+			return idNotice;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static void storeUserNotices(Notice notice, int idUser) {
+		
+		try
+		{
+			String query = "INSERT INTO notifica_utente (id_utente, id_notifica) VALUES (?, ?)";
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, idUser);
+			stat.setInt(2, notice.getId());
+			stat.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	

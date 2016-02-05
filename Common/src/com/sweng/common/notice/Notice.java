@@ -15,8 +15,7 @@ public abstract class Notice implements Serializable {
 	String title;
 	String message;
 	
-	public Notice(Integer _id, String _title, String _message) {
-		id = _id;
+	public Notice(String _title, String _message) {
 		date = Date.from(Instant.now());
 		title = _title;
 		message = _message;
