@@ -1,32 +1,25 @@
 package com.sweng.common.gui;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
-import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.User;
-
-import java.awt.Insets;
-import java.awt.Dimension;
 
 public class ActivityInfoGui extends JPanel {
 	private JTextField txtActivityName;
@@ -102,6 +95,7 @@ public class ActivityInfoGui extends JPanel {
 		textFieldHour.setBorder(null);
 		textFieldHour.setBounds(100, 117, 100, 20);
 		panelActivity.add(textFieldHour);
+		
 
 		if (activityInfo.isFinishable()) {
 			JButton btnCompleteActivity = new JButton("Complete Activity\r\n");

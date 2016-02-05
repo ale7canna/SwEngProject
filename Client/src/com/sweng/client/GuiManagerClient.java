@@ -1,5 +1,6 @@
 package com.sweng.client;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,6 +26,7 @@ import com.sweng.common.gui.ICommonGui;
 import com.sweng.common.gui.NoticeInfoGui;
 import com.sweng.common.gui.ProjectInfoGui;
 import com.sweng.common.notice.Notice;
+import com.sweng.common.utils.CustomException;
 
 public class GuiManagerClient {
 
@@ -311,6 +313,13 @@ public class GuiManagerClient {
 		public ArrayList<User> removeResponsible(ActivityResponsible resp) {
 			// TODO Auto-generated method stub
 			return clientManager.removeResponsible(resp);
+		}
+
+		@Override
+		public void startProject(Project project) throws RemoteException,
+				CustomException {
+			// TODO Auto-generated method stub
+			
 		}
 
 	
