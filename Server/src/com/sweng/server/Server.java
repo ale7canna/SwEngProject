@@ -18,6 +18,7 @@ import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.FinishedProjNotice;
 import com.sweng.common.notice.Notice;
 import com.sweng.common.notice.StartedProjNotice;
 import com.sweng.common.notice.UnlockedActivityNotice;
@@ -43,7 +44,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		if (_isLast)
 		{
 			NotifyFirstActivityResponsible(_activity.getIdProject());
-			NotifyAllParticipants(_activity.getIdProject());
+			NotifyAllParticipants(_activity.getIdProject(), true);
 		}
 		
 		return result;
@@ -305,13 +306,17 @@ public class Server extends UnicastRemoteObject implements IServer {
 			
 	}
 	
-	private void NotifyAllParticipants(int idProject)
+	private void NotifyAllParticipants(int idProject, boolean isStarted)
 	{
 		try {
 			ProjectInfo projectInfo = DBManager.getProjectInfo(new Project(idProject));
 			ArrayList<User> participants = DBManager.getParticipantsFromProject(new Project(idProject));
 			
-			StartedProjNotice notice = new StartedProjNotice(0, projectInfo);
+			Notice notice = null;
+			if (isStarted)
+				notice = new StartedProjNotice(0, projectInfo);
+			else
+				notice = new FinishedProjNotice(0, projectInfo);
 			
 			for (User p : participants)
 				NotifyUser(notice, p);
@@ -343,8 +348,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	private void endOfProject(Project project) {
 		
-		System.out.println("Progetto completato. Notificare tutti gli utenti");
-		
+		NotifyAllParticipants(project.getIdProject(), false);
 	}
 
 	@Override
