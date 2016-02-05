@@ -39,6 +39,7 @@ public interface IServer extends Remote{
 	public void removeProject(Project project) throws RemoteException, CustomException;
 	public void removeFriendship(Friendship friendship) throws RemoteException, CustomException;
 	
+	public void setNoticeRead(Notice notice) throws RemoteException, CustomException;
 	public void setActivityDone(ActivityInfo activityInfo) throws RemoteException, CustomException;
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
