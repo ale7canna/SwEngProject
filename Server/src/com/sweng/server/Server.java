@@ -30,6 +30,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	protected Server() throws RemoteException {
 		super();
+		DBManager.RemoveAllConnectedUsers();
 		// TODO Auto-generated constructor stub
 	}
 	

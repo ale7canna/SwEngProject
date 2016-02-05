@@ -860,6 +860,18 @@ public class DBManager {
 		return result;
 	}
 
+	public static void RemoveAllConnectedUsers()
+	{
+		try
+		{
+			String query = "DELETE FROM utente_connesso WHERE 1";
+			connection.prepareStatement(query).executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
+	}
 
 	public static IClient getConnectedUserByUserId(int id) throws CustomException
 	{
@@ -906,7 +918,7 @@ public class DBManager {
 		
 		try
 		{
-			String query = "SELECT notifica, notifica_class FROM notifica AS n JOIN notifica_utente AS nu ON n.id = nu.id_notifica " +
+			String query = "SELECT id, notifica, notifica_class FROM notifica AS n JOIN notifica_utente AS nu ON n.id = nu.id_notifica " +
 							"WHERE nu.id_utente = ?";
 			
 			PreparedStatement stat  = connection.prepareStatement(query);
@@ -921,6 +933,7 @@ public class DBManager {
 				try {
 					Class specificNotice = Class.forName(className);
 					Notice n = (Notice)specificNotice.cast(getObjectFromBytes(buffer));
+					n.setId(rs.getInt("id"));
 					result.add(n);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
