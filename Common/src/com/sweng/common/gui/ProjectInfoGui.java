@@ -159,9 +159,9 @@ public class ProjectInfoGui extends JPanel {
 			
 			listActivities.addMouseListener(new MouseAdapter() {
 	
-				public void mouseClicked(MouseEvent e) {
-					if(e.getClickCount()==2){
-						Activity a = (Activity) ((MyActivityListModel) listActivities.getModel()).getActivityAt(listActivities.getSelectedIndex());
+				public void mouseClicked(MouseEvent ev) {
+					if(ev.getClickCount()==2){
+						Activity a = ((MyActivityListModel) listActivities.getModel()).getActivityAt(listActivities.getSelectedIndex());
 						_listener.showActivityInfo(a);
 					}
 					
