@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
@@ -115,7 +116,7 @@ public class GuiManager{
 
 		@Override
 		public void ProjectClicked(Project project) {
-			// TODO Auto-generated method stub
+
 			ProjectInfo pi = null;
 			try {
 				pi = DBManager.getProjectInfo(project);
@@ -141,20 +142,24 @@ public class GuiManager{
 
 		@Override
 		public void completeActivity(ActivityInfo activityInfo) {
-			// TODO Auto-generated method stub
+			// TODO COMPLETARE ATTIVITA
 			
 		}
 
 		@Override
 		public void refreshAll() {
-			// TODO Auto-generated method stub
+			// TODO AGGIORNARE DATI
 			
 		}
 
 		@Override
 		public void setNoticeRead(Notice notice) {
-			// TODO Auto-generated method stub
 			
+		}
+
+		@Override
+		public ArrayList<User> removeParticipant(Participant part) {
+			return null;
 		}
 
 	}

@@ -37,5 +37,5 @@ public interface IClientManager {
 	public void performRegistration(String username, String password, String name, String surname);
 	void removeNotice(Notice notice);
 	public int getId();
-	public void removeParticipant(Participant part);
+	public ArrayList<User> removeParticipant(Participant part);
 }

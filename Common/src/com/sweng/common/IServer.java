@@ -38,6 +38,7 @@ public interface IServer extends Remote{
 	
 	public void removeProject(Project project) throws RemoteException, CustomException;
 	public void removeFriendship(Friendship friendship) throws RemoteException, CustomException;
+	public ArrayList<User> removeParticipant(Participant partecipant) throws RemoteException, CustomException;
 	
 	public void setNoticeRead(Notice notice, User user) throws RemoteException, CustomException;
 	public void setActivityDone(ActivityInfo activityInfo) throws RemoteException, CustomException;

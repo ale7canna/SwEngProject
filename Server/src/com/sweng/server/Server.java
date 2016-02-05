@@ -361,5 +361,12 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		DBManager.setNoticeDone(notice, user);
 	}
+
+	@Override
+	public ArrayList<User> removeParticipant(Participant participant) throws RemoteException, CustomException {
+		
+		DBManager.removeParticipant(participant);
+		return DBManager.getParticipantsFromProject(new Project(participant.getIdProject()));
+	}
 	
 }

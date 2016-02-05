@@ -302,9 +302,8 @@ public class GuiManagerClient {
 		}
 
 		@Override
-		public void removeParticipant(Participant part) {
-			clientManager.removeParticipant(part);
-			
+		public ArrayList<User> removeParticipant(Participant part) {
+			return clientManager.removeParticipant(part);
 		}
 
 	

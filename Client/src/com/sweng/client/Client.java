@@ -424,7 +424,16 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 
 	@Override
 	public ArrayList<User> removeParticipant(Participant part) {
-		return server.removeParticipant(part);
+		try {
+			return server.removeParticipant(part);
+		} catch (RemoteException | CustomException e) {
+
+			if (e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
+			else
+				e.printStackTrace();
+		}
+		return null;
 	}
 
 
