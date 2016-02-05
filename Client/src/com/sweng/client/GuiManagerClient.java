@@ -15,6 +15,7 @@ import com.sweng.client.gui.GUIPanelSignIn;
 import com.sweng.client.gui.GUIaddComponent;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
@@ -297,6 +298,12 @@ public class GuiManagerClient {
 		@Override
 		public void setNoticeRead(Notice notice) {
 			clientManager.removeNotice(notice);
+			
+		}
+
+		@Override
+		public void removeParticipant(Participant part) {
+			clientManager.removeParticipant(part);
 			
 		}
 

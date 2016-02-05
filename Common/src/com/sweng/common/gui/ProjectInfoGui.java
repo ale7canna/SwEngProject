@@ -1,11 +1,14 @@
 package com.sweng.common.gui;
 
-import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -15,21 +18,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 import com.sweng.common.beans.Activity;
+import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
-
-
-
-
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Window;
 
 public class ProjectInfoGui extends JPanel {
 	private JTextField txtProjectName;
@@ -153,8 +144,15 @@ public class ProjectInfoGui extends JPanel {
 		listParticipants.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
-				User u = (User) ((MyUserListModel) listParticipants.getModel()).getUserAt(listParticipants.getSelectedIndex());
-				_listener.UserClicked(u);
+				if(e.getClickCount()==2){
+					User u = (User) ((MyUserListModel) listParticipants.getModel()).getUserAt(listParticipants.getSelectedIndex());
+					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove "+ u.getUsername()+ " from "+ projectInfo.getName()+" project?", "Remove participant", JOptionPane.YES_NO_OPTION );
+					if(scelta == JOptionPane.YES_OPTION){
+						Participant part = new Participant(u.getIdUser(), projectInfo.getIdProject()); 
+						_listener.removeParticipant(part);
+						} 
+				}
+				
 			}
 		});
 	}

@@ -129,6 +129,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return notices;
 	}
 	
+	
 	//GETTER FOR GUIMANAGER
 	public ArrayList<User> getFriendships() {
 		return friendships;
@@ -419,6 +420,11 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 		loadNotice(user);
 		guiManagerClient.refreshHomeContent();
+	}
+
+	@Override
+	public ArrayList<User> removeParticipant(Participant part) {
+		return server.removeParticipant(part);
 	}
 
 
