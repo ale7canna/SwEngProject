@@ -48,7 +48,7 @@ public class NoticeInfoGui extends JPanel{
 		
 		textNoticeTitle = new JTextField(notice.getTitle());
 		textNoticeTitle.setEditable(false);
-		textNoticeTitle.setBounds(126, 37, 86, 20);
+		textNoticeTitle.setBounds(126, 37, 150, 20);
 		panel.add(textNoticeTitle);
 		textNoticeTitle.setColumns(10);
 		
@@ -71,7 +71,7 @@ public class NoticeInfoGui extends JPanel{
 		textNoticeDate = new JTextField(ora);
 		textNoticeDate.setEditable(false);
 		textNoticeDate.setColumns(10);
-		textNoticeDate.setBounds(126, 97, 86, 20);
+		textNoticeDate.setBounds(126, 97, 130, 20);
 		panel.add(textNoticeDate);
 		
 		
@@ -90,10 +90,13 @@ public class NoticeInfoGui extends JPanel{
 		btnSetNoticeRed.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				_listener.setNoticeRed(notice);
+				int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to set the notice "+ notice.getTitle()+"already read?", "Set Read Notice", JOptionPane.YES_NO_OPTION);
+				if (scelta == JOptionPane.YES_OPTION)
+					_listener.refreshAll();
+//					_listener.setNoticeRed(notice);
 			}
 		});
-		btnSetNoticeRed.setBounds(277, 36, 99, 23);
+		btnSetNoticeRed.setBounds(327, 36, 99, 23);
 		panel.add(btnSetNoticeRed);
 		
 		JLabel labelClass = new JLabel("Type");
@@ -103,7 +106,7 @@ public class NoticeInfoGui extends JPanel{
 		textField = new JTextField(notice.getClass().getName());
 		textField.setEditable(false);
 		textField.setColumns(10);
-		textField.setBounds(126, 69, 86, 20);
+		textField.setBounds(126, 69, 200, 20);
 		panel.add(textField);
 		
 		

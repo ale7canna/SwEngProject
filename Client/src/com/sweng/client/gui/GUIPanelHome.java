@@ -157,7 +157,7 @@ public class GUIPanelHome extends JPanel {
 						
 					}
 					else
-						JOptionPane.showMessageDialog(null, "ciao");					
+						JOptionPane.showMessageDialog(null, u.getUsername() + " was not removed from your friends");					
 				}
 			}
 		});
@@ -240,6 +240,8 @@ public class GUIPanelHome extends JPanel {
 	
 	   
 	}
+	
+
 	private void userInfo(User u){
 		Name.setText(u.getName());
 		Surname.setText(u.getSurname());

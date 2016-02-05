@@ -251,7 +251,7 @@ public class GuiManagerClient {
 
 		// REFRESHING AFTER ADDING OR DELETE
 		public void refreshAll() {
-			goToUserHomePage();
+			refreshHomeContent();
 		}
 
 		public void buttonclickedAddProject(Project proj) {

@@ -54,7 +54,6 @@ public class GUIaddComponent extends JFrame{
 	
 	public static JCheckBox checkbox;
 	private JTextField txtProjectName;
-	private JTextField TimeActivityText;
 	private JTextField PlaceActivityText;
 	public static Project project;
 	private JLabel NameLabel;
@@ -187,14 +186,7 @@ public class GUIaddComponent extends JFrame{
 		addProjbtn.setBounds(266, 227, 89, 23);
 		getContentPane().add(addProjbtn);
 		
-		JLabel TimeActivityLabel = new JLabel("Activity Time\r\n\r\n");
-		TimeActivityLabel.setBounds(10, 125, 83, 14);
-		getContentPane().add(TimeActivityLabel);
 		
-		TimeActivityText = new JTextField();
-		TimeActivityText.setBounds(10, 150, 86, 20);
-		getContentPane().add(TimeActivityText);
-		TimeActivityText.setColumns(10);
 		
 		JLabel PlaceActivityLabel = new JLabel("Activity Place \r\n");
 		PlaceActivityLabel.setBounds(10, 181, 83, 14);
@@ -227,8 +219,7 @@ public class GUIaddComponent extends JFrame{
 			// Nascondi solo le etichette ma rimangono i campi di testo
 			PlaceActivityText.setVisible(false);
 			PlaceActivityLabel.setVisible(false);
-			TimeActivityText.setVisible(false);
-			TimeActivityLabel.setVisible(false);
+		
 			addActivitybtn.setVisible(false);
 			if(isAddFriends){
 				txtProjectName.setVisible(false);
