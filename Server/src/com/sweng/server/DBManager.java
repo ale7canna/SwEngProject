@@ -996,9 +996,39 @@ public class DBManager {
 		
 	}
 
-	public static void setNoticeDone(Notice notice, User user) {
+	public static void setNoticeDone(Notice notice, User user) throws CustomException {
 		
-		notice.getId();
+		try {
+			String query = "DELETE FROM notifica_utente WHERE id_utente = ? AND id_notifica = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setInt(1, user.getIdUser());
+			stat.setInt(2, notice.getId());
+			
+			stat.executeUpdate();
+			
+			query = "SELECT Count(*) FROM notifica_utente WHERE id_notifica = ?";
+			stat = connection.prepareStatement(query);
+			stat.setInt(1, notice.getId());
+			
+			ResultSet rs = stat.executeQuery();
+			int sameNoticesRemaining = 0;
+			if (rs.next())
+				sameNoticesRemaining = rs.getInt(1);
+			
+			if (!(sameNoticesRemaining > 0))
+			{
+				query = "DELETE FROM notifica WHERE id = ?";
+				stat = connection.prepareStatement(query);
+				stat.setInt(1, notice.getId());
+				stat.executeUpdate();
+			}
+				
+		}
+		catch (Exception e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
 
 		
 	}
