@@ -89,7 +89,7 @@ public class NoticeInfoGui extends JPanel{
 				int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to set the notice "+ notice.getTitle()+"already read?", "Set Read Notice", JOptionPane.YES_NO_OPTION);
 				if (scelta == JOptionPane.YES_OPTION)
 					_listener.refreshAll();
-//					_listener.setNoticeRed(notice);
+					_listener.setNoticeRead(notice);
 			}
 		});
 		btnSetNoticeRed.setBounds(327, 36, 99, 23);

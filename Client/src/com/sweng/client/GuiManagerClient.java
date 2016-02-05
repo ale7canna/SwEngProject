@@ -199,10 +199,16 @@ public class GuiManagerClient {
 
 		// showing info
 		public void showProjectInfo(Project p) {
+			boolean isAdmin;
+			if(p.getIdAdmin()== clientManager.getId())
+				isAdmin=true;
+			else
+				isAdmin=false;
+			
 			Project project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive());
 			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
 			projectInfoFrame = new JFrame();
-			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this);
+			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this, isAdmin);
 			projectInfoFrame.getContentPane().add(piGui);
 			projectInfoFrame.setSize(800, 600);
 			projectInfoFrame.setVisible(true);
@@ -285,6 +291,12 @@ public class GuiManagerClient {
 				JOptionPane.showMessageDialog(null, "Please complete in correct way the Signup form!");
 			else
 				clientManager.performRegistration (username, password, name, surname);
+			
+		}
+
+		@Override
+		public void setNoticeRead(Notice notice) {
+			clientManager.removeNotice(notice);
 			
 		}
 

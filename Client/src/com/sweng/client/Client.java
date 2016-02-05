@@ -185,6 +185,22 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return notices;
 	}
 	
+	@Override
+	public int getId() {
+		if(user!=null)
+			return user.getIdUser();
+		else
+			return -1;
+	}
+
+	@Override
+	public String getUsername() {
+		if(user!=null)
+			return user.getUsername();
+		else
+			return null;
+	}
+	
 	// ADD METHODS
  	public Project addProject(String nameProject, int idAdmin, boolean isActive) {
 		Project _project = new Project(idAdmin, nameProject, isActive);
@@ -343,22 +359,6 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	}
 
 	@Override
-	public int getId() {
-		if(user!=null)
-			return user.getIdUser();
-		else
-			return -1;
-	}
-
-	@Override
-	public String getUsername() {
-		if(user!=null)
-			return user.getUsername();
-		else
-			return null;
-	}
-
-	@Override
 	public void sendMessage(String message) throws RemoteException {
 		guiManagerClient.showMessage(message);
 	}
@@ -395,18 +395,30 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		loadNotice(user);
 		if(notice instanceof StartedProjNotice){
 			loadProjectsfromServer(user);
-			if(notice instanceof StartedActicityNotice)
-				loadActivitiesfromServer(user);
-		}
+			}
+		else if(notice instanceof StartedActicityNotice)
+			loadActivitiesfromServer(user);
 		guiManagerClient.refreshHomeContent();
 		
 	}
 
+
+
 	@Override
-	public Notice getNoticeInfo(Notice n) {
-		// TODO: Marzo questo metodo (messo qua) mi fa pensare che tu stia per andare al server a chiedere notice Info.
-		// 			Ma tutto ciò che serve è già in notice. Dipenderà dalla classe. NON LO SO :)ERA PER CREARE LANOTICE INFO MA DIFATTI E INUTILE
-		return null;
+	public void removeNotice(Notice notice) {
+		// TODO Auto-generated method stub
+		
+		try {
+			server.setNoticeRead(notice);
+		
+		} catch (RemoteException | CustomException e) {
+			// TODO Auto-generated catch block
+			if(e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
+			e.printStackTrace();
+		}
+		loadNotice(user);
+		guiManagerClient.refreshHomeContent();
 	}
 
 

@@ -36,7 +36,7 @@ public class ProjectInfoGui extends JPanel {
 	JList listActivities;
 	JList listParticipants;
 
-	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener) {
+	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener, Boolean isAdmin) {
 		setLayout(new GridLayout(0, 1, 0, 0));
 
 		JSplitPane splitPane = new JSplitPane();
@@ -110,22 +110,26 @@ public class ProjectInfoGui extends JPanel {
 		txtAdmin.setBounds(240, 131, 146, 26);
 		panel.add(txtAdmin);
 
-		JButton btnRemove = new JButton("Remove");
-		btnRemove.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove from your friends "+ projectInfo.getName()+"?", "Remove Project", JOptionPane.YES_NO_OPTION);
-				if (scelta == JOptionPane.YES_OPTION)
-					{
-					_listener.RemoveProjectPressed(projectInfo);
-					JOptionPane.showMessageDialog(null, "The Project was correctly removed.");
-					_listener.refreshAll();
-					}
-							
-			}
-		});
-		btnRemove.setBounds(271, 12, 115, 29);
-		panel.add(btnRemove);
+		if(isAdmin){
+			JButton btnRemove = new JButton("Remove");
+			btnRemove.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove from your friends "+ projectInfo.getName()+"?", "Remove Project", JOptionPane.YES_NO_OPTION);
+					if (scelta == JOptionPane.YES_OPTION)
+						{
+						_listener.RemoveProjectPressed(projectInfo);
+						JOptionPane.showMessageDialog(null, "The Project was correctly removed.");
+						_listener.refreshAll();
+						}
+								
+				}
+			});
+			btnRemove.setBounds(271, 12, 115, 29);
+			panel.add(btnRemove);
+			
+			JButton btnRemovePart = new JButton("Remove Participants");
+		}
 
 		JPanel panel_2 = new JPanel();
 		splitPane_1.setRightComponent(panel_2);
