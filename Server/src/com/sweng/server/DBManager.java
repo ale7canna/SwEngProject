@@ -1017,7 +1017,7 @@ public class DBManager {
 
 	public static void removeParticipant(Participant participant) throws CustomException {
 		try {
-			String query = "DELETE FROM partecipante WHERE idUdente = ? AND idProgetto = ?";
+			String query = "DELETE FROM partecipante WHERE idUtente = ? AND idProgetto = ?";
 			PreparedStatement stat = connection.prepareStatement(query);
 			
 			stat.setInt(1, participant.getIdUser());

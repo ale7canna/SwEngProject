@@ -20,6 +20,10 @@ public class MyActivityListModel extends DefaultListModel<String> {
 		if (activitiesAndUSers == null)
 			activitiesAndUSers = new HashMap<Activity, User>();
 		activitiesAndUSers.put(a, u);
+
+		if (activities == null)
+			activities = new ArrayList<Activity>();
+		activities.add(a);
 	}
 	
 	public void addElement(Activity a)
