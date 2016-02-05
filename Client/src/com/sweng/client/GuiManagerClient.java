@@ -155,7 +155,7 @@ public class GuiManagerClient {
 
 		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, false);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 
 			JOptionPane.showMessageDialog(null, "Activity was added correctly");
@@ -166,11 +166,13 @@ public class GuiManagerClient {
 
 		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, true);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 			addActivityFrame.setVisible(false);
 			addActivityFrame.dispose();
-
+			
+			if (project.isActive())
+				clientManager.startProject(project);
 		}
 
 		public ArrayList<User> addFriends(ArrayList<Integer> friends) {

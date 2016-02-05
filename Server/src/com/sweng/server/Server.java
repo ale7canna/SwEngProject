@@ -37,19 +37,18 @@ public class Server extends UnicastRemoteObject implements IServer {
 	// IMPLEMENTAZIONE METODI REMOTI
 	
 	@Override
-	public Activity addActivity(Activity _activity, boolean _isLast) throws RemoteException, CustomException {
+	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
 		
 		Activity result = null;
 		DBManager.addActivity(_activity);
 		result = DBManager.getActivityFromNameAndProject(_activity.getName(), _activity.getIdProject());
 		
-		if (_isLast)
-		{
-			NotifyFirstActivityResponsible(_activity.getIdProject());
-			NotifyAllParticipants(_activity.getIdProject(), true);
-		}
-		
 		return result;
+	}
+	
+	public void startProject(Project project) throws RemoteException, CustomException {
+		NotifyFirstActivityResponsible(project.getIdProject());
+		NotifyAllParticipants(project.getIdProject(), true);
 	}
 	
 	@Override

@@ -238,12 +238,12 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 	}
 
-	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour, boolean isLast) {
+	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour) {
 
 		Activity _activity = new Activity(idProject, nameActivity, place, hour, false);
 
 		try {
-			_activity = server.addActivity(_activity, isLast);
+			_activity = server.addActivity(_activity);
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
@@ -446,6 +446,17 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void startProject(Project project) {
+		try {
+			server.startProject(project);
+		} catch (RemoteException | CustomException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 
