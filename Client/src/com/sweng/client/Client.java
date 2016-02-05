@@ -436,5 +436,11 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		return null;
 	}
 
+	@Override
+	public ArrayList<User> removeResponsible(ActivityResponsible resp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

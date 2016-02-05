@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
@@ -17,5 +18,6 @@ public interface ICommonGui {
 	public void setNoticeRead(Notice notice);
 	public ArrayList<User> removeParticipant(Participant part);
 	public void showActivityInfo(Activity a);
+	public ArrayList<User> removeResponsible(ActivityResponsible resp);
 	
 }

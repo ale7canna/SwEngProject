@@ -15,6 +15,7 @@ import com.sweng.client.gui.GUIPanelSignIn;
 import com.sweng.client.gui.GUIaddComponent;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
@@ -302,6 +303,12 @@ public class GuiManagerClient {
 		@Override
 		public ArrayList<User> removeParticipant(Participant part) {
 			return clientManager.removeParticipant(part);
+		}
+
+		@Override
+		public ArrayList<User> removeResponsible(ActivityResponsible resp) {
+			// TODO Auto-generated method stub
+			return clientManager.removeResponsible(resp);
 		}
 
 	

@@ -21,6 +21,8 @@ import javax.swing.JTextField;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.beans.ActivityResponsible;
+import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.User;
 
 import java.awt.Insets;
@@ -135,6 +137,21 @@ public class ActivityInfoGui extends JPanel {
 		listResponsible = new JList(new MyUserListModel());
 		panelResponsabili.add(listResponsible);
 
+		listResponsible.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked(MouseEvent ev) {
+				if(ev.getClickCount()==2){
+					User u = (User) ((MyUserListModel) listResponsible.getModel()).getUserAt(listResponsible.getSelectedIndex());
+					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove "+ u.getUsername()+ " from "+ activityInfo.getName()+" activity?", "Remove participant", JOptionPane.YES_NO_OPTION );
+					if(scelta == JOptionPane.YES_OPTION){
+						ActivityResponsible resp= new ActivityResponsible(u.getIdUser(), activityInfo.getIdActivity()); 
+						addUsers(_listener.removeResponsible(resp));
+						} 
+				}
+				
+			}
+		});
+		
 		if (activityInfo != null)
 			addUsers(activityInfo.getResponsabili());
 
