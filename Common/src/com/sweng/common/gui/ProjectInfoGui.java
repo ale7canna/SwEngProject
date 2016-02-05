@@ -140,21 +140,36 @@ public class ProjectInfoGui extends JPanel {
 		if (projectInfo != null)
 			addUsers(projectInfo.getParticipants());
 
-		
-		listParticipants.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount()==2){
-					User u = (User) ((MyUserListModel) listParticipants.getModel()).getUserAt(listParticipants.getSelectedIndex());
-					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove "+ u.getUsername()+ " from "+ projectInfo.getName()+" project?", "Remove participant", JOptionPane.YES_NO_OPTION );
-					if(scelta == JOptionPane.YES_OPTION){
-						Participant part = new Participant(u.getIdUser(), projectInfo.getIdProject()); 
-						addUsers(_listener.removeParticipant(part));
-						} 
+		if(isAdmin){
+			listParticipants.addMouseListener(new MouseAdapter() {
+	
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount()==2){
+						User u = (User) ((MyUserListModel) listParticipants.getModel()).getUserAt(listParticipants.getSelectedIndex());
+						int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove "+ u.getUsername()+ " from "+ projectInfo.getName()+" project?", "Remove participant", JOptionPane.YES_NO_OPTION );
+						if(scelta == JOptionPane.YES_OPTION){
+							Participant part = new Participant(u.getIdUser(), projectInfo.getIdProject()); 
+							addUsers(_listener.removeParticipant(part));
+							} 
+					}
+					
 				}
-				
-			}
-		});
+			});
+			
+			
+			listActivities.addMouseListener(new MouseAdapter() {
+	
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount()==2){
+						Activity a = (Activity) ((MyActivityListModel) listActivities.getModel()).getActivityAt(listActivities.getSelectedIndex());
+						_listener.showActivityInfo(a);
+					}
+					
+				}
+			});
+		
+		}
+	
 	}
 
 	public void addActivitiesAndUsers(HashMap<Activity, User> data) {

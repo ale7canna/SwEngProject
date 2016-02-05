@@ -167,8 +167,6 @@ public class GuiManagerClient {
 
 			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, true);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
-
-			JOptionPane.showMessageDialog(null, "Activity was added correctly");
 			addActivityFrame.setVisible(false);
 			addActivityFrame.dispose();
 
