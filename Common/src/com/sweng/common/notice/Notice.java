@@ -10,11 +10,13 @@ public abstract class Notice implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	Integer id;
 	Date date;
 	String title;
 	String message;
 	
-	public Notice(String _title, String _message) {
+	public Notice(Integer _id, String _title, String _message) {
+		id = _id;
 		date = Date.from(Instant.now());
 		title = _title;
 		message = _message;
@@ -34,6 +36,17 @@ public abstract class Notice implements Serializable {
 	public String getTitle() {
 		
 		return title;
+	}
+
+	
+	public Integer getId() {
+		
+		return id;
+	}
+	
+	public void setId(Integer _id)
+	{
+		id = _id;
 	}
 	
 }

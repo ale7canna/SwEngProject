@@ -14,8 +14,8 @@ public class UnlockedActivityNotice extends Notice {
 
 	private Activity activity;
 	
-	public UnlockedActivityNotice(Activity _activity) {
-		super(DefaultMessages.UnlockedActivityTitle.toString(), DefaultMessages.UnlockedActivity.toString());
+	public UnlockedActivityNotice(Integer _id, Activity _activity) {
+		super(_id, DefaultMessages.UnlockedActivityTitle.toString(), DefaultMessages.UnlockedActivity.toString());
 		activity = _activity;
 	}
 	

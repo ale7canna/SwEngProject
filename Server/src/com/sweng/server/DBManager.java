@@ -900,7 +900,7 @@ public class DBManager {
 		}
 	}
 	
-	public static void storeNotices(Notice notice, int userId)
+	public static int storeNotices(Notice notice, int userId)
 	{
 		try
 		{
@@ -921,11 +921,14 @@ public class DBManager {
 			stat.setInt(1, userId);
 			stat.setInt(2, idNotice);
 			stat.executeUpdate();
+			
+			return idNotice;
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
+		return 0;
 	}
 	
 	public static ArrayList<Notice> getNoticesByUserId(int userId)
@@ -990,6 +993,13 @@ public class DBManager {
 		
 		
 		return (T)deSerializedObject;
+		
+	}
+
+	public static void setNoticeDone(Notice notice, User user) {
+		
+		notice.getId();
+
 		
 	}
 	

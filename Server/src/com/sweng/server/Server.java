@@ -6,9 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
@@ -272,7 +270,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 			Date date = Date.from(Instant.now());
 			String title = DefaultMessages.UnlockedActivityTitle.toString();
 			String message = DefaultMessages.UnlockedActivity.toString();
-			UnlockedActivityNotice n = new UnlockedActivityNotice(activities.get(0));
+			UnlockedActivityNotice n = new UnlockedActivityNotice(0, activities.get(0));
 			for (User r : activityInfo.getResponsabili())
 				NotifyUser(n, r);
 			
@@ -294,7 +292,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 					Date date = Date.from(Instant.now());
 					String title = DefaultMessages.UnlockedActivityTitle.toString();
 					String message = DefaultMessages.UnlockedActivity.toString();
-					Notice n = new UnlockedActivityNotice(activity);
+					Notice n = new UnlockedActivityNotice(0, activity);
 
 					NotifyUser(n, r);
 				}
@@ -313,7 +311,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 			ProjectInfo projectInfo = DBManager.getProjectInfo(new Project(idProject));
 			ArrayList<User> participants = DBManager.getParticipantsFromProject(new Project(idProject));
 			
-			StartedProjNotice notice = new StartedProjNotice(projectInfo);
+			StartedProjNotice notice = new StartedProjNotice(0, projectInfo);
 			
 			for (User p : participants)
 				NotifyUser(notice, p);
@@ -326,7 +324,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 	private void NotifyUser(Notice notice, User user)
 	{
 		IClient client;
+
 		try {
+			int idNotifica = DBManager.storeNotices(notice, user.getIdUser());
+			notice.setId(idNotifica);
+			
 			client = DBManager.getConnectedUserByUserId(user.getIdUser());
 			if (client != null)
 				client.update(notice);
@@ -337,7 +339,6 @@ public class Server extends UnicastRemoteObject implements IServer {
 		} catch (RemoteException e) {
 			System.out.println("Errore di connessione a " + user.getUsername() + "\n" + e.getMessage());
 		}
-		DBManager.storeNotices(notice, user.getIdUser());
 	}
 	
 	private void endOfProject(Project project) {
@@ -353,6 +354,12 @@ public class Server extends UnicastRemoteObject implements IServer {
 		result = DBManager.getNoticesByUserId(user.getIdUser());
 		
 		return result;
+	}
+
+	@Override
+	public void setNoticeRead(Notice notice, User user) throws RemoteException, CustomException {
+		
+		DBManager.setNoticeDone(notice, user);
 	}
 	
 }

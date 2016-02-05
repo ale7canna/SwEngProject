@@ -14,8 +14,8 @@ public class StartedActicityNotice extends Notice {
 	
 	private ActivityInfo activityInfo;
 
-	public StartedActicityNotice(ActivityInfo _activityInfo) {
-		super(DefaultMessages.StartedActivityTitle.toString(), DefaultMessages.StartedActivity.toString());
+	public StartedActicityNotice(Integer _id, ActivityInfo _activityInfo) {
+		super(_id, DefaultMessages.StartedActivityTitle.toString(), DefaultMessages.StartedActivity.toString());
 		activityInfo = _activityInfo;
 	}
 	
