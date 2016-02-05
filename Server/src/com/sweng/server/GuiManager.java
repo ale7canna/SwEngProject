@@ -13,6 +13,7 @@ import com.sweng.common.beans.User;
 import com.sweng.common.gui.ActivityInfoGui;
 import com.sweng.common.gui.ICommonGui;
 import com.sweng.common.gui.ProjectInfoGui;
+import com.sweng.common.notice.Notice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.server.gui.GUIListener;
 import com.sweng.server.gui.ServerGUI;
@@ -85,7 +86,7 @@ public class GuiManager{
 			{	System.out.println(project.getName());
 			
 				try {
-					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this);
+					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this, true);
 					JFrame frame = new JFrame();
 					frame.getContentPane().add(projectInfoGui);
 					frame.setVisible(true);
@@ -121,7 +122,7 @@ public class GuiManager{
 			} catch (CustomException e) {
 				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
 			}
-			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this);
+			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this, true);
 			GUI.ChangeProjectInfo(projectInfo);
 		}
 
@@ -146,6 +147,12 @@ public class GuiManager{
 
 		@Override
 		public void refreshAll() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setNoticeRead(Notice notice) {
 			// TODO Auto-generated method stub
 			
 		}

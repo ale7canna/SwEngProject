@@ -21,6 +21,7 @@ import com.sweng.common.beans.User;
 
 
 
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
@@ -128,7 +129,7 @@ public class ProjectInfoGui extends JPanel {
 			btnRemove.setBounds(271, 12, 115, 29);
 			panel.add(btnRemove);
 			
-			JButton btnRemovePart = new JButton("Remove Participants");
+		
 		}
 
 		JPanel panel_2 = new JPanel();
@@ -148,6 +149,14 @@ public class ProjectInfoGui extends JPanel {
 		if (projectInfo != null)
 			addUsers(projectInfo.getParticipants());
 
+		
+		listParticipants.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				User u = (User) ((MyUserListModel) listParticipants.getModel()).getUserAt(listParticipants.getSelectedIndex());
+				_listener.UserClicked(u);
+			}
+		});
 	}
 
 	public void addActivitiesAndUsers(HashMap<Activity, User> data) {

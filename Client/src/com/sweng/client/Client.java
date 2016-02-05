@@ -409,7 +409,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		// TODO Auto-generated method stub
 		
 		try {
-			server.setNoticeRead(notice);
+			server.setNoticeRead(notice, user);
 		
 		} catch (RemoteException | CustomException e) {
 			// TODO Auto-generated catch block
