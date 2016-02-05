@@ -23,6 +23,7 @@ import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
 import com.sweng.common.notice.StartedActicityNotice;
 import com.sweng.common.notice.StartedProjNotice;
+import com.sweng.common.notice.UnlockedActivityNotice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.common.utils.Errors;
 
@@ -393,11 +394,10 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			}
 		});
 		loadNotice(user);
-		if(notice instanceof StartedProjNotice){
-			loadProjectsfromServer(user);
-			}
-		else if(notice instanceof StartedActicityNotice)
-			loadActivitiesfromServer(user);
+		loadProjectsfromServer(user);
+		loadActivitiesfromServer(user);
+		loadFriendsfromServer(user);
+		
 		guiManagerClient.refreshHomeContent();
 		
 	}
