@@ -10,7 +10,9 @@ public enum DefaultMessages {
 	UnlockedActivityTitle("Attività sbloccata"),
 	FinishedProjectTitle("Progetto completato."),
 	FinishedProject("Il progetto è pronto per essere eseguito."),
-	FriendShipAddedTitle("Friendship added");
+	FriendShipAddedTitle("Friendship added"),
+	ActivityWithoutResponsibleTitle("No responsible for activity"),
+	ActivityWithoutResponsible("Each responsible for activity gives up the role of responsible.");
 	
 	private String message;
 	

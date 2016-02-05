@@ -716,6 +716,32 @@ public class DBManager {
 		return result;
 	}
 
+	public static Activity getActivityFromId(int idActivity)throws CustomException {
+
+		Activity result = null;
+		String query = "SELECT * FROM attivita WHERE idAttivita = ?";
+
+		try {
+			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
+			stat.setInt(1, idActivity);
+			ResultSet rs = stat.executeQuery();
+
+			if (rs.next()) {
+				Date d = null;
+				Timestamp t = rs.getTimestamp("Ora");
+				if (t != null)
+					d = new Date(t.getTime());
+				
+				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
+						rs.getString("Luogo"), d, rs.getBoolean("Completata"));
+			} else
+				throw new CustomException(Errors.ActivitiesNotFound);
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+		return result;
+	}
+	
 	public static void setActivityDone(ActivityInfo activityInfo) throws CustomException {
 		try 
 		{
@@ -1087,6 +1113,63 @@ public class DBManager {
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static int getRemainingActivityResponsible(int idActivity) throws CustomException {
+		
+		try {
+			String query = "SELECT Count(*) FROM responsabili_attivita WHERE idAttivita = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			ResultSet rs = stat.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+
+		return 0;
+	}
+	
+	public static User getProjectAdmin(Project project) throws CustomException
+	{
+		User result = null;
+		try 
+		{
+			String query = "SELECT * FROM utente WHERE idUtente = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, project.getIdAdmin());
+			ResultSet rs = stat.executeQuery();
+			
+			if (rs.next())
+				return new User(rs.getInt("idUtente"), rs.getString("Nome"), rs.getString("Cognome"), rs.getString("UserName"), rs.getString("password"));
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		
+		return result;
+	}
+
+	public static Project getProjectFromActivity(Activity activity) throws CustomException {
+		
+		try {
+			String query = "SELECT * FROM progetto WHERE idProgetto = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			stat.setInt(1, activity.getIdProject());
+			
+			ResultSet rs = stat.executeQuery();
+			if (rs.next())
+				return new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"), rs.getBoolean("Attivo"));				
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+		return null;
 	}
 	
 	

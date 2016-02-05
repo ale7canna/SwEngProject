@@ -18,6 +18,7 @@ import com.sweng.common.beans.Participant;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
+import com.sweng.common.notice.ActivityWithoutResponsibleNotice;
 import com.sweng.common.notice.FinishedProjNotice;
 import com.sweng.common.notice.FriendshipAdded;
 import com.sweng.common.notice.Notice;
@@ -409,6 +410,21 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException {
 		
 		DBManager.removeActivityResponsible(resp);
+		
+		ArrayList<User> responsabili = DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
+		
+		if (!(responsabili.size() > 0))
+		{
+			Activity activity = DBManager.getActivityFromId(resp.getIdActivity());
+			Project proj = DBManager.getProjectFromActivity(activity);
+			User admin = DBManager.getProjectAdmin(proj);
+			
+			Notice notice = new ActivityWithoutResponsibleNotice(proj, activity);
+			NotifyUser(notice, admin);
+		}
+			
+		
+			
 		return DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 	}
 	
