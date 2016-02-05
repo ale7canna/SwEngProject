@@ -1,5 +1,6 @@
 package com.sweng.server;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -105,9 +106,7 @@ public class GuiManager{
 			Project p = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive());
 			try {
 				DBManager.removeProject(p);
-				projectInfoGui.setVisible(false);
-//				projectInfoGui.dispose();
-				
+				GUI.ChangeProjectInfo(null);
 			}
 			catch (CustomException e )
 			{
@@ -149,7 +148,20 @@ public class GuiManager{
 
 		@Override
 		public void refreshAll() {
-			// TODO AGGIORNARE DATI
+			try {
+			LoadActivities(DBManager.getAllActivities(), 
+					DBManager.getDoneActivitiesCount(),
+					DBManager.getActivitiesCount());
+			LoadProjects(DBManager.getAllProjects(), 
+					DBManager.getActiveProjectsCount(),
+					DBManager.getTotalProjectsCount());
+			LoadUser(DBManager.getAllUsers());
+
+			}
+			catch (CustomException e)
+			{
+				System.out.println(e.getMessage());
+			}
 			
 		}
 
@@ -172,6 +184,13 @@ public class GuiManager{
 		public ArrayList<User> removeResponsible(ActivityResponsible resp) {
 
 			return null;
+		}
+
+		@Override
+		public void startProject(Project project) throws RemoteException, CustomException {
+			
+			// TODO Auto-generated method stub
+			
 		}
 
 	}

@@ -42,7 +42,7 @@ import com.sweng.common.gui.ProjectInfoGui;
 
 public class ServerGUI extends JFrame {
 	private JList userList, userProjectList, projectList, listFriends, activityList;
-	private JPanel projectInfo;
+	private JPanel projectInfo, standardProjectPanelView;
 	private JSplitPane splitPaneProjects, splitPaneActivity ;
 	private JLabel projectSummaryLabel, activitySummaryLabel;
 	private DefaultListModel model;
@@ -225,14 +225,14 @@ public class ServerGUI extends JFrame {
 		});
 		splitPaneProjects.setLeftComponent(projectList);
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		splitPaneProjects.setRightComponent(panel_3);
+		standardProjectPanelView = new JPanel();
+		standardProjectPanelView.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		splitPaneProjects.setRightComponent(standardProjectPanelView);
 
 		JLabel label = new JLabel("Clicca un progetto a lato per caricare i dettagli");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setAlignmentX(0.5f);
-		panel_3.add(label);
+		standardProjectPanelView.add(label);
 		splitPaneProjects.setDividerLocation(200);
 		
 		JPanel tabAttivita = new JPanel();
@@ -327,7 +327,10 @@ public class ServerGUI extends JFrame {
 	}
 
 	public void ChangeProjectInfo(ProjectInfoGui projectInfo) {
-		splitPaneProjects.setRightComponent(projectInfo);
+		if (projectInfo == null)
+			splitPaneProjects.setRightComponent(standardProjectPanelView);
+		else
+			splitPaneProjects.setRightComponent(projectInfo);
 	}
 
 	public void ChangeProjectsSummary(int progettiAttivi, int progettiTotali) {
