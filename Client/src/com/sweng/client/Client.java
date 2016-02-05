@@ -21,6 +21,8 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
+import com.sweng.common.notice.StartedActicityNotice;
+import com.sweng.common.notice.StartedProjNotice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.common.utils.Errors;
 
@@ -195,6 +197,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}
+		notices = loadNotice(user);
 		projects = loadProjectsfromServer(user);
 		return _project;
 	}
@@ -228,6 +231,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		}
 		
 		activities = loadActivitiesfromServer(user);
+		notices = loadNotice(user);
 		return _activity;
 	}
 
@@ -389,7 +393,13 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			}
 		});
 		loadNotice(user);
+		if(notice instanceof StartedProjNotice){
+			loadProjectsfromServer(user);
+			if(notice instanceof StartedActicityNotice)
+				loadActivitiesfromServer(user);
+		}
 		guiManagerClient.refreshHomeContent();
+		
 	}
 
 	@Override

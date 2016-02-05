@@ -1,29 +1,19 @@
 package com.sweng.common.gui;
 
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
-import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
-
-import java.awt.Rectangle;
-import java.awt.Dimension;
-
-import javax.swing.JTextPane;
 
 public class NoticeInfoGui extends JPanel{
 	private JTextField textNoticeTitle;
@@ -33,6 +23,12 @@ public class NoticeInfoGui extends JPanel{
 
 	public NoticeInfoGui(Notice notice, ICommonGui _listener) {
 		setLayout(null);
+		try{
+		UIManager.setLookAndFeel(
+	            UIManager.getCrossPlatformLookAndFeelClassName());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		JPanel panel = new JPanel();
 		panel.setSize(new Dimension(300, 300));
