@@ -24,6 +24,12 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.utils.CustomException;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class ProjectInfoGui extends JPanel {
 	private JTextField txtProjectName;
@@ -40,13 +46,42 @@ public class ProjectInfoGui extends JPanel {
 
 		JPanel panel_1 = new JPanel();
 		splitPane.setRightComponent(panel_1);
-		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
-		JLabel lblPartecipanti = new JLabel("Partecipanti");
-		panel_1.add(lblPartecipanti);
+		JLabel lblPartecipanti = new JLabel("Participants");
+		lblPartecipanti.setForeground(new Color(0, 128, 128));
+		lblPartecipanti.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
+		lblPartecipanti.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		listParticipants = new JList(new MyUserListModel());
-		panel_1.add(listParticipants);
+		
+		JLabel lblDoubleClickTo_1 = new JLabel("Double click to remove a participant");
+		lblDoubleClickTo_1.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(71)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(lblPartecipanti, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+							.addGap(61))
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(lblDoubleClickTo_1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGap(0, 0, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPartecipanti)
+					.addPreferredGap(ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+					.addComponent(lblDoubleClickTo_1)
+					.addContainerGap())
+		);
+		panel_1.setLayout(gl_panel_1);
+		
+		
 
 		JSplitPane splitPane_1 = new JSplitPane();
 		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -56,11 +91,13 @@ public class ProjectInfoGui extends JPanel {
 		splitPane_1.setLeftComponent(panel);
 		panel.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Progetto");
-		lblNewLabel.setBounds(145, 16, 132, 20);
+		JLabel lblNewLabel = new JLabel("Project\r\n");
+		lblNewLabel.setForeground(new Color(0, 128, 128));
+		lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
+		lblNewLabel.setBounds(162, 11, 91, 20);
 		panel.add(lblNewLabel);
 
-		JLabel lblNome = new JLabel("Nome:");
+		JLabel lblNome = new JLabel("Name\r\n");
 		lblNome.setBounds(29, 47, 69, 20);
 		panel.add(lblNome);
 
@@ -71,7 +108,7 @@ public class ProjectInfoGui extends JPanel {
 		panel.add(txtProjectName);
 		txtProjectName.setColumns(10);
 
-		JLabel lblAttivo = new JLabel("\u00E8 attivo?");
+		JLabel lblAttivo = new JLabel("is Active\r\n");
 		lblAttivo.setBounds(261, 47, 82, 20);
 		panel.add(lblAttivo);
 
@@ -148,13 +185,41 @@ public class ProjectInfoGui extends JPanel {
 
 		JPanel panel_2 = new JPanel();
 		splitPane_1.setRightComponent(panel_2);
-		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
-		JLabel lblAttivit = new JLabel("Attivit\u00E0");
-		panel_2.add(lblAttivit);
+		JLabel lblAttivit = new JLabel("Activity");
+		lblAttivit.setForeground(new Color(0, 128, 128));
+		lblAttivit.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblAttivit.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
 
 		listActivities = new JList(new MyActivityListModel());
-		panel_2.add(listActivities);
+		
+		JLabel lblDoubleClickTo = new JLabel("Double click to modify an activity");
+		lblDoubleClickTo.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(171)
+							.addComponent(lblAttivit))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(46)
+							.addComponent(lblDoubleClickTo, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(88, Short.MAX_VALUE))
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblAttivit)
+					.addPreferredGap(ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
+					.addComponent(lblDoubleClickTo)
+					.addContainerGap())
+		);
+		panel_2.setLayout(gl_panel_2);
+		
+		
 		splitPane_1.setDividerLocation(175);
 		splitPane.setDividerLocation(400);
 
@@ -164,6 +229,13 @@ public class ProjectInfoGui extends JPanel {
 			addUsers(projectInfo.getParticipants());
 
 		if(isAdmin){
+			JLabel lblDoubleClickOn = new JLabel("Double click on a row to modify");
+			panel_2.add(lblDoubleClickOn);
+			
+			JLabel lblNewLabel_1 = new JLabel("Double click on a row to remove a participant from your project\r\n");
+			panel_1.add(lblNewLabel_1);
+			
+			
 			listParticipants.addMouseListener(new MouseAdapter() {
 	
 				public void mouseClicked(MouseEvent e) {

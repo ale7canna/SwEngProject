@@ -14,11 +14,16 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.sweng.common.notice.Notice;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 public class NoticeInfoGui extends JPanel{
 	private JTextField textNoticeTitle;
 	private JTextField textNoticeDate;
-	private JTextField textNoticeMessage;
 	private JTextField textField;
 
 	public NoticeInfoGui(Notice notice, ICommonGui _listener) {
@@ -34,23 +39,16 @@ public class NoticeInfoGui extends JPanel{
 		panel.setSize(new Dimension(300, 300));
 		panel.setToolTipText("NoticeInfo\r\n");
 		panel.setBounds(new Rectangle(400, 400, 700, 700));
-		panel.setBounds(0, 0, 450, 295);
+		panel.setBounds(0, 0, 599, 389);
 		add(panel);
-		panel.setLayout(null);
 		
 		JLabel lblNoticesTitle = new JLabel("Title");
-		lblNoticesTitle.setBounds(33, 40, 69, 14);
-		panel.add(lblNoticesTitle);
 		
 		textNoticeTitle = new JTextField(notice.getTitle());
 		textNoticeTitle.setEditable(false);
-		textNoticeTitle.setBounds(126, 37, 150, 20);
-		panel.add(textNoticeTitle);
 		textNoticeTitle.setColumns(10);
 		
 		JLabel labelDateNotice = new JLabel("Date\r\n");
-		labelDateNotice.setBounds(33, 100, 69, 14);
-		panel.add(labelDateNotice);
 		
 		String ora = "";
 		if(notice!=null)
@@ -67,20 +65,9 @@ public class NoticeInfoGui extends JPanel{
 		textNoticeDate = new JTextField(ora);
 		textNoticeDate.setEditable(false);
 		textNoticeDate.setColumns(10);
-		textNoticeDate.setBounds(126, 97, 130, 20);
-		panel.add(textNoticeDate);
 		
 		
 		JLabel lblMessage = new JLabel("Message\r\n");
-		lblMessage.setBounds(33, 128, 69, 14);
-		panel.add(lblMessage);
-		
-		
-		textNoticeMessage = new JTextField(notice.getMessage());
-		textNoticeMessage.setEditable(false);
-		textNoticeMessage.setColumns(10);
-		textNoticeMessage.setBounds(126, 128, 250, 106);
-		panel.add(textNoticeMessage);
 		
 		JButton btnSetNoticeRed = new JButton("Set notice read");
 		btnSetNoticeRed.addMouseListener(new MouseAdapter() {
@@ -92,18 +79,80 @@ public class NoticeInfoGui extends JPanel{
 					_listener.setNoticeRead(notice);
 			}
 		});
-		btnSetNoticeRed.setBounds(327, 36, 99, 23);
-		panel.add(btnSetNoticeRed);
 		
 		JLabel labelClass = new JLabel("Type");
-		labelClass.setBounds(33, 72, 69, 14);
-		panel.add(labelClass);
 		
 		textField = new JTextField(notice.getClass().getName());
 		textField.setEditable(false);
 		textField.setColumns(10);
-		textField.setBounds(126, 69, 200, 20);
-		panel.add(textField);
+		
+		JPanel panel_1 = new JPanel();
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(33)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblNoticesTitle, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+							.addGap(24)
+							.addComponent(textNoticeTitle, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
+							.addGap(124)
+							.addComponent(btnSetNoticeRed, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblMessage, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+								.addComponent(labelClass, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+								.addComponent(labelDateNotice, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
+							.addGap(24)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(panel_1, 0, 0, Short.MAX_VALUE)
+								.addComponent(textField, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+								.addComponent(textNoticeDate, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(27, Short.MAX_VALUE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(21)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(19)
+									.addComponent(lblNoticesTitle))
+								.addComponent(btnSetNoticeRed)))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(37)
+							.addComponent(textNoticeTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(18)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelClass))
+					.addGap(15)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textNoticeDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelDateNotice))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(18)
+							.addComponent(lblMessage))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)))
+					.addGap(153))
+		);
+		panel_1.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 321, 89);
+		panel_1.add(scrollPane);
+		
+		JTextPane txtpnSdasd = new JTextPane();
+		txtpnSdasd.setEditable(false);
+		txtpnSdasd.setText(notice.getMessage());
+		scrollPane.setViewportView(txtpnSdasd);
+		panel.setLayout(gl_panel);
 		
 		
 		

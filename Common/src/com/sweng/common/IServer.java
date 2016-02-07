@@ -49,5 +49,6 @@ public interface IServer extends Remote{
 	public void removeObserver(IClient _client) throws RemoteException;
 	public void notifyObservers(Notice _notice) throws RemoteException;
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException;
+	//public void addTexttoActivity(Activity act, String text);
 	
 }

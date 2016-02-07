@@ -41,4 +41,5 @@ public interface IClientManager {
 	public int getId();
 	public ArrayList<User> removeParticipant(Participant part);
 	public ArrayList<User> removeResponsible(ActivityResponsible resp);
+	public void addTexttoActivity(ActivityInfo activityInfo, String text);
 }

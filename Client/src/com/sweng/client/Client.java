@@ -459,5 +459,13 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 	}
 
+	@Override
+	public void addTexttoActivity(ActivityInfo activityInfo, String text) {
+		// TODO Auto-generated method stub
+		Activity act = new Activity(activityInfo.getIdActivity());
+		//server.addTexttoActivity(act, text);
+		
+	}
+
 
 }

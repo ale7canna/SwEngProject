@@ -301,7 +301,7 @@ public class GuiManagerClient {
 		@Override
 		public void setNoticeRead(Notice notice) {
 			clientManager.removeNotice(notice);
-			
+			noticeInfoFrame.setVisible(false);
 		}
 
 		@Override
@@ -321,6 +321,12 @@ public class GuiManagerClient {
 			// TODO Auto-generated method stub
 			
 		}
+
+		
+//		public void addText(ActivityInfo activityInfo, String text) {
+//			// TODO Auto-generated method stub
+//			clientManager.addTexttoActivity(activityInfo, text);
+//		}
 
 	
 	}

@@ -22,6 +22,14 @@ import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
+import javax.swing.UIManager;
+import java.awt.Color;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class GUIPanelHome extends JPanel {
 	
@@ -38,6 +46,9 @@ public class GUIPanelHome extends JPanel {
 	private EventListenerGUI listener;
 	
 	public GUIPanelHome(EventListenerGUI _listener) {
+		setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		setForeground(Color.LIGHT_GRAY);
+		setBorder(UIManager.getBorder("FormattedTextField.border"));
 		
 		listener = _listener;
 		
@@ -47,47 +58,30 @@ public class GUIPanelHome extends JPanel {
 		
 		JPanel UserInfo = new JPanel();
 		tabbedPane.addTab("User Info", null, UserInfo, null);
-		UserInfo.setLayout(null);
 		
 		Name = new JTextField();
 		Name.setEditable(false);
-		Name.setBounds(114, 26, 86, 20);
-		UserInfo.add(Name);
 		Name.setColumns(10);
 		
 		Surname = new JTextField();
 		Surname.setEditable(false);
-		Surname.setBounds(114, 70, 86, 20);
-		UserInfo.add(Surname);
 		Surname.setColumns(10);
 		
 		Id = new JTextField();
 		Id.setEditable(false);
-		Id.setBounds(114, 123, 86, 20);
-		UserInfo.add(Id);
 		Id.setColumns(10);
 		
 		UserName = new JTextField();
 		UserName.setEditable(false);
-		UserName.setBounds(114, 174, 86, 20);
-		UserInfo.add(UserName);
 		UserName.setColumns(10);
 		
 		JLabel NameLabel = new JLabel("Name");
-		NameLabel.setBounds(10, 29, 46, 14);
-		UserInfo.add(NameLabel);
 		
 		JLabel SurnameLabel = new JLabel("Surname\r\n");
-		SurnameLabel.setBounds(10, 73, 46, 14);
-		UserInfo.add(SurnameLabel);
 		
 		JLabel IdLabel = new JLabel("Id");
-		IdLabel.setBounds(10, 126, 46, 14);
-		UserInfo.add(IdLabel);
 		
 		JLabel UserNameLabel = new JLabel("UserName");
-		UserNameLabel.setBounds(10, 177, 65, 14);
-		UserInfo.add(UserNameLabel);
 		
 		JButton AddProjectButton = new JButton("Add Project\r\n");
 		AddProjectButton.addActionListener(new ActionListener() {
@@ -100,8 +94,6 @@ public class GUIPanelHome extends JPanel {
 				listener.addProjectView();
 			}
 		});
-		AddProjectButton.setBounds(311, 41, 89, 23);
-		UserInfo.add(AddProjectButton);
 		
 		JButton addFriendButton = new JButton("Add Friends");
 		addFriendButton.addMouseListener(new MouseAdapter() {
@@ -110,8 +102,6 @@ public class GUIPanelHome extends JPanel {
 				listener.addFriendsView();
 			}
 		});
-		addFriendButton.setBounds(311, 120, 89, 23);
-		UserInfo.add(addFriendButton);
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addMouseListener(new MouseAdapter() {
@@ -122,8 +112,73 @@ public class GUIPanelHome extends JPanel {
 				
 			}
 		});
-		btnLogout.setBounds(311, 173, 89, 23);
-		UserInfo.add(btnLogout);
+		GroupLayout gl_UserInfo = new GroupLayout(UserInfo);
+		gl_UserInfo.setHorizontalGroup(
+			gl_UserInfo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_UserInfo.createSequentialGroup()
+					.addGroup(gl_UserInfo.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_UserInfo.createSequentialGroup()
+							.addGap(21)
+							.addComponent(AddProjectButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+							.addGap(30)
+							.addComponent(addFriendButton, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+							.addGap(109)
+							.addComponent(btnLogout, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_UserInfo.createSequentialGroup()
+							.addGap(10)
+							.addGroup(gl_UserInfo.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(gl_UserInfo.createSequentialGroup()
+									.addComponent(SurnameLabel, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+									.addGap(50)
+									.addComponent(Surname))
+								.addGroup(Alignment.LEADING, gl_UserInfo.createSequentialGroup()
+									.addComponent(NameLabel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addGap(69)
+									.addComponent(Name, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)))
+							.addGap(44)
+							.addGroup(gl_UserInfo.createParallelGroup(Alignment.LEADING)
+								.addComponent(IdLabel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+								.addComponent(UserNameLabel, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_UserInfo.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_UserInfo.createSequentialGroup()
+									.addGap(21)
+									.addComponent(Id, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
+								.addGroup(Alignment.TRAILING, gl_UserInfo.createSequentialGroup()
+									.addGap(21)
+									.addComponent(UserName, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)))))
+					.addContainerGap())
+		);
+		gl_UserInfo.setVerticalGroup(
+			gl_UserInfo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_UserInfo.createSequentialGroup()
+					.addGap(26)
+					.addGroup(gl_UserInfo.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_UserInfo.createSequentialGroup()
+							.addGap(3)
+							.addComponent(NameLabel))
+						.addGroup(gl_UserInfo.createSequentialGroup()
+							.addGap(3)
+							.addComponent(IdLabel))
+						.addComponent(Name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(Id, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(24)
+					.addGroup(gl_UserInfo.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_UserInfo.createSequentialGroup()
+							.addGap(3)
+							.addComponent(SurnameLabel))
+						.addGroup(gl_UserInfo.createSequentialGroup()
+							.addGap(3)
+							.addComponent(UserNameLabel))
+						.addComponent(Surname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(UserName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(117)
+					.addGroup(gl_UserInfo.createParallelGroup(Alignment.LEADING)
+						.addComponent(AddProjectButton)
+						.addComponent(addFriendButton)
+						.addComponent(btnLogout))
+					.addContainerGap())
+		);
+		UserInfo.setLayout(gl_UserInfo);
 	
 		modelFriendship = new MyUserTableAdapter();
 		JTable tableFriends = new JTable(modelFriendship);
@@ -216,13 +271,27 @@ public class GUIPanelHome extends JPanel {
 	    
 	    modelNotice = new MyNoticeTableAdapter();
 		JTable tableNotice = new JTable(modelNotice);
+		tableNotice.setForeground(Color.BLACK);
 		
 		tableNotice.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		tableNotice.setFillsViewportHeight(true);
 		JScrollPane scrollPaneNotice = new JScrollPane(tableNotice);
 	    scrollPaneNotice.setBounds(5, 218, 884, 194);		
 	    tabbedPane.add(scrollPaneNotice);
+	   
+	   
 	    tabbedPane.setTitleAt(4, "My Notices");
+	    
+	    if(tableNotice.getRowCount()!=0){
+	    	 tabbedPane.setForegroundAt(4, Color.RED);
+	    	 tabbedPane.setToolTipTextAt(4, "New Notices Available\r\n");
+	    }
+	    
+	    JLabel lblDoubleClickingOn = new JLabel("Double clicking on a row of the tables to see more info");
+	    lblDoubleClickingOn.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+	    lblDoubleClickingOn.setBounds(20, 275, 408, 14);
+	    add(lblDoubleClickingOn);
+	    setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{tabbedPane, UserInfo, Name, Surname, Id, UserName, NameLabel, SurnameLabel, IdLabel, UserNameLabel, AddProjectButton, addFriendButton, btnLogout, scrollPaneFriends, tableFriends, scrollPaneActivity, tableActivity, scrollPaneProject, tableProject, scrollPaneNotice, tableNotice, lblDoubleClickingOn}));
 	    
 	   
 	    	tableNotice.addMouseListener(new MouseAdapter() {

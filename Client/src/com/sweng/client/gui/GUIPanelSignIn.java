@@ -9,6 +9,13 @@ import javax.swing.JPasswordField;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.TitledBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.UIManager;
+import java.awt.Color;
+import javax.swing.border.MatteBorder;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class GUIPanelSignIn extends JPanel{
 		
@@ -25,12 +32,57 @@ public class GUIPanelSignIn extends JPanel{
 		setLayout(null);
 		listener = _listener;
 		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SignIn", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 128, 128)));
+		panel.setBounds(5, 5, 285, 340);
+		add(panel);
+		
 		textSignInUserName = new JTextField();
 		textSignInUserName.setColumns(10);
-		textSignInUserName.setBounds(32, 91, 86, 20);
-		add(textSignInUserName);
 		
 		JButton button = new JButton("SignIn");
+		
+		JLabel label = new JLabel("Password");
+		
+		JLabel label_1 = new JLabel("UserName");
+		
+		textSignInPassword = new JPasswordField();
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+					.addGap(20)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(button, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(textSignInPassword, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+								.addComponent(textSignInUserName, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+							.addGap(18)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+									.addGap(38))
+								.addComponent(label, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)))))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(52)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textSignInUserName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_1))
+					.addGap(40)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textSignInPassword, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label))
+					.addGap(44)
+					.addComponent(button)
+					.addContainerGap(121, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -42,49 +94,78 @@ public class GUIPanelSignIn extends JPanel{
 					JOptionPane.showMessageDialog(null, "Please complete in the correct way the Signin form");
 			}
 		});
-		button.setBounds(72, 170, 89, 23);
-		add(button);
 		
-		JLabel label = new JLabel("Password");
-		label.setBounds(145, 132, 46, 14);
-		add(label);
-		
-		JLabel label_1 = new JLabel("UserName");
-		label_1.setBounds(145, 94, 46, 14);
-		add(label_1);
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SignUp", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 128, 128)), "SignUp", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 128, 128)));
+		panel_1.setBounds(290, 5, 285, 340);
+		add(panel_1);
 		
 		textSignUpName = new JTextField();
 		textSignUpName.setColumns(10);
-		textSignUpName.setBounds(255, 91, 86, 20);
-		add(textSignUpName);
 		
 		JLabel label_2 = new JLabel("Name");
-		label_2.setBounds(370, 94, 46, 14);
-		add(label_2);
 		
 		JLabel label_3 = new JLabel("UserName");
-		label_3.setBounds(370, 132, 46, 14);
-		add(label_3);
 		
 		textSignUpUserName = new JTextField();
 		textSignUpUserName.setColumns(10);
-		textSignUpUserName.setBounds(255, 129, 86, 20);
-		add(textSignUpUserName);
 		
 		JLabel label_4 = new JLabel("Password");
-		label_4.setBounds(370, 174, 46, 14);
-		add(label_4);
 		
 		JLabel label_5 = new JLabel("Surname");
-		label_5.setBounds(370, 219, 46, 14);
-		add(label_5);
 		
 		textSignUpSurname = new JTextField();
 		textSignUpSurname.setColumns(10);
-		textSignUpSurname.setBounds(255, 216, 86, 20);
-		add(textSignUpSurname);
 		
 		JButton btnSignUp = new JButton("SignUp");
+		
+		textSignUpPassword = new JPasswordField();
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(textSignUpSurname, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+						.addComponent(textSignUpPassword, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+						.addComponent(textSignUpUserName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+						.addComponent(textSignUpName, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+					.addGap(34)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_5, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+						.addComponent(label_4, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+						.addComponent(label_3, GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+						.addComponent(label_2, GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+					.addContainerGap())
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(63)
+					.addComponent(btnSignUp, GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+					.addGap(79))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(45)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textSignUpName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_2))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textSignUpUserName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_3))
+					.addGap(22)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textSignUpPassword, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_4))
+					.addGap(25)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textSignUpSurname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_5))
+					.addGap(45)
+					.addComponent(btnSignUp)
+					.addContainerGap(55, Short.MAX_VALUE))
+		);
+		panel_1.setLayout(gl_panel_1);
 		btnSignUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -95,15 +176,5 @@ public class GUIPanelSignIn extends JPanel{
 				_listener.performSignUp(username, password, name, surname);
 			}
 		});
-		btnSignUp.setBounds(296, 266, 89, 23);
-		add(btnSignUp);
-		
-		textSignInPassword = new JPasswordField();
-		textSignInPassword.setBounds(32, 129, 86, 20);
-		add(textSignInPassword);
-		
-		textSignUpPassword = new JPasswordField();
-		textSignUpPassword.setBounds(255, 171, 86, 20);
-		add(textSignUpPassword);
 	}
 }

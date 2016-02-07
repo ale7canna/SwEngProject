@@ -20,6 +20,12 @@ import javax.swing.JTextField;
 import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
 import com.sweng.common.beans.User;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class ActivityInfoGui extends JPanel {
 	private JTextField txtActivityName;
@@ -40,6 +46,8 @@ public class ActivityInfoGui extends JPanel {
 		panelActivity.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Activity");
+		lblNewLabel.setForeground(new Color(0, 128, 128));
+		lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
 		lblNewLabel.setBounds(145, 16, 132, 20);
 		panelActivity.add(lblNewLabel);
 
@@ -54,11 +62,12 @@ public class ActivityInfoGui extends JPanel {
 		panelActivity.add(txtActivityName);
 		txtActivityName.setColumns(10);
 
-		JLabel lblAttivo = new JLabel("\u00E8 Completed?");
+		JLabel lblAttivo = new JLabel("Is Completed:\r\n");
 		lblAttivo.setBounds(261, 47, 82, 20);
 		panelActivity.add(lblAttivo);
 
 		JCheckBox checkBox = new JCheckBox("");
+		lblAttivo.setLabelFor(checkBox);
 		if (activityInfo != null)
 			checkBox.setSelected(activityInfo.isDone());
 		checkBox.setEnabled(false);
@@ -69,7 +78,8 @@ public class ActivityInfoGui extends JPanel {
 		lblPlace.setBounds(29, 78, 100, 20);
 		panelActivity.add(lblPlace);
 
-		JLabel lblHour = new JLabel("Hour");
+		JLabel lblHour = new JLabel("Hour:");
+		lblHour.setLabelFor(this);
 		lblHour.setBounds(29, 120, 100, 20);
 		panelActivity.add(lblHour);
 
@@ -96,10 +106,43 @@ public class ActivityInfoGui extends JPanel {
 		textFieldHour.setBounds(100, 117, 100, 20);
 		panelActivity.add(textFieldHour);
 		
+		JLabel lblMessage = new JLabel("Message:");
+		lblMessage.setBounds(29, 163, 69, 14);
+		panelActivity.add(lblMessage);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(98, 163, 301, 65);
+		panelActivity.add(panel);
+		panel.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 301, 65);
+		panel.add(scrollPane);
+		
+		JTextPane textPane = new JTextPane();
+		scrollPane.setViewportView(textPane);
+		
+		JButton btnNewButton = new JButton("Add Text\r\n");
+		btnNewButton.setBounds(98, 253, 108, 23);
+		panelActivity.add(btnNewButton);
+		btnNewButton.addMouseListener(new MouseAdapter() {
+	
+		public void mousePressed(MouseEvent evt) {
+			int scelta = JOptionPane.showConfirmDialog(null,
+					"Do you really want to add the text this activity?",
+					"Add Text", JOptionPane.YES_NO_OPTION);
+			if (scelta == JOptionPane.YES_OPTION) {
+				//_listener.addText(activityInfo, textPane.getText());
+				JOptionPane.showMessageDialog(null,"The text was correctly added!");
+				_listener.refreshAll();
+				}
+			}
+		});
+		
 
 		if (activityInfo.isFinishable()) {
 			JButton btnCompleteActivity = new JButton("Complete Activity\r\n");
-			btnCompleteActivity.setBounds(297, 119, 89, 23);
+			btnCompleteActivity.setBounds(150, 353, 200, 23);
 			btnCompleteActivity.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent evt) {
 					int scelta = JOptionPane.showConfirmDialog(null,
@@ -123,13 +166,46 @@ public class ActivityInfoGui extends JPanel {
 		splitPane.setDividerLocation(410);
 
 		JLabel lblAttivit = new JLabel("");
-		panelResponsabili.add(lblAttivit);
 
 		JLabel lblResponsible = new JLabel("Responsabili");
-		panelResponsabili.add(lblResponsible);
+		lblResponsible.setForeground(new Color(0, 140, 128));
+		lblResponsible.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
 
 		listResponsible = new JList(new MyUserListModel());
-		panelResponsabili.add(listResponsible);
+		lblResponsible.setLabelFor(listResponsible);
+		
+		JLabel lblNewLabel_1 = new JLabel("Double click to remove from responsible");
+		lblNewLabel_1.setLabelFor(panelResponsabili);
+		lblNewLabel_1.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+		GroupLayout gl_panelResponsabili = new GroupLayout(panelResponsabili);
+		gl_panelResponsabili.setHorizontalGroup(
+			gl_panelResponsabili.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelResponsabili.createSequentialGroup()
+					.addGroup(gl_panelResponsabili.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelResponsabili.createSequentialGroup()
+							.addGap(51)
+							.addComponent(lblAttivit))
+						.addGroup(gl_panelResponsabili.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNewLabel_1)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addGroup(gl_panelResponsabili.createSequentialGroup()
+					.addGap(132)
+					.addComponent(lblResponsible)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_panelResponsabili.setVerticalGroup(
+			gl_panelResponsabili.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelResponsabili.createSequentialGroup()
+					.addGap(13)
+					.addGroup(gl_panelResponsabili.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblAttivit)
+						.addComponent(lblResponsible))
+					.addGap(245)
+					.addComponent(lblNewLabel_1)
+					.addContainerGap())
+		);
+		panelResponsabili.setLayout(gl_panelResponsabili);
 
 		listResponsible.addMouseListener(new MouseAdapter() {
 			
@@ -147,7 +223,9 @@ public class ActivityInfoGui extends JPanel {
 		});
 		
 		if (activityInfo != null)
+			{
 			addUsers(activityInfo.getResponsabili());
+			}
 
 	}
 
