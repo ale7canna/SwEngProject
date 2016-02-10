@@ -90,6 +90,11 @@ public class ActivityInfo implements Serializable {
 	public void setDone(boolean isDone) {
 		this.isDone = isDone;
 	}
-
+	public void setText(String text){
+		this.text = text;
+	}
+	public String getText(){
+		return text;
+	}
 	
 }

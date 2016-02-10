@@ -155,9 +155,9 @@ public class GuiManagerClient {
 
 		}
 
-		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity) {
+		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity, String text) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 
 			JOptionPane.showMessageDialog(null, "Activity was added correctly");
@@ -166,9 +166,9 @@ public class GuiManagerClient {
 			addActivityView(project);
 		}
 
-		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity) {
+		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity, String text) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text);
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 			addActivityFrame.setVisible(false);
 			addActivityFrame.dispose();

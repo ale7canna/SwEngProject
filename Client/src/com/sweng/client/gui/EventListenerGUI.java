@@ -20,9 +20,9 @@ public interface EventListenerGUI {
 	
 	public void addActivityView(Project project);
 	
-	public void addActivityFinish(String nameActivity, String place, java.util.Date date, ArrayList<Integer> respActivity);
+	public void addActivityFinish(String nameActivity, String place, java.util.Date date, ArrayList<Integer> respActivity, String text);
 	
-	public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity);
+	public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity, String text);
 	
 	public void addFriendsView();
 	

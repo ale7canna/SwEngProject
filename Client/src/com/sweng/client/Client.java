@@ -238,9 +238,9 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 	}
 
-	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour) {
+	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour, String text) {
 
-		Activity _activity = new Activity(idProject, nameActivity, place, hour, false);
+		Activity _activity = new Activity(idProject, nameActivity, place, hour, false, text);
 
 		try {
 			_activity = server.addActivity(_activity);
@@ -462,8 +462,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	@Override
 	public void addTexttoActivity(ActivityInfo activityInfo, String text) {
 		// TODO Auto-generated method stub
-		Activity act = new Activity(activityInfo.getIdActivity());
-		server.addTexttoActivity(act, text);
+		activityInfo.setText(text);
+		server.addTexttoActivity(activityInfo);
 		
 	}
 
