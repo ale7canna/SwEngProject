@@ -7,6 +7,7 @@ public class Activity implements Serializable{
 	
 	private String name;
 	private String place;
+	private String text;
 	private java.util.Date hour;
 	private int idActivity;
 	private int idProject;
@@ -14,16 +15,17 @@ public class Activity implements Serializable{
 	private boolean isFinishable;
 
 
-	public Activity(int idProject, String name, String place, Date hour, boolean isDone) {
+	public Activity(int idProject, String name, String place, Date hour, boolean isDone, String text) {
 		super();
 		this.idProject = idProject;
 		this.name = name;
 		this.place = place;
 		this.hour = hour;
 		this.isDone = isDone;
+		this.text = text;
 	}
 
-	public Activity(int _idProject, int _idActivity, String _name, String _place, Date _hour, boolean _isDone)
+	public Activity(int _idProject, int _idActivity, String _name, String _place, Date _hour, boolean _isDone, String text)
 	{
 		idProject = _idProject;
 		idActivity = _idActivity;
@@ -31,6 +33,7 @@ public class Activity implements Serializable{
 		place = _place;
 		hour = _hour;
 		isDone = _isDone;
+		this.text = text;
 	}
 
 	public Activity(int _idActivity) {
@@ -110,6 +113,18 @@ public class Activity implements Serializable{
 
 	public void setFinishable(boolean isFinishable) {
 		this.isFinishable = isFinishable;
+	}
+
+	
+	public String getText() {
+		
+		return text;
+	}
+
+	
+	public void setText(String text) {
+		
+		this.text = text;
 	}
 
 	

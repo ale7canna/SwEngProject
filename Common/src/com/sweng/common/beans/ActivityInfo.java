@@ -8,6 +8,7 @@ public class ActivityInfo implements Serializable {
 	
 	private String name;
 	private String place;
+	private String text;
 	private java.util.Date hour;
 	private int idActivity;
 	private Project project;
@@ -19,7 +20,7 @@ public class ActivityInfo implements Serializable {
 	
 	
 	public ActivityInfo(int idActivity, ArrayList<User> responsabili, Project project, String name, String place,
-			Date hour, boolean isDone, boolean isFinishable) {
+			Date hour, boolean isDone, boolean isFinishable, String text) {
 		super();
 		this.idActivity = idActivity;
 		this.responsabili = responsabili;
@@ -29,6 +30,7 @@ public class ActivityInfo implements Serializable {
 		this.hour = hour;
 		this.isDone = isDone;
 		this.isFinishable = isFinishable;
+		this.text = text;
 	}
 	
 	public Boolean equals(ActivityInfo a)

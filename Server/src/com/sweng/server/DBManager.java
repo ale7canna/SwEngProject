@@ -64,7 +64,7 @@ public class DBManager {
 					d = new Date(t.getTime());
 					
 				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
-						rs.getString("Luogo"), d, rs.getBoolean("Completata"));
+						rs.getString("Luogo"), d, rs.getBoolean("Completata"), rs.getString("Testo"));
 				result.add(act);
 			}
 
@@ -257,7 +257,7 @@ public class DBManager {
 					d = new Date(t.getTime());
 				
 				Activity act = new Activity(project.getIdProject(), rs.getInt("ar.idAttivita"),
-						rs.getString("attivita.Nome"), rs.getString("Luogo"), d, completa);
+						rs.getString("attivita.Nome"), rs.getString("Luogo"), d, completa, rs.getString("Testo"));
 
 				User u = new User(rs.getInt("ar.idUtente"), rs.getString("utente.Nome"), rs.getString("Cognome"),
 						rs.getString("UserName"), null);
@@ -403,7 +403,7 @@ public class DBManager {
 					d = new Date(t.getTime());
 				
 				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), 
-									rs.getString("Luogo"), d, rs.getBoolean("Completata")); 
+									rs.getString("Luogo"), d, rs.getBoolean("Completata"), rs.getString("Testo")); 
 						
 			
 				result.add(act);
@@ -496,7 +496,7 @@ public class DBManager {
 			throw new CustomException(Errors.ServerError);
 		}
 		activityInfo = new ActivityInfo(activity.getIdActivity(), responsabili, project, activity.getName(),
-						activity.getPlace(), activity.getHour(), activity.getIsDone(), canICompleteMyActivity(activity));
+						activity.getPlace(), activity.getHour(), activity.getIsDone(), canICompleteMyActivity(activity), activity.getText());
 		
 		return activityInfo;
 	}
@@ -520,7 +520,7 @@ public class DBManager {
 					d = new Date(t.getTime());
 				
 				Activity act = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"), 
-									rs.getString("Luogo"), d, rs.getBoolean("Completata")); 
+									rs.getString("Luogo"), d, rs.getBoolean("Completata"), rs.getString("Testo")); 
 						
 			
 				result.add(act);
@@ -707,7 +707,7 @@ public class DBManager {
 					d = new Date(t.getTime());
 				
 				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
-						rs.getString("Luogo"), d, rs.getBoolean("Completata"));
+						rs.getString("Luogo"), d, rs.getBoolean("Completata"), rs.getString("Testo"));
 			} else
 				throw new CustomException(Errors.ProjectsNotFound);
 		} catch (SQLException e) {
@@ -733,7 +733,7 @@ public class DBManager {
 					d = new Date(t.getTime());
 				
 				result = new Activity(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
-						rs.getString("Luogo"), d, rs.getBoolean("Completata"));
+						rs.getString("Luogo"), d, rs.getBoolean("Completata"), rs.getString("Testo"));
 			} else
 				throw new CustomException(Errors.ActivitiesNotFound);
 		} catch (SQLException e) {
