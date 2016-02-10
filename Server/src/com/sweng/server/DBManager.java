@@ -1171,6 +1171,27 @@ public class DBManager {
 		}
 		return null;
 	}
+
+	public static void updateActivityText(ActivityInfo activityInfo) throws CustomException {
+		
+		try {
+			String query = "UPDATE attivita SET Testo = ? WHERE idAttivita = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setString(1, activityInfo.getText());
+			stat.setInt(2, activityInfo.getIdActivity());
+			
+			int affectedRows = stat.executeUpdate();
+			
+			if (affectedRows != 1)
+				throw new CustomException(Errors.ActivitiesNotFound);
+			
+		}
+		catch (SQLException e)
+		{
+			throw new CustomException(Errors.ServerError);
+		}
+	}
 	
 	
 	

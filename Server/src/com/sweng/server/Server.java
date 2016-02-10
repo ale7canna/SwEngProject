@@ -427,5 +427,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 			
 		return DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 	}
+
+	@Override
+	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException{
+		
+		DBManager.updateActivityText(activityInfo);
+	}
 	
 }

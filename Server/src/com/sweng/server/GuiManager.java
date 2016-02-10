@@ -193,6 +193,13 @@ public class GuiManager{
 			
 		}
 
+		@Override
+		public void addText(ActivityInfo activityInfo, String text) {
+			
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 

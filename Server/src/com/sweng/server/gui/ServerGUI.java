@@ -39,6 +39,8 @@ import com.sweng.common.gui.MyActivityListModel;
 import com.sweng.common.gui.MyProjectListModel;
 import com.sweng.common.gui.MyUserListModel;
 import com.sweng.common.gui.ProjectInfoGui;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class ServerGUI extends JFrame {
 	private JList userList, userProjectList, projectList, listFriends, activityList;
@@ -74,51 +76,23 @@ public class ServerGUI extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setSize(new Dimension(600, 400));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
-
-		JPanel tabStatistics = new JPanel();
-		tabStatistics.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		tabbedPane.addTab("Statistiche", null, tabStatistics, null);
-		tabStatistics.setLayout(new BoxLayout(tabStatistics, BoxLayout.X_AXIS));
-
-		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
 		gbc_panel_4.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel_4.gridx = 0;
 		gbc_panel_4.gridy = 0;
-		tabStatistics.add(panel_4);
-
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		panel_4.add(lblNewLabel_1);
-
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		GridBagConstraints gbc_panel_5 = new GridBagConstraints();
 		gbc_panel_5.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel_5.gridx = 0;
 		gbc_panel_5.gridy = 0;
-		tabStatistics.add(panel_5);
-
-		JButton btnNewButton = new JButton("New button");
-		panel_5.add(btnNewButton);
-
-		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		tabStatistics.add(panel_6);
-
-		JLabel lblNewLabel = new JLabel("New label");
-		panel_6.add(lblNewLabel);
 		;
 
 		JPanel tabUtente = new JPanel();
 		tabbedPane.addTab("Utenti", null, tabUtente, null);
-		tabUtente.setLayout(new GridLayout(0, 3, 0, 0));
 
 		JPanel panelUser = new JPanel();
 		panelUser.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelUser.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelUser.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		tabUtente.add(panelUser);
 
 		userList = new JList(new MyUserListModel());
 		userList.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -143,7 +117,6 @@ public class ServerGUI extends JFrame {
 		panelUserProject.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelUserProject.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelUserProject.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		tabUtente.add(panelUserProject);
 
 		userProjectList = new JList(new MyProjectListModel());
 		userProjectList.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -171,7 +144,6 @@ public class ServerGUI extends JFrame {
 		panelUserFriends.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelUserFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelUserFriends.setBorder(new LineBorder(new Color(0, 0, 0)));
-		tabUtente.add(panelUserFriends);
 		panelUserFriends.setLayout(new BoxLayout(panelUserFriends, BoxLayout.Y_AXIS));
 
 		JLabel lblNewLabel_4 = new JLabel("Amici");
@@ -183,6 +155,22 @@ public class ServerGUI extends JFrame {
 		listFriends.setAlignmentY(Component.TOP_ALIGNMENT);
 		listFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelUserFriends.add(listFriends);
+		GroupLayout gl_tabUtente = new GroupLayout(tabUtente);
+		gl_tabUtente.setHorizontalGroup(
+			gl_tabUtente.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tabUtente.createSequentialGroup()
+					.addGap(1)
+					.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_tabUtente.setVerticalGroup(
+			gl_tabUtente.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+				.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+				.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+		);
+		tabUtente.setLayout(gl_tabUtente);
 
 		JPanel tabProgetti = new JPanel();
 		tabbedPane.addTab("Progetti", null, tabProgetti, null);

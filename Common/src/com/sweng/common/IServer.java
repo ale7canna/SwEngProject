@@ -51,6 +51,6 @@ public interface IServer extends Remote{
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException;
 	
 	
-	public void addTexttoActivity(Activity act, String text);
+	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException;
 	
 }
