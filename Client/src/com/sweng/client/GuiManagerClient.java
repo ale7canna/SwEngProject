@@ -323,10 +323,10 @@ public class GuiManagerClient {
 		}
 
 		
-//		public void addText(ActivityInfo activityInfo, String text) {
-//			// TODO Auto-generated method stub
-//			clientManager.addTexttoActivity(activityInfo, text);
-//		}
+		public void addText(ActivityInfo activityInfo, String text) {
+			// TODO Auto-generated method stub
+			clientManager.addTexttoActivity(activityInfo, text);
+		}
 
 	
 	}

@@ -49,23 +49,22 @@ public class GUIPanelSignIn extends JPanel{
 		textSignInPassword = new JPasswordField();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(20)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(textSignInPassword, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+						.addComponent(textSignInUserName, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+					.addGap(18)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(button, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(textSignInPassword, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-								.addComponent(textSignInUserName, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
-							.addGap(18)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-									.addGap(38))
-								.addComponent(label, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)))))
+							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+							.addGap(38))
+						.addComponent(label, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(72)
+					.addComponent(button, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(73, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -78,9 +77,9 @@ public class GUIPanelSignIn extends JPanel{
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textSignInPassword, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 						.addComponent(label))
-					.addGap(44)
+					.addGap(42)
 					.addComponent(button)
-					.addContainerGap(121, Short.MAX_VALUE))
+					.addContainerGap(123, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		button.addMouseListener(new MouseAdapter() {
