@@ -11,30 +11,23 @@ import java.util.Date;
 import com.sweng.common.Consts;
 import com.sweng.common.notice.SimpleNotice;
 import com.sweng.common.utils.CustomException;
+import com.sweng.server.Server.IServerEvents;
 import com.sweng.server.gui.ServerGUI;
 
 public class MainServer {
 
-	private static ServerGUI GUI;
+	private static GuiManager guiMgr;
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, RemoteException {
 
-		DBManager db = new DBManager();
-		GuiManager guiMgr = new GuiManager();
+		guiMgr = new GuiManager();
 		
-//		db.addProject(new Project(0, 1, "Cena", true));
-		try
-		{
-			guiMgr.LoadUser(DBManager.getAllUsers());
-			guiMgr.LoadProjects(DBManager.getAllProjects(), DBManager.getActiveProjectsCount(), DBManager.getTotalProjectsCount());
-			guiMgr.LoadActivities(DBManager.getAllActivities(), DBManager.getDoneActivitiesCount(), DBManager.getActivitiesCount());
-		}
-		catch (CustomException e)
-		{
-			
-		}
+		guiMgr.LoadUser();
+		guiMgr.LoadProjects();
+		guiMgr.LoadActivities();
 		
-		Server server = new Server();
+		ServerEvents list = new ServerEvents();
+		Server server = new Server(list);
 		try 
 		{
 			Registry registry = LocateRegistry.createRegistry(Consts.RMI_PORT);
@@ -44,13 +37,48 @@ public class MainServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static class ServerEvents implements IServerEvents {
+
+		@Override
+		public void aggiornaProgetti() {
+			
+
+			Thread t = new Thread(new Runnable() {
+				
+				public void run() {
+					guiMgr.LoadProjects();
+				}
+			});
+			t.start();
+		}
+
+		@Override
+		public void aggiornaUtenti() {
+			
+
+			Thread t = new Thread(new Runnable() {
+				
+				public void run() {
+					guiMgr.LoadUser();
+				}
+			});
+			t.start();
+		}
+
+		@Override
+		public void aggiornaAttivita() {
+			
+			Thread t = new Thread(new Runnable() {
+				
+				public void run() {
+					guiMgr.LoadActivities();
+				}
+			});
+			t.start();
+		}
 		
-		
-//		SimpleNotice n = new SimpleNotice(Date.from(Instant.now()), "Not", "Prima notifica");
-//		
-//		DBManager.storeNotices(n, 2);
-//
-//		DBManager.storeNotices(n, 1);
 	}
 	
 }

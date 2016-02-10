@@ -50,7 +50,8 @@ public class GuiManagerClient {
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gui.setVisible(true);
 		gui.setSize(600, 400);
-		SwingUtilities.updateComponentTreeUI(gui);
+		gui.repaint();
+		gui.revalidate();
 	}
 
 	public void goToUserHomePage() {

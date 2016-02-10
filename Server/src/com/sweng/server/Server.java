@@ -29,9 +29,19 @@ import com.sweng.common.utils.DefaultMessages;
 
 public class Server extends UnicastRemoteObject implements IServer {
 	
-	protected Server() throws RemoteException {
+	interface IServerEvents {
+		public void aggiornaProgetti();
+		public void aggiornaUtenti();
+		public void aggiornaAttivita();
+		
+	}
+	
+	IServerEvents listener;
+	
+	protected Server(IServerEvents _listener) throws RemoteException {
 		super();
 		DBManager.RemoveAllConnectedUsers();
+		listener = _listener;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -44,6 +54,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		DBManager.addActivity(_activity);
 		result = DBManager.getActivityFromNameAndProject(_activity.getName(), _activity.getIdProject());
 		
+		listener.aggiornaAttivita();
 		return result;
 	}
 	
@@ -100,18 +111,20 @@ public class Server extends UnicastRemoteObject implements IServer {
 		DBManager.addProject(_project);
 		result = DBManager.getProjectFromNameAndAdmin(_project.getName(), _project.getIdAdmin());
 				
+		listener.aggiornaProgetti();
 		return result;
 	}
 	
 	@Override
 	public void addUser(User _user) throws RemoteException {
-		
+		//TODO: è il metodo per il sign-in?
 		try {
 			DBManager.addUser(_user);
 		} catch (CustomException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		listener.aggiornaUtenti();
 	}
 	
 	@Override
@@ -133,24 +146,9 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		// Utente connesso alla ricezione delle notifiche
 		DBManager.addClientToObservers(_client);
-		ArrayList<IClient> utenti = DBManager.getObservers();
 		
-		for (IClient c : utenti) {
-			Thread t = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					
-					try {
-						System.out.println(c.getUsername() + " Avvisato");
-						c.sendMessage("Ciao dal server");
-					} catch (RemoteException e) {
-						System.out.println(e.getMessage());
-					}
-				}
-			});
-			t.start();
-		}
+		listener.aggiornaUtenti();
+		
 	}
 	
 	@Override
@@ -159,6 +157,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		try {
 			DBManager.removeObserver(_client);
 			System.out.println("Utente rimosso");
+			listener.aggiornaUtenti();
 		} catch (CustomException e) {
 			System.out.println(e.getMessage());
 		}
@@ -230,7 +229,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public void removeProject(Project project) throws RemoteException, CustomException {
 		
 		DBManager.removeProject(project);
-		
+		listener.aggiornaProgetti();
 	}
 	
 	@Override
@@ -275,12 +274,9 @@ public class Server extends UnicastRemoteObject implements IServer {
 			ArrayList<Activity> activities = DBManager.getActivitiesFromProject(new Project(idProject));
 			ActivityInfo activityInfo = DBManager.getActivityInfo(activities.get(0));
 			
-			Date date = Date.from(Instant.now());
-			String title = DefaultMessages.UnlockedActivityTitle.toString();
-			String message = DefaultMessages.UnlockedActivity.toString();
 			UnlockedActivityNotice n = new UnlockedActivityNotice(activities.get(0));
-			for (User r : activityInfo.getResponsabili())
-				NotifyUser(n, r);
+
+			NotifyUser(n, activityInfo.getResponsabili());
 			
 		} catch (CustomException e) {
 			// TODO Auto-generated catch block

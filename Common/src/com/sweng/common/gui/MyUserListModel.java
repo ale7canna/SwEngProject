@@ -25,5 +25,12 @@ public class MyUserListModel extends DefaultListModel<String> {
 		return null;
 	}
 	
-
+	public void removeAllElements()
+	{
+		super.removeAllElements();
+		if (listaUtenti != null)
+			listaUtenti.clear();
+		
+		listaUtenti = null;
+	}
 }

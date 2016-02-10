@@ -36,6 +36,7 @@ public interface IServer extends Remote{
 	public ActivityInfo getActivityInfo(Activity activity) throws RemoteException, CustomException;
 	public ArrayList<User> getNotMyFriends(int idUser) throws CustomException, RemoteException;
 	public ArrayList<Notice> getNoticeFromUser(User user) throws CustomException, RemoteException;
+	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException;
 	
 	
 	public void removeProject(Project project) throws RemoteException, CustomException;
@@ -44,6 +45,8 @@ public interface IServer extends Remote{
 	
 	public void setNoticeRead(Notice notice, User user) throws RemoteException, CustomException;
 	public void setActivityDone(ActivityInfo activityInfo) throws RemoteException, CustomException;
+	
+	
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
 	public void removeObserver(IClient _client) throws RemoteException;
@@ -51,6 +54,5 @@ public interface IServer extends Remote{
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException;
 	
 	
-	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException;
 	
 }

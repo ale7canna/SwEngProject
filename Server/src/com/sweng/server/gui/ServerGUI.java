@@ -41,12 +41,13 @@ import com.sweng.common.gui.MyUserListModel;
 import com.sweng.common.gui.ProjectInfoGui;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class ServerGUI extends JFrame {
 	private JList userList, userProjectList, projectList, listFriends, activityList;
 	private JPanel projectInfo, standardProjectPanelView;
 	private JSplitPane splitPaneProjects, splitPaneActivity ;
-	private JLabel projectSummaryLabel, activitySummaryLabel;
+	private JLabel projectSummaryLabel, activitySummaryLabel, usersSummaryLabel;
 	private DefaultListModel model;
 	private int counter = 0;
 	private GUIListener listener;
@@ -155,20 +156,36 @@ public class ServerGUI extends JFrame {
 		listFriends.setAlignmentY(Component.TOP_ALIGNMENT);
 		listFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelUserFriends.add(listFriends);
+		
+		usersSummaryLabel = new JLabel("New label");
 		GroupLayout gl_tabUtente = new GroupLayout(tabUtente);
 		gl_tabUtente.setHorizontalGroup(
 			gl_tabUtente.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_tabUtente.createSequentialGroup()
-					.addGap(1)
-					.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
-					.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
-					.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_tabUtente.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_tabUtente.createSequentialGroup()
+							.addGap(251)
+							.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+						.addGroup(gl_tabUtente.createSequentialGroup()
+							.addGap(1)
+							.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
+					.addGap(0))
 		);
 		gl_tabUtente.setVerticalGroup(
 			gl_tabUtente.createParallelGroup(Alignment.LEADING)
-				.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
-				.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
-				.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+				.addGroup(gl_tabUtente.createSequentialGroup()
+					.addGap(12)
+					.addComponent(usersSummaryLabel, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_tabUtente.createParallelGroup(Alignment.LEADING)
+						.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE))
+					.addGap(0))
 		);
 		tabUtente.setLayout(gl_tabUtente);
 
@@ -279,6 +296,7 @@ public class ServerGUI extends JFrame {
 	public void AddUsersToList(ArrayList<User> users) {
 		MyUserListModel listModel = (MyUserListModel) userList.getModel();
 
+		listModel.removeAllElements();
 		if (users != null)
 			for (User u : users)
 				listModel.addElement(u);
@@ -349,6 +367,11 @@ public class ServerGUI extends JFrame {
 				attivitaTotali);
 		activitySummaryLabel.setText(s);
 	}
-	
-	
+
+	public void ChangeUserSummary(int activeUsers, int totalUsers)
+	{
+		String newText = String.format("Ci sono %d utenti attivi su un totale di %d", activeUsers, totalUsers);
+		usersSummaryLabel.setText(newText); 
+	}
+
 }

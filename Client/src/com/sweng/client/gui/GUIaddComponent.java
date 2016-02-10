@@ -231,6 +231,7 @@ public class GUIaddComponent extends JFrame {
 				}
 
 			}
+			
 		});
 		addProjbtn.setBounds(266, 227, 89, 23);
 		getContentPane().add(addProjbtn);
@@ -266,6 +267,10 @@ public class GUIaddComponent extends JFrame {
 
 		getContentPane().setLayout(null);
 		getContentPane().add(scrollPane);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(84, 211, 69, 20);
+		getContentPane().add(lblNewLabel);
 
 	}
 }

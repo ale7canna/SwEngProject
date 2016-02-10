@@ -37,7 +37,7 @@ public class GUIPanelSignIn extends JPanel{
 		panel.setBounds(5, 5, 285, 340);
 		add(panel);
 		
-		textSignInUserName = new JTextField();
+		textSignInUserName = new JTextField("");
 		textSignInUserName.setColumns(10);
 		
 		JButton button = new JButton("SignIn");
@@ -46,7 +46,7 @@ public class GUIPanelSignIn extends JPanel{
 		
 		JLabel label_1 = new JLabel("UserName");
 		
-		textSignInPassword = new JPasswordField();
+		textSignInPassword = new JPasswordField("");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -99,26 +99,26 @@ public class GUIPanelSignIn extends JPanel{
 		panel_1.setBounds(290, 5, 285, 340);
 		add(panel_1);
 		
-		textSignUpName = new JTextField();
+		textSignUpName = new JTextField("");
 		textSignUpName.setColumns(10);
 		
 		JLabel label_2 = new JLabel("Name");
 		
 		JLabel label_3 = new JLabel("UserName");
 		
-		textSignUpUserName = new JTextField();
+		textSignUpUserName = new JTextField("");
 		textSignUpUserName.setColumns(10);
 		
 		JLabel label_4 = new JLabel("Password");
 		
 		JLabel label_5 = new JLabel("Surname");
 		
-		textSignUpSurname = new JTextField();
+		textSignUpSurname = new JTextField("");
 		textSignUpSurname.setColumns(10);
 		
 		JButton btnSignUp = new JButton("SignUp");
 		
-		textSignUpPassword = new JPasswordField();
+		textSignUpPassword = new JPasswordField("");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
