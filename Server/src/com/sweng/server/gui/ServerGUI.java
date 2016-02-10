@@ -42,9 +42,11 @@ import com.sweng.common.gui.ProjectInfoGui;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 
 public class ServerGUI extends JFrame {
-	private JList userList, userProjectList, projectList, listFriends, activityList;
+	private JList userList, userProjectList, listFriends, activityList, projectList;
 	private JPanel projectInfo, standardProjectPanelView;
 	private JSplitPane splitPaneProjects, splitPaneActivity ;
 	private JLabel projectSummaryLabel, activitySummaryLabel, usersSummaryLabel;
@@ -72,7 +74,7 @@ public class ServerGUI extends JFrame {
 		setUIFont(new FontUIResource(f));
 
 		getContentPane().setSize(new Dimension(600, 400));
-		setSize(new Dimension(860, 490));
+		setSize(new Dimension(1031, 570));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setSize(new Dimension(600, 400));
@@ -93,7 +95,7 @@ public class ServerGUI extends JFrame {
 		JPanel panelUser = new JPanel();
 		panelUser.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelUser.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panelUser.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panelUser.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 
 		userList = new JList(new MyUserListModel());
 		userList.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -106,18 +108,15 @@ public class ServerGUI extends JFrame {
 				listener.UserClicked(u);
 			}
 		});
-		panelUser.setLayout(new BoxLayout(panelUser, BoxLayout.Y_AXIS));
 
 		JLabel lblNewLabel_2 = new JLabel("Utenti");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		lblNewLabel_2.setAlignmentY(Component.TOP_ALIGNMENT);
-		panelUser.add(lblNewLabel_2);
-		panelUser.add(userList);
 
 		JPanel panelUserProject = new JPanel();
 		panelUserProject.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelUserProject.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panelUserProject.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panelUserProject.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 
 		userProjectList = new JList(new MyProjectListModel());
 		userProjectList.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -132,103 +131,117 @@ public class ServerGUI extends JFrame {
 				}
 			}
 		});
-		panelUserProject.setLayout(new BoxLayout(panelUserProject, BoxLayout.Y_AXIS));
 
 		JLabel lblNewLabel_3 = new JLabel("Progetti");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		lblNewLabel_3.setAlignmentY(Component.TOP_ALIGNMENT);
-		panelUserProject.add(lblNewLabel_3);
-
-		panelUserProject.add(userProjectList);
 
 		JPanel panelUserFriends = new JPanel();
 		panelUserFriends.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelUserFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panelUserFriends.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelUserFriends.setLayout(new BoxLayout(panelUserFriends, BoxLayout.Y_AXIS));
+		panelUserFriends.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 
 		JLabel lblNewLabel_4 = new JLabel("Amici");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		lblNewLabel_4.setAlignmentY(Component.TOP_ALIGNMENT);
-		panelUserFriends.add(lblNewLabel_4);
 
 		listFriends = new JList(new MyUserListModel());
 		listFriends.setAlignmentY(Component.TOP_ALIGNMENT);
 		listFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panelUserFriends.add(listFriends);
 		
 		usersSummaryLabel = new JLabel("New label");
 		GroupLayout gl_tabUtente = new GroupLayout(tabUtente);
 		gl_tabUtente.setHorizontalGroup(
 			gl_tabUtente.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_tabUtente.createSequentialGroup()
-					.addGroup(gl_tabUtente.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_tabUtente.createSequentialGroup()
-							.addGap(251)
-							.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-						.addGroup(gl_tabUtente.createSequentialGroup()
-							.addGap(1)
-							.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)))
+				.addGroup(Alignment.TRAILING, gl_tabUtente.createSequentialGroup()
+					.addComponent(panelUser, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE)
-					.addGap(0))
+					.addComponent(panelUserProject, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelUserFriends, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
+				.addGroup(gl_tabUtente.createSequentialGroup()
+					.addGap(230)
+					.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 566, GroupLayout.PREFERRED_SIZE)
+					.addGap(208))
 		);
 		gl_tabUtente.setVerticalGroup(
 			gl_tabUtente.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_tabUtente.createSequentialGroup()
 					.addGap(12)
-					.addComponent(usersSummaryLabel, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
 					.addGroup(gl_tabUtente.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelUserFriends, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panelUserProject, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panelUser, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE))
-					.addGap(0))
+						.addComponent(panelUserProject, GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+						.addComponent(panelUserFriends, GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+						.addComponent(panelUser, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
+					.addContainerGap())
 		);
+		
+		GroupLayout gl_panelUserFriends = new GroupLayout(panelUserFriends);
+		gl_panelUserFriends.setHorizontalGroup(
+			gl_panelUserFriends.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panelUserFriends.createSequentialGroup()
+					.addGap(136)
+					.addComponent(lblNewLabel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(130))
+				.addComponent(listFriends, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+		);
+		gl_panelUserFriends.setVerticalGroup(
+			gl_panelUserFriends.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUserFriends.createSequentialGroup()
+					.addComponent(lblNewLabel_4)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listFriends, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+		);
+		panelUserFriends.setLayout(gl_panelUserFriends);
+		
+		GroupLayout gl_panelUserProject = new GroupLayout(panelUserProject);
+		gl_panelUserProject.setHorizontalGroup(
+			gl_panelUserProject.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelUserProject.createSequentialGroup()
+					.addGap(127)
+					.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(121))
+				.addComponent(userProjectList, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+		);
+		gl_panelUserProject.setVerticalGroup(
+			gl_panelUserProject.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUserProject.createSequentialGroup()
+					.addComponent(lblNewLabel_3)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(userProjectList, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+		);
+		panelUserProject.setLayout(gl_panelUserProject);
+		
+		GroupLayout gl_panelUser = new GroupLayout(panelUser);
+		gl_panelUser.setHorizontalGroup(
+			gl_panelUser.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUser.createSequentialGroup()
+					.addGap(142)
+					.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(138))
+				.addComponent(userList, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+		);
+		gl_panelUser.setVerticalGroup(
+			gl_panelUser.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUser.createSequentialGroup()
+					.addComponent(lblNewLabel_2)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(userList, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+		);
+		panelUser.setLayout(gl_panelUser);
 		tabUtente.setLayout(gl_tabUtente);
 
 		JPanel tabProgetti = new JPanel();
 		tabbedPane.addTab("Progetti", null, tabProgetti, null);
-		GridBagLayout gbl_tabProgetti = new GridBagLayout();
-		gbl_tabProgetti.columnWidths = new int[] { 833, 0 };
-		gbl_tabProgetti.rowHeights = new int[] { 41, 324, 0 };
-		gbl_tabProgetti.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
-		gbl_tabProgetti.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		tabProgetti.setLayout(gbl_tabProgetti);
 
 		JPanel panel_2 = new JPanel();
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.fill = GridBagConstraints.BOTH;
-		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_2.gridx = 0;
-		gbc_panel_2.gridy = 0;
-		tabProgetti.add(panel_2, gbc_panel_2);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		projectSummaryLabel = new JLabel("");
 		panel_2.add(projectSummaryLabel);
 
 		splitPaneProjects = new JSplitPane();
-		GridBagConstraints gbc_splitPaneProjects = new GridBagConstraints();
-		gbc_splitPaneProjects.fill = GridBagConstraints.BOTH;
-		gbc_splitPaneProjects.gridx = 0;
-		gbc_splitPaneProjects.gridy = 1;
-		tabProgetti.add(splitPaneProjects, gbc_splitPaneProjects);
-
-		projectList = new JList(new MyProjectListModel());
-		projectList.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent evt) {
-				if (evt.getClickCount() == 1) {
-					Project p = (Project) ((MyProjectListModel) projectList.getModel())
-							.getProjectAt(projectList.getSelectedIndex());
-					listener.ProjectClicked(p);
-				}
-			}
-		});
-		splitPaneProjects.setLeftComponent(projectList);
 
 		standardProjectPanelView = new JPanel();
 		standardProjectPanelView.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -238,7 +251,27 @@ public class ServerGUI extends JFrame {
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setAlignmentX(0.5f);
 		standardProjectPanelView.add(label);
-		splitPaneProjects.setDividerLocation(200);
+		splitPaneProjects.setDividerLocation(250);
+		GroupLayout gl_tabProgetti = new GroupLayout(tabProgetti);
+		gl_tabProgetti.setHorizontalGroup(
+			gl_tabProgetti.createParallelGroup(Alignment.LEADING)
+				.addComponent(splitPaneProjects, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
+				.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
+		);
+		gl_tabProgetti.setVerticalGroup(
+			gl_tabProgetti.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tabProgetti.createSequentialGroup()
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+					.addComponent(splitPaneProjects, GroupLayout.PREFERRED_SIZE, 439, GroupLayout.PREFERRED_SIZE))
+		);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		splitPaneProjects.setLeftComponent(scrollPane);
+		
+		projectList = new JList(new MyProjectListModel());
+		scrollPane.setViewportView(projectList);
+		tabProgetti.setLayout(gl_tabProgetti);
 		
 		JPanel tabAttivita = new JPanel();
 		tabbedPane.addTab("Attivit\u00E0", null, tabAttivita, null);
