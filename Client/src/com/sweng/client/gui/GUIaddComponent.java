@@ -64,6 +64,7 @@ public class GUIaddComponent extends JFrame {
 	private JSpinner timeSpinner;
 	private DatePicker datePicker;
 	private JTextPane textPane;
+	private JCheckBox isActive;
 
 	public GUIaddComponent(EventListenerGUI _listener,
 			ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
@@ -81,7 +82,7 @@ public class GUIaddComponent extends JFrame {
 		getContentPane().add(NameLabel);
 
 		txtProjectName = new JTextField();
-		txtProjectName.setBounds(128, 22, 86, 20);
+		txtProjectName.setBounds(99, 18, 86, 20);
 		getContentPane().add(txtProjectName);
 		txtProjectName.setColumns(10);
 
@@ -93,30 +94,32 @@ public class GUIaddComponent extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setSize(new Dimension(300, 200));
-		scrollPane.setBounds(280, 51, 226, 168);
+		scrollPane.setBounds(279, 46, 258, 167);
 		scrollPane.setVisible(true);
 
 		scrollPane.setColumnHeaderView(listFriends);
 
 		if (!isProject) {
+			JLabel lblNewLabel = new JLabel("Activity Time\r\n\r\n");
+			lblNewLabel.setBounds(10, 296, 94, 20);
+			getContentPane().add(lblNewLabel);
 			timeSpinner = new JSpinner(new SpinnerDateModel());
-			JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(
-					timeSpinner, "HH:mm:ss");
+			JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
 			timeSpinner.setEditor(timeEditor);
 			timeSpinner.setValue(Time.from(Instant.now()));
-			timeSpinner.setBounds(10, 250, 80, 30);
+			timeSpinner.setBounds(99, 271, 80, 30);
 			getContentPane().add(timeSpinner);
 			datePicker = new DatePicker(Date.from(Instant.now()),
 					new SimpleDateFormat("yyyy/MM/dd"));
-			datePicker.setBounds(200, 400, 200, 50);
+			datePicker.setBounds(99, 312, 200, 50);
 			getContentPane().add(datePicker);
 
 			JLabel lblMessage = new JLabel("Message");
-			lblMessage.setBounds(10, 234, 71, 23);
+			lblMessage.setBounds(10, 126, 71, 23);
 			getContentPane().add(lblMessage);
 
 			JPanel panel = new JPanel();
-			panel.setBounds(110, 234, 134, 113);
+			panel.setBounds(99, 126, 134, 113);
 			getContentPane().add(panel);
 			panel.setLayout(null);
 
@@ -129,14 +132,13 @@ public class GUIaddComponent extends JFrame {
 		}
 
 		if (isProject && !isAddFriends)
-			ChooseFriendsLabel = new JLabel(
-					"Choose partecipans among your friends ");
+			ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
 		if (isProject && isAddFriends)
 			ChooseFriendsLabel = new JLabel("Choose new friends");
 		if (!isProject)
 			ChooseFriendsLabel = new JLabel("Choose responsible for the activity");
 		
-		ChooseFriendsLabel.setBounds(178, 21, 219, 14);
+		ChooseFriendsLabel.setBounds(279, 21, 239, 14);
 		getContentPane().add(ChooseFriendsLabel);
 
 		JButton addActivitybtn = new JButton("Add New Activity");
@@ -165,25 +167,25 @@ public class GUIaddComponent extends JFrame {
 					}
 					System.out.println(dateTime);
 
-					_listener.addActivityContinue(txtProjectName.getText(),
-							PlaceActivityText.getText(), date,
-							listFriends.getSelectedItems(), textPane.getText());
+					_listener.addActivityContinue(txtProjectName.getText(),	PlaceActivityText.getText(), date,listFriends.getSelectedItems(), textPane.getText());
 					_listener.refreshAll();
 				}
 			}
 		});
-		addActivitybtn.setBounds(353, 234, 106, 23);
+		addActivitybtn.setBounds(398, 237, 139, 23);
 		getContentPane().add(addActivitybtn);
 
-		JCheckBox isActive = new JCheckBox("");
-		isActive.setBounds(84, 51, 23, 20);
-		isActive.setSelected(true);
-		getContentPane().add(isActive);
-
+	
 		if (!isProject) {
 			addProjbtn = new JButton("FINISH");
-		} else
+		} else{
 			addProjbtn = new JButton("OK");
+			isActive = new JCheckBox("");
+			isActive.setBounds(99, 51, 23, 20);
+			isActive.setSelected(true);
+			getContentPane().add(isActive);
+		}
+		
 
 		addProjbtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -233,16 +235,16 @@ public class GUIaddComponent extends JFrame {
 			}
 			
 		});
-		addProjbtn.setBounds(266, 227, 89, 23);
+		addProjbtn.setBounds(279, 239, 89, 23);
 		getContentPane().add(addProjbtn);
 
 		JLabel PlaceActivityLabel = new JLabel("Activity Place \r\n");
-		PlaceActivityLabel.setBounds(10, 181, 83, 14);
+		PlaceActivityLabel.setBounds(10, 93, 83, 14);
 		getContentPane().add(PlaceActivityLabel);
 
 		PlaceActivityText = new JTextField();
 		PlaceActivityText.setColumns(10);
-		PlaceActivityText.setBounds(110, 178, 86, 20);
+		PlaceActivityText.setBounds(99, 90, 86, 20);
 		getContentPane().add(PlaceActivityText);
 
 		JLabel lblNewLabelActivate = new JLabel("Activate");
@@ -268,9 +270,7 @@ public class GUIaddComponent extends JFrame {
 		getContentPane().setLayout(null);
 		getContentPane().add(scrollPane);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(84, 211, 69, 20);
-		getContentPane().add(lblNewLabel);
+	
 
 	}
 }

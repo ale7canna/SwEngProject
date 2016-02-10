@@ -34,11 +34,11 @@ public class ActivityInfoGui extends JPanel {
 	private JTextField textFieldHour;
 
 	public ActivityInfoGui(ActivityInfo activityInfo, ICommonGui _listener) {
-		setSize(new Dimension(550, 300));
-		
-		setLayout(new GridLayout(0, 1, 0, 0));
+		setSize(new Dimension(800, 416));
+		setLayout(null);
 
 		JSplitPane splitPane = new JSplitPane();
+		splitPane.setBounds(0, 0, 790, 402);
 		add(splitPane);
 
 		JPanel panelActivity = new JPanel();
@@ -120,6 +120,7 @@ public class ActivityInfoGui extends JPanel {
 		panel.add(scrollPane);
 		
 		JTextPane textPane = new JTextPane();
+		textPane.setText(activityInfo.getText());
 		scrollPane.setViewportView(textPane);
 		
 		JButton btnNewButton = new JButton("Add Text\r\n");
@@ -165,8 +166,6 @@ public class ActivityInfoGui extends JPanel {
 		splitPane.setRightComponent(panelResponsabili);
 		splitPane.setDividerLocation(410);
 
-		JLabel lblAttivit = new JLabel("");
-
 		JLabel lblResponsible = new JLabel("Responsabili");
 		lblResponsible.setForeground(new Color(0, 140, 128));
 		lblResponsible.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
@@ -174,37 +173,42 @@ public class ActivityInfoGui extends JPanel {
 		listResponsible = new JList(new MyUserListModel());
 		lblResponsible.setLabelFor(listResponsible);
 		
+	
+		
 		JLabel lblNewLabel_1 = new JLabel("Double click to remove from responsible");
 		lblNewLabel_1.setLabelFor(panelResponsabili);
 		lblNewLabel_1.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
 		GroupLayout gl_panelResponsabili = new GroupLayout(panelResponsabili);
 		gl_panelResponsabili.setHorizontalGroup(
 			gl_panelResponsabili.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panelResponsabili.createSequentialGroup()
-					.addGroup(gl_panelResponsabili.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelResponsabili.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblAttivit))
-						.addGroup(gl_panelResponsabili.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblNewLabel_1)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				.addGroup(gl_panelResponsabili.createSequentialGroup()
 					.addGap(132)
 					.addComponent(lblResponsible)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(91, Short.MAX_VALUE))
+				.addGroup(gl_panelResponsabili.createSequentialGroup()
+					.addContainerGap(84, Short.MAX_VALUE)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE)
+					.addGap(60))
+				.addGroup(Alignment.LEADING, gl_panelResponsabili.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNewLabel_1)
+					.addContainerGap(180, Short.MAX_VALUE))
 		);
 		gl_panelResponsabili.setVerticalGroup(
 			gl_panelResponsabili.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelResponsabili.createSequentialGroup()
 					.addGap(13)
-					.addGroup(gl_panelResponsabili.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblAttivit)
-						.addComponent(lblResponsible))
-					.addGap(245)
+					.addComponent(lblResponsible)
+					.addGap(26)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(191)
 					.addComponent(lblNewLabel_1)
 					.addContainerGap())
 		);
+		
+		scrollPane_1.setViewportView(listResponsible);
 		panelResponsabili.setLayout(gl_panelResponsabili);
 
 		listResponsible.addMouseListener(new MouseAdapter() {
