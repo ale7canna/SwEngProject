@@ -443,6 +443,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			return server.removeActivityResponsible(resp);
 		} catch (RemoteException | CustomException e) {
 			// TODO Auto-generated catch block
+			if (e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -454,6 +456,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 			server.startProject(project);
 		} catch (RemoteException | CustomException e) {
 			// TODO Auto-generated catch block
+			if (e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -463,7 +467,14 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public void addTexttoActivity(ActivityInfo activityInfo, String text) {
 		// TODO Auto-generated method stub
 		activityInfo.setText(text);
-		server.addTexttoActivity(activityInfo);
+		try {
+			server.addTexttoActivity(activityInfo);
+		} catch (RemoteException | CustomException e) {
+			// TODO Auto-generated catch block
+			if (e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
+			e.printStackTrace();
+		}
 		
 	}
 
