@@ -9,5 +9,6 @@ public enum Errors {
 	FriendsNotFound, 
 	NetworkError, 
 	AllUsersYetFriends,
+	UserAlreadyLoggedIn
 
 }

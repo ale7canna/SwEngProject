@@ -27,6 +27,7 @@ import com.sweng.common.notice.StartedProjNotice;
 import com.sweng.common.notice.UnlockedActivityNotice;
 import com.sweng.common.utils.CustomException;
 import com.sweng.common.utils.DefaultMessages;
+import com.sweng.common.utils.Errors;
 
 public class Server extends UnicastRemoteObject implements IServer {
 	
@@ -138,12 +139,10 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		User result = null;
 		result = DBManager.getUser(username, password);
-		try {
-			System.out.println(getClientHost());
-		} catch (ServerNotActiveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		if (DBManager.getConnectedUserByUserId(result.getIdUser()) != null)
+			throw new CustomException(Errors.UserAlreadyLoggedIn);
+		
 		return result;
 	}
 	

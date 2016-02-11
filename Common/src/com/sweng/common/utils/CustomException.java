@@ -33,6 +33,7 @@ public class CustomException extends Exception implements Serializable{
 		listaErrori.put(Errors.FriendsNotFound, "L'utente non ha nessun amico. The user do not have any friend.");
 		listaErrori.put(Errors.NetworkError, "Errore di rete. Error from the Network.");
 		listaErrori.put(Errors.AllUsersYetFriends, "All available users are yet your friends");
+		listaErrori.put(Errors.UserAlreadyLoggedIn, "The same user has already logged in.");
 		
 
 //		listaErrori.put(Errors.MaxHumidity, "L'umidità si trova già al massimo");
