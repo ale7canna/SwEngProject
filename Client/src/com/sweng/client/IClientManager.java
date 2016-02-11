@@ -30,10 +30,10 @@ public interface IClientManager {
 
 	public ArrayList<Notice> getNotices();
 
-	public Project addProject(String nameProject, int idAdmin, boolean isActive);
+	public Project addProject(String nameProject, int idAdmin, boolean isActive, ArrayList<Integer> participants);
 
 	public Activity addActivity(String nameActivity, int idProject,
-			String place, Date hour, String text);
+			String place, Date hour, String text, ArrayList<Integer> respActivity);
 
 	public void startProject(Project project);
 

@@ -209,13 +209,18 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	}
 	
 	// ADD METHODS
- 	public Project addProject(String nameProject, int idAdmin, boolean isActive) {
+ 	public Project addProject(String nameProject, int idAdmin, boolean isActive, ArrayList<Integer> participants) {
 		Project _project = new Project(idAdmin, nameProject, isActive);
 		
 		try {
 			_project = server.addProject(_project);
 			Participant p = new Participant(user.getIdUser(), _project.getIdProject());
 			server.addParticipant(p);
+			
+			for (int i:participants){
+				p= new Participant(i, _project.getIdProject());
+				server.addParticipant(p);
+			}
 
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
@@ -243,12 +248,19 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 	}
 
-	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour, String text) {
+	public Activity addActivity(String nameActivity, int idProject, String place, java.util.Date hour, String text, ArrayList<Integer> responsibles) {
 
 		Activity _activity = new Activity(idProject, nameActivity, place, hour, false, text);
 
 		try {
 			_activity = server.addActivity(_activity);
+			
+			ActivityResponsible ar = null;
+			for (int i : responsibles){
+				ar = new ActivityResponsible(i, _activity.getIdActivity());
+				server.addActivityResponsible(ar);
+				
+			}
 		} catch (RemoteException | CustomException e) {
 			e.printStackTrace();
 		}

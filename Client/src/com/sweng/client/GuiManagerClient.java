@@ -146,7 +146,7 @@ public class GuiManagerClient {
 			// non ha senso quindi fare poi l'addParticipants su quell'ID.
 			// Modifico la funzione del server addProject. Le faccio restituire
 			// un bean Progetto con l'id giusto.
-			project = clientManager.addProject(name, clientManager.getUser().getIdUser(), isActive);
+			project = clientManager.addProject(name, clientManager.getUser().getIdUser(), isActive, participants);
 			clientManager.addParticipants(participants, project.getIdProject());
 
 			JOptionPane.showMessageDialog(null, "Project was added correctly");
@@ -158,8 +158,8 @@ public class GuiManagerClient {
 
 		public void addActivityContinue(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity, String text) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text);
-			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text, respActivity);
+//			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 
 			JOptionPane.showMessageDialog(null, "Activity was added correctly");
 			addActivityFrame.clearall();
@@ -170,8 +170,8 @@ public class GuiManagerClient {
 
 		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity, String text) {
 
-			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text);
-			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
+			activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text, respActivity);
+//			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 			addActivityFrame.setVisible(false);
 			addActivityFrame.dispose();
 			
