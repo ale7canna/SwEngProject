@@ -117,14 +117,16 @@ public class GuiManagerClient {
 			friendships = clientManager.getFriendships();
 			addProjectFrame = new GUIaddComponent(this, friendships, true, false);
 			addProjectFrame.setVisible(true);
-			addProjectFrame.setSize(600, 600);
+			addProjectFrame.setBounds(700, 0, 600, 400);
+//			addProjectFrame.setSize(600, 600);
 		}
 
 		public void addActivityView(Project project) {
 			participants = clientManager.getParticipant(project);
 			addActivityFrame = new GUIaddComponent(this, participants, false, false);
 			addActivityFrame.setVisible(true);
-			addActivityFrame.setSize(600, 600);
+			addActivityFrame.setBounds(700, 0, 600, 500);
+//			addActivityFrame.setSize(600, 600);
 		}
 
 		public void addFriendsView() {
@@ -133,7 +135,8 @@ public class GuiManagerClient {
 			// notmyfriends = clientManager.getNotmyFriends();
 			addFriendsFrame = new GUIaddComponent(this, clientManager.getNotmyFriends(), true, true);
 			addFriendsFrame.setVisible(true);
-			addFriendsFrame.setSize(600, 600);
+			addFriendsFrame.setBounds(700, 0, 600, 400);
+//			addFriendsFrame.setSize(600, 600);
 			System.out.println("Add friends view");
 
 		}
