@@ -12,7 +12,7 @@ public enum DefaultMessages {
 	FinishedProject("Il progetto è pronto per essere eseguito."),
 	FriendShipAddedTitle("Friendship added"),
 	ActivityWithoutResponsibleTitle("No responsible for activity"),
-	ActivityWithoutResponsible("Each responsible for activity gives up the role of responsible."),
+	ActivityWithoutResponsible("Each responsible for activity gives up role of responsible. You become the responsible of the activity."),
 	ActivityDoneByOtherTitle("Your activity was completed"),
 	ActivityDoneByOther("Another co-responsible completed your activity.");
 	

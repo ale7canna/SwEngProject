@@ -31,8 +31,11 @@ import com.sweng.common.utils.DefaultMessages;
 public class Server extends UnicastRemoteObject implements IServer {
 	
 	interface IServerEvents {
+		
 		public void aggiornaProgetti();
+		
 		public void aggiornaUtenti();
+		
 		public void aggiornaAttivita();
 		
 	}
@@ -55,11 +58,12 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		if (listener != null)
 			listener.aggiornaAttivita();
-		
+			
 		return _activity;
 	}
 	
 	public void startProject(Project project) throws RemoteException, CustomException {
+		
 		NotifyFirstActivityResponsible(project.getIdProject());
 		NotifyAllParticipants(project.getIdProject(), true);
 	}
@@ -117,7 +121,8 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	@Override
 	public void addUser(User _user) throws RemoteException {
-		//TODO: è il metodo per il sign-in?
+		
+		// TODO: è il metodo per il sign-in?
 		try {
 			DBManager.addUser(_user);
 		} catch (CustomException e) {
@@ -248,18 +253,18 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 	
 	@Override
-	public void setActivityDone(ActivityInfo activityInfo, User whoCompletedActivity) throws RemoteException, CustomException {
-		
+	public void setActivityDone(ActivityInfo activityInfo, User whoCompletedActivity)
+			throws RemoteException, CustomException {
+			
 		DBManager.setActivityDone(activityInfo);
 		
-		activityInfo.getResponsabili().remove(whoCompletedActivity);
-		ArrayList<User> otherResponsible = activityInfo.getResponsabili();
+		if (whoCompletedActivity != null)
+			activityInfo.getResponsabili().remove(whoCompletedActivity);
+		
+		ArrayList<User> otherResponsibles = activityInfo.getResponsabili();
 		
 		Notice n = new FinishedActivityNotice(activityInfo);
-		NotifyUser(n, otherResponsible);
-		
-		
-		
+		NotifyUser(n, otherResponsibles);
 		
 		// CONTROLLARE STATO ATTIVITA/PROGETTO PER NOTIFICHE
 		
@@ -280,14 +285,14 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 	}
 	
-	private void NotifyFirstActivityResponsible(int idProject)
-	{
+	private void NotifyFirstActivityResponsible(int idProject) {
+		
 		try {
 			ArrayList<Activity> activities = DBManager.getActivitiesFromProject(new Project(idProject));
 			ActivityInfo activityInfo = DBManager.getActivityInfo(activities.get(0));
 			
 			UnlockedActivityNotice n = new UnlockedActivityNotice(activities.get(0));
-
+			
 			NotifyUser(n, activityInfo.getResponsabili());
 			
 		} catch (CustomException e) {
@@ -298,31 +303,29 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 	
 	private void notifyNextResponsible(Activity activity) {
+		
 		System.out.println("Attività completata. Notificare utente ");
 		
-			try {
+		try {
+			
+			ArrayList<User> responsibles = DBManager.getActivityInfo(activity).getResponsabili();
+			for (User r : responsibles) {
+				Date date = Date.from(Instant.now());
+				String title = DefaultMessages.UnlockedActivityTitle.toString();
+				String message = DefaultMessages.UnlockedActivity.toString();
+				Notice n = new UnlockedActivityNotice(activity);
 				
-				ArrayList<User> responsibles = DBManager.getActivityInfo(activity).getResponsabili();
-				for (User r : responsibles)
-				{
-					Date date = Date.from(Instant.now());
-					String title = DefaultMessages.UnlockedActivityTitle.toString();
-					String message = DefaultMessages.UnlockedActivity.toString();
-					Notice n = new UnlockedActivityNotice(activity);
-
-					NotifyUser(n, r);
-				}
-			} catch (CustomException e) {
-
-				System.out.println(e.getMessage());
+				NotifyUser(n, r);
 			}
+		} catch (CustomException e) {
 			
-
-			
+			System.out.println(e.getMessage());
+		}
+		
 	}
 	
-	private void NotifyAllParticipants(int idProject, boolean isStarted)
-	{
+	private void NotifyAllParticipants(int idProject, boolean isStarted) {
+		
 		try {
 			ProjectInfo projectInfo = DBManager.getProjectInfo(new Project(idProject));
 			ArrayList<User> participants = DBManager.getParticipantsFromProject(new Project(idProject));
@@ -332,7 +335,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 				notice = new StartedProjNotice(projectInfo);
 			else
 				notice = new FinishedProjNotice(projectInfo);
-			
+				
 			NotifyUser(notice, participants);
 			
 		} catch (CustomException e) {
@@ -340,58 +343,76 @@ public class Server extends UnicastRemoteObject implements IServer {
 		}
 	}
 	
-	private void NotifyUser(Notice notice, ArrayList<User> users)
-	{
-		IClient client;
-
-		try {
-			int idNotifica = DBManager.storeNotice(notice);
-			notice.setId(idNotifica);
+	private void NotifyUser(Notice notice, ArrayList<User> users) {
+		
+		Thread thread = new Thread(new Runnable() {
 			
-			for (User u : users)
-			{
-				DBManager.storeUserNotices(notice, u.getIdUser());
+			@Override
+			public void run() {
 				
-				client = DBManager.getConnectedUserByUserId(u.getIdUser());
-				if (client != null)
-					client.update(notice);
+				IClient client;
+				
+				try {
+					int idNotifica = DBManager.storeNotice(notice);
+					notice.setId(idNotifica);
+					
+					for (User u : users) {
+						DBManager.storeUserNotices(notice, u.getIdUser());
+						
+						client = DBManager.getConnectedUserByUserId(u.getIdUser());
+						if (client != null)
+							client.update(notice);
+					}
+					
+				} catch (CustomException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RemoteException e) {
+					System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
+				}
+				
 			}
-			
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
-		}
+		});
+		thread.start();
+		
 	}
 	
-	private void NotifyUser(Notice notice, User user)
-	{
-		IClient client;
-
-		try {
-			int idNotifica = DBManager.storeNotice(notice);
-			notice.setId(idNotifica);
+	private void NotifyUser(Notice notice, User user) {
+		
+		Thread thread = new Thread(new Runnable() {
 			
-			DBManager.storeUserNotices(notice, user.getIdUser());
-			
-			client = DBManager.getConnectedUserByUserId(user.getIdUser());
-			if (client != null)
-				client.update(notice);
+			@Override
+			public void run() {
 				
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
-		}
+				IClient client;
+				
+				try {
+					int idNotifica = DBManager.storeNotice(notice);
+					notice.setId(idNotifica);
+					
+					DBManager.storeUserNotices(notice, user.getIdUser());
+					
+					client = DBManager.getConnectedUserByUserId(user.getIdUser());
+					if (client != null)
+						client.update(notice);
+						
+				} catch (CustomException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RemoteException e) {
+					System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
+				}
+				
+			}
+		});
+		thread.start();
 	}
 	
 	private void endOfProject(Project project) {
 		
 		NotifyAllParticipants(project.getIdProject(), false);
 	}
-
+	
 	@Override
 	public ArrayList<Notice> getNoticeFromUser(User user) throws CustomException, RemoteException {
 		
@@ -400,20 +421,20 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		return result;
 	}
-
+	
 	@Override
 	public void setNoticeRead(Notice notice, User user) throws RemoteException, CustomException {
 		
 		DBManager.setNoticeDone(notice, user);
 	}
-
+	
 	@Override
 	public ArrayList<User> removeParticipant(Participant participant) throws RemoteException, CustomException {
 		
 		DBManager.removeParticipant(participant);
 		return DBManager.getParticipantsFromProject(new Project(participant.getIdProject()));
 	}
-
+	
 	@Override
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException {
 		
@@ -421,23 +442,23 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		ArrayList<User> responsabili = DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 		
-		if (!(responsabili.size() > 0))
-		{
+		if (!(responsabili.size() > 0)) {
 			Activity activity = DBManager.getActivityFromId(resp.getIdActivity());
 			Project proj = DBManager.getProjectFromActivity(activity);
 			User admin = DBManager.getProjectAdmin(proj);
 			
+			ActivityResponsible ar = new ActivityResponsible(admin.getIdUser(), activity.getIdActivity());
+			addActivityResponsible(ar);
+			
 			Notice notice = new ActivityWithoutResponsibleNotice(proj, activity);
 			NotifyUser(notice, admin);
 		}
-			
 		
-			
 		return DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 	}
-
+	
 	@Override
-	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException{
+	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException {
 		
 		DBManager.updateActivityText(activityInfo);
 	}

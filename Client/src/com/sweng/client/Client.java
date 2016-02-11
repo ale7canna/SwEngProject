@@ -112,7 +112,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	
 	public ArrayList<User> getNotmyFriends(){
 		try {
-			notmyFriends.clear();
+			if (notmyFriends != null)
+				notmyFriends.clear();
 			notmyFriends=server.getNotMyFriends(user.getIdUser());
 		} catch (RemoteException | CustomException e) {
 			

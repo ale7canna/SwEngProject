@@ -1,6 +1,5 @@
 package com.sweng.server;
 
-import java.awt.List;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -8,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.beans.ActivityResponsible;
@@ -26,13 +26,17 @@ import com.sweng.server.gui.ServerGUI;
 public class GuiManager {
 	
 	private static ServerGUI GUI;
-	ProjectInfoGui projectInfoGui;
+	private IServer server;
+	private ProjectInfoGui projectInfoGui;
 	
-	public GuiManager() {
+	
+	public GuiManager(IServer _server) {
 		GUI = new ServerGUI(new GuiListener());
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUI.setSize(1400, 800);
 		GUI.setVisible(true);
+		
+		server = _server;
 		
 	}
 	
@@ -155,7 +159,13 @@ public class GuiManager {
 		
 		@Override
 		public void completeActivity(ActivityInfo activityInfo) {
-			// TODO COMPLETARE ATTIVITA
+			try {
+				server.setActivityDone(activityInfo, null);
+				LoadActivities();
+			} catch (RemoteException | CustomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		
@@ -169,38 +179,64 @@ public class GuiManager {
 		
 		@Override
 		public void setNoticeRead(Notice notice) {
-		
 		}
 		
 		@Override
 		public ArrayList<User> removeParticipant(Participant part) {
+			try {
+				return server.removeParticipant(part);
+			} catch (RemoteException | CustomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 			
-			return null;
 		}
 		
 		@Override
 		public void showActivityInfo(Activity a) {
-		
+			if (a != null) {
+				System.out.println(a.getName());
+				
+				try {
+					ActivityInfoGui activityInfoGui = new ActivityInfoGui(server.getActivityInfo(a), this);
+					JFrame frame = new JFrame();
+					frame.getContentPane().add(activityInfoGui);
+					frame.setVisible(true);
+					frame.setSize(800, 600);
+				} catch (CustomException | RemoteException e) {
+				}
+			}
 		}
 		
 		@Override
 		public ArrayList<User> removeResponsible(ActivityResponsible resp) {
-			
-			return null;
+
+			try {
+				return server.removeActivityResponsible(resp);
+			} catch (RemoteException | CustomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		}
 		
 		@Override
 		public void startProject(Project project) throws RemoteException, CustomException {
-			
-			// TODO Auto-generated method stub
+
+			server.startProject(project);
 			
 		}
 		
 		@Override
 		public void addText(ActivityInfo activityInfo, String text) {
-			
-			// TODO Auto-generated method stub
-			
+			activityInfo.setText(text);
+			try {
+				server.addTexttoActivity(activityInfo);
+			} catch (RemoteException | CustomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}

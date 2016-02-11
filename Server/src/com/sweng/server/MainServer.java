@@ -19,12 +19,6 @@ public class MainServer {
 	private static GuiManager guiMgr;
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, RemoteException {
-
-		guiMgr = new GuiManager();
-		
-		guiMgr.LoadUser();
-		guiMgr.LoadProjects();
-		guiMgr.LoadActivities();
 		
 		ServerEvents list = new ServerEvents();
 		Server server = new Server(list);
@@ -37,6 +31,12 @@ public class MainServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		guiMgr = new GuiManager(server);
+		
+		guiMgr.LoadUser();
+		guiMgr.LoadProjects();
+		guiMgr.LoadActivities();
 	}
 	
 	public static class ServerEvents implements IServerEvents {
