@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -30,6 +31,7 @@ import com.sweng.client.CheckBoxId;
 import com.sweng.client.CheckBoxList;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
+
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -65,6 +67,7 @@ public class GUIaddComponent extends JFrame {
 	private DatePicker datePicker;
 	private JTextPane textPane;
 	private JCheckBox isActive;
+	private CheckBoxList listFriends;
 
 	public GUIaddComponent(EventListenerGUI _listener,
 			ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
@@ -87,7 +90,7 @@ public class GUIaddComponent extends JFrame {
 		txtProjectName.setColumns(10);
 
 		ArrayList<CheckBoxId> checkboxList = createCheckboxList(friendships);
-		CheckBoxList listFriends = new CheckBoxList();
+		listFriends = new CheckBoxList();
 		for (CheckBoxId c : checkboxList) {
 			listFriends.addCheckbox(c);
 		}
@@ -272,5 +275,26 @@ public class GUIaddComponent extends JFrame {
 		
 	
 
+	}
+
+	public void clearall() {
+		txtProjectName.setText("");
+		textPane.setText("");
+		PlaceActivityText.setText("");
+		
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		timeSpinner.setEditor(timeEditor);
+		timeSpinner.setValue(Time.from(Instant.now()));
+		
+		try {
+			datePicker.setDate(Date.from(Instant.now()));
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		listFriends.clearSelected();
+		listFriends.updateUI();
+		
 	}
 }

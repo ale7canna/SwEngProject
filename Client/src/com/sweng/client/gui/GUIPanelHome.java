@@ -1,6 +1,9 @@
 package com.sweng.client.gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,20 +21,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import com.sweng.common.beans.Activity;
 import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
-import javax.swing.UIManager;
-import java.awt.Color;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
 public class GUIPanelHome extends JPanel {
 	
@@ -44,6 +45,7 @@ public class GUIPanelHome extends JPanel {
 	private JTextField UserName;
 	private JScrollPane scrollFriends;
 	private EventListenerGUI listener;
+	private JTable tableNotice;
 	
 	public GUIPanelHome(EventListenerGUI _listener) {
 		setFont(new Font("Yu Gothic", Font.BOLD, 13));
@@ -270,7 +272,7 @@ public class GUIPanelHome extends JPanel {
 	    
 	    
 	    modelNotice = new MyNoticeTableAdapter();
-		JTable tableNotice = new JTable(modelNotice);
+		tableNotice = new JTable(modelNotice);
 		tableNotice.setForeground(Color.BLACK);
 		
 		tableNotice.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -282,10 +284,7 @@ public class GUIPanelHome extends JPanel {
 	   
 	    tabbedPane.setTitleAt(4, "My Notices");
 	    
-	    if(tableNotice.getRowCount()!=0){
-	    	 tabbedPane.setForegroundAt(4, Color.RED);
-	    	 tabbedPane.setToolTipTextAt(4, "New Notices Available\r\n");
-	    }
+	    
 	    
 	    JLabel lblDoubleClickingOn = new JLabel("Double clicking on a row of the tables to see more info");
 	    lblDoubleClickingOn.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
@@ -353,6 +352,11 @@ public class GUIPanelHome extends JPanel {
 	private void addNoticesToList(ArrayList<Notice> notices)
 	{
 		modelNotice.removeAll();
+		if(notices.size()>0){
+			setRedTab();
+		}
+		else
+			setWhiteTab();
 		
 		for (Notice n : notices)
 			modelNotice.addRow(n);
@@ -374,6 +378,7 @@ public class GUIPanelHome extends JPanel {
 			addNoticesToList(notices);
 		
 	}
+	
 	
 	
 	class MyTableModel extends AbstractTableModel{
@@ -432,5 +437,20 @@ public class GUIPanelHome extends JPanel {
 	        return getValueAt(0, c).getClass();
 	    
 	    	}
+	}
+
+
+
+	
+	public void setWhiteTab() {
+		 tabbedPane.setBackgroundAt(4, new Color(240, 240, 240));
+    	 tabbedPane.setToolTipTextAt(4, "New Notices Available\r\n");
+	}
+
+
+	public void setRedTab() {
+		 tabbedPane.setBackgroundAt(4, Color.RED);
+    	 tabbedPane.setToolTipTextAt(4, "New Notices Available\r\n");
+		
 	}
 }

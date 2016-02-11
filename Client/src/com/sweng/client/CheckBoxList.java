@@ -77,4 +77,12 @@ public class CheckBoxList extends JList
 	   }
 	   return checkedId;
    }
+
+   public void clearSelected()
+   {
+	   for(int i=0; i<getModel().getSize(); i++){
+		   CheckBoxId checkbox= (CheckBoxId)getModel().getElementAt(i);
+		   checkbox.setSelected(false);
+	   }
+   }
 }

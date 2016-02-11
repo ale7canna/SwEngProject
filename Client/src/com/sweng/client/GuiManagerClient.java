@@ -69,7 +69,7 @@ public class GuiManagerClient {
 	{
 		home.setUserInfo(clientManager.getUser(), clientManager.getFriendships(), clientManager.getActivity(),
 				clientManager.getProject(), clientManager.getNotices());
-
+	
 	}
 
 	public void showMessage(String message) {
@@ -162,9 +162,10 @@ public class GuiManagerClient {
 			clientManager.addRespActivity(activity.getIdActivity(), respActivity);
 
 			JOptionPane.showMessageDialog(null, "Activity was added correctly");
-			addActivityFrame.setVisible(false);
-			addActivityFrame.dispose();
-			addActivityView(project);
+			addActivityFrame.clearall();
+//			addActivityFrame.setVisible(false);
+//			addActivityFrame.dispose();
+//			addActivityView(project);
 		}
 
 		public void addActivityFinish(String nameActivity, String place, Date hour, ArrayList<Integer> respActivity, String text) {
