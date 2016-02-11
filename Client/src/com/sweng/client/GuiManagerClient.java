@@ -150,7 +150,7 @@ public class GuiManagerClient {
 			// Modifico la funzione del server addProject. Le faccio restituire
 			// un bean Progetto con l'id giusto.
 			project = clientManager.addProject(name, clientManager.getUser().getIdUser(), isActive, participants);
-			clientManager.addParticipants(participants, project.getIdProject());
+//			clientManager.addParticipants(participants, project.getIdProject());
 
 			JOptionPane.showMessageDialog(null, "Project was added correctly");
 			addProjectFrame.setVisible(false);
