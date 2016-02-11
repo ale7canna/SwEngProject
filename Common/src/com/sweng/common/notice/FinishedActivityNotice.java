@@ -2,6 +2,9 @@ package com.sweng.common.notice;
 
 import java.util.Date;
 
+import com.sweng.common.beans.ActivityInfo;
+import com.sweng.common.utils.DefaultMessages;
+
 public class FinishedActivityNotice extends Notice {
 
 
@@ -9,8 +12,26 @@ public class FinishedActivityNotice extends Notice {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private ActivityInfo activityInfo;
 
-	public FinishedActivityNotice(String _title, String _message) {
-		super(_title, _message);
+	public FinishedActivityNotice(ActivityInfo activityInfo) {
+		super(DefaultMessages.ActivityDoneByOtherTitle.toString(), DefaultMessages.ActivityDoneByOther.toString());
+		this.activityInfo = activityInfo;
+		
 	}
+
+	
+	public ActivityInfo getActivityInfo() {
+		
+		return activityInfo;
+	}
+
+	
+	public void setActivityInfo(ActivityInfo activityInfo) {
+		
+		this.activityInfo = activityInfo;
+	}
+	
+	
+	
 }

@@ -44,7 +44,7 @@ public interface IServer extends Remote{
 	public ArrayList<User> removeParticipant(Participant partecipant) throws RemoteException, CustomException;
 	
 	public void setNoticeRead(Notice notice, User user) throws RemoteException, CustomException;
-	public void setActivityDone(ActivityInfo activityInfo) throws RemoteException, CustomException;
+	public void setActivityDone(ActivityInfo activityInfo, User whoCompletedActivity) throws RemoteException, CustomException;
 	
 	
 	//OBSERVER PATTERN

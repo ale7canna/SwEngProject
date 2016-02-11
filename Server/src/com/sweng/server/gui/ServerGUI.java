@@ -152,27 +152,28 @@ public class ServerGUI extends JFrame {
 		usersSummaryLabel = new JLabel("New label");
 		GroupLayout gl_tabUtente = new GroupLayout(tabUtente);
 		gl_tabUtente.setHorizontalGroup(
-			gl_tabUtente.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_tabUtente.createSequentialGroup()
+			gl_tabUtente.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_tabUtente.createSequentialGroup()
 					.addComponent(panelUser, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panelUserProject, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panelUserFriends, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
-				.addGroup(gl_tabUtente.createSequentialGroup()
-					.addGap(230)
-					.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 566, GroupLayout.PREFERRED_SIZE)
-					.addGap(208))
+					.addGroup(gl_tabUtente.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_tabUtente.createSequentialGroup()
+							.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 566, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(gl_tabUtente.createSequentialGroup()
+							.addComponent(panelUserProject, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panelUserFriends, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))))
 		);
 		gl_tabUtente.setVerticalGroup(
 			gl_tabUtente.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_tabUtente.createSequentialGroup()
-					.addGap(12)
+					.addGap(14)
 					.addComponent(usersSummaryLabel, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_tabUtente.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelUserProject, GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
-						.addComponent(panelUserFriends, GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+						.addComponent(panelUserProject, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panelUserFriends, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(panelUser, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
 					.addContainerGap())
 		);
@@ -234,52 +235,65 @@ public class ServerGUI extends JFrame {
 
 		JPanel tabProgetti = new JPanel();
 		tabbedPane.addTab("Progetti", null, tabProgetti, null);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		projectSummaryLabel = new JLabel("");
-		panel_2.add(projectSummaryLabel);
-
-		splitPaneProjects = new JSplitPane();
-
-		standardProjectPanelView = new JPanel();
-		standardProjectPanelView.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		splitPaneProjects.setRightComponent(standardProjectPanelView);
-
-		JLabel label = new JLabel("Clicca un progetto a lato per caricare i dettagli");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setAlignmentX(0.5f);
-		standardProjectPanelView.add(label);
-		splitPaneProjects.setDividerLocation(250);
-		GroupLayout gl_tabProgetti = new GroupLayout(tabProgetti);
-		gl_tabProgetti.setHorizontalGroup(
-			gl_tabProgetti.createParallelGroup(Alignment.LEADING)
-				.addComponent(splitPaneProjects, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
-				.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
-		);
-		gl_tabProgetti.setVerticalGroup(
-			gl_tabProgetti.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_tabProgetti.createSequentialGroup()
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
-					.addComponent(splitPaneProjects, GroupLayout.PREFERRED_SIZE, 439, GroupLayout.PREFERRED_SIZE))
-		);
+		GridBagLayout gbl_tabProgetti = new GridBagLayout();
+		gbl_tabProgetti.columnWidths = new int[]{1004, 0};
+		gbl_tabProgetti.rowHeights = new int[]{36, 439, 0};
+		gbl_tabProgetti.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_tabProgetti.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		tabProgetti.setLayout(gbl_tabProgetti);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		splitPaneProjects.setLeftComponent(scrollPane);
-		
-		projectList = new JList(new MyProjectListModel());
-		scrollPane.setViewportView(projectList);
-		tabProgetti.setLayout(gl_tabProgetti);
+				splitPaneProjects = new JSplitPane();
+				
+						standardProjectPanelView = new JPanel();
+						standardProjectPanelView.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+						splitPaneProjects.setRightComponent(standardProjectPanelView);
+						
+								JLabel label = new JLabel("Clicca un progetto a lato per caricare i dettagli");
+								label.setHorizontalAlignment(SwingConstants.CENTER);
+								label.setAlignmentX(0.5f);
+								standardProjectPanelView.add(label);
+								splitPaneProjects.setDividerLocation(250);
+								
+								JScrollPane scrollPane = new JScrollPane();
+								splitPaneProjects.setLeftComponent(scrollPane);
+								
+								projectList = new JList(new MyProjectListModel());
+								projectList.addMouseListener(new MouseAdapter() {
+
+									public void mouseClicked(MouseEvent evt) {
+										if (evt.getClickCount() == 1) {
+											Project project = (Project) ((MyProjectListModel) projectList.getModel())
+													.getProjectAt(projectList.getSelectedIndex());
+											listener.ProjectClicked(project);
+										}
+									}
+								});
+								
+										JPanel panel_2 = new JPanel();
+										panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+										
+												projectSummaryLabel = new JLabel("");
+												panel_2.add(projectSummaryLabel);
+												GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+												gbc_panel_2.fill = GridBagConstraints.BOTH;
+												gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+												gbc_panel_2.gridx = 0;
+												gbc_panel_2.gridy = 0;
+												tabProgetti.add(panel_2, gbc_panel_2);
+								scrollPane.setViewportView(projectList);
+								GridBagConstraints gbc_splitPaneProjects = new GridBagConstraints();
+								gbc_splitPaneProjects.fill = GridBagConstraints.BOTH;
+								gbc_splitPaneProjects.gridx = 0;
+								gbc_splitPaneProjects.gridy = 1;
+								tabProgetti.add(splitPaneProjects, gbc_splitPaneProjects);
 		
 		JPanel tabAttivita = new JPanel();
 		tabbedPane.addTab("Attivit\u00E0", null, tabAttivita, null);
 		GridBagLayout gbl_tabAttivita = new GridBagLayout();
 		gbl_tabAttivita.columnWidths = new int[]{833, 0};
 		gbl_tabAttivita.rowHeights = new int[]{41, 324, 0};
-		gbl_tabAttivita.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_tabAttivita.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_tabAttivita.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_tabAttivita.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		tabAttivita.setLayout(gbl_tabAttivita);
 		
 		JPanel panel_1 = new JPanel();

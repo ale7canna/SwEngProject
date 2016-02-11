@@ -31,7 +31,7 @@ public class GuiManager {
 	public GuiManager() {
 		GUI = new ServerGUI(new GuiListener());
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GUI.setSize(800, 600);
+		GUI.setSize(1400, 800);
 		GUI.setVisible(true);
 		
 	}

@@ -19,6 +19,7 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.ActivityWithoutResponsibleNotice;
+import com.sweng.common.notice.FinishedActivityNotice;
 import com.sweng.common.notice.FinishedProjNotice;
 import com.sweng.common.notice.FriendshipAdded;
 import com.sweng.common.notice.Notice;
@@ -38,7 +39,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	IServerEvents listener;
 	
-	protected Server(IServerEvents _listener) throws RemoteException {
+	public Server(IServerEvents _listener) throws RemoteException {
 		super();
 		DBManager.RemoveAllConnectedUsers();
 		listener = _listener;
@@ -50,12 +51,12 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
 		
-		Activity result = null;
-		DBManager.addActivity(_activity);
-		result = DBManager.getActivityFromNameAndProject(_activity.getName(), _activity.getIdProject());
+		_activity = DBManager.addActivity(_activity);
 		
-		listener.aggiornaAttivita();
-		return result;
+		if (listener != null)
+			listener.aggiornaAttivita();
+		
+		return _activity;
 	}
 	
 	public void startProject(Project project) throws RemoteException, CustomException {
@@ -107,12 +108,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public Project addProject(Project _project) throws RemoteException, CustomException {
 		
-		Project result = null;
-		DBManager.addProject(_project);
-		result = DBManager.getProjectFromNameAndAdmin(_project.getName(), _project.getIdAdmin());
-				
-		listener.aggiornaProgetti();
-		return result;
+		_project = DBManager.addProject(_project);
+		
+		if (listener != null)
+			listener.aggiornaProgetti();
+		return _project;
 	}
 	
 	@Override
@@ -124,7 +124,8 @@ public class Server extends UnicastRemoteObject implements IServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		listener.aggiornaUtenti();
+		if (listener != null)
+			listener.aggiornaUtenti();
 	}
 	
 	@Override
@@ -157,7 +158,8 @@ public class Server extends UnicastRemoteObject implements IServer {
 		try {
 			DBManager.removeObserver(_client);
 			System.out.println("Utente rimosso");
-			listener.aggiornaUtenti();
+			if (listener != null)
+				listener.aggiornaUtenti();
 		} catch (CustomException e) {
 			System.out.println(e.getMessage());
 		}
@@ -229,7 +231,8 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public void removeProject(Project project) throws RemoteException, CustomException {
 		
 		DBManager.removeProject(project);
-		listener.aggiornaProgetti();
+		if (listener != null)
+			listener.aggiornaProgetti();
 	}
 	
 	@Override
@@ -245,9 +248,18 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 	
 	@Override
-	public void setActivityDone(ActivityInfo activityInfo) throws RemoteException, CustomException {
+	public void setActivityDone(ActivityInfo activityInfo, User whoCompletedActivity) throws RemoteException, CustomException {
 		
 		DBManager.setActivityDone(activityInfo);
+		
+		activityInfo.getResponsabili().remove(whoCompletedActivity);
+		ArrayList<User> otherResponsible = activityInfo.getResponsabili();
+		
+		Notice n = new FinishedActivityNotice(activityInfo);
+		NotifyUser(n, otherResponsible);
+		
+		
+		
 		
 		// CONTROLLARE STATO ATTIVITA/PROGETTO PER NOTIFICHE
 		

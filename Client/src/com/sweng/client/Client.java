@@ -112,10 +112,14 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	
 	public ArrayList<User> getNotmyFriends(){
 		try {
+			notmyFriends.clear();
 			notmyFriends=server.getNotMyFriends(user.getIdUser());
 		} catch (RemoteException | CustomException e) {
 			
-			e.printStackTrace();
+			if (e instanceof CustomException)
+				guiManagerClient.showError(e.getMessage());
+			else
+				e.printStackTrace();
 		}
 		return notmyFriends;
 	}
@@ -321,7 +325,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public void setActivityInfoDone(ActivityInfo activityInfo){
 		
 		try {
-			server.setActivityDone(activityInfo);
+			server.setActivityDone(activityInfo, user);
 		} catch (RemoteException | CustomException e) {
 			// TODO Auto-generated catch block
 			if (e instanceof CustomException){

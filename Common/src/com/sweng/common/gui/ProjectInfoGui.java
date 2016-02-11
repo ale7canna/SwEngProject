@@ -56,26 +56,30 @@ public class ProjectInfoGui extends JPanel {
 		
 		JLabel lblDoubleClickTo_1 = new JLabel("Double click to remove a participant");
 		lblDoubleClickTo_1.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addGap(71)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panel_1.createSequentialGroup()
 							.addComponent(lblPartecipanti, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 							.addGap(61))
-						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+						.addGroup(gl_panel_1.createSequentialGroup()
 							.addComponent(lblDoubleClickTo_1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addGap(0, 0, Short.MAX_VALUE))
+					.addContainerGap(47, Short.MAX_VALUE))
+				.addComponent(listParticipants, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblPartecipanti)
-					.addPreferredGap(ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listParticipants, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+					.addGap(18)
 					.addComponent(lblDoubleClickTo_1)
 					.addContainerGap())
 		);
@@ -195,6 +199,7 @@ public class ProjectInfoGui extends JPanel {
 		
 		JLabel lblDoubleClickTo = new JLabel("Double click to modify an activity");
 		lblDoubleClickTo.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
+		
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
@@ -207,13 +212,16 @@ public class ProjectInfoGui extends JPanel {
 							.addGap(46)
 							.addComponent(lblDoubleClickTo, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(88, Short.MAX_VALUE))
+				.addComponent(listActivities, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblAttivit)
-					.addPreferredGap(ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listActivities, GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblDoubleClickTo)
 					.addContainerGap())
 		);

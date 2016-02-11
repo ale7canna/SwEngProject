@@ -338,7 +338,7 @@ public class DBManager {
 			}
 
 			if (result.isEmpty())
-				throw new CustomException(Errors.UserNotFound);
+				throw new CustomException(Errors.AllUsersYetFriends);
 		} catch (SQLException e) {			e.printStackTrace();
 			throw new CustomException(Errors.ServerError);
 		}
@@ -559,10 +559,10 @@ public class DBManager {
 	}
 	
 	// METODI DI AGGIUNTA ENTRY AL DB
-	public static void addActivity(Activity activity) throws CustomException {
+	public static Activity addActivity(Activity activity) throws CustomException {
 		try {
 			PreparedStatement stat = (PreparedStatement) connection
-					.prepareStatement("INSERT INTO attivita (Nome, Luogo, Ora, idProgetto)" + "VALUES (?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO attivita (Nome, Luogo, Ora, idProgetto)" + "VALUES (?, ?, ?, ?)", new String[] {"idAttivita"});
 
 			stat.setString(1, activity.getName());
 			stat.setString(2, activity.getPlace());
@@ -571,6 +571,17 @@ public class DBManager {
 			stat.setInt(4, activity.getIdProject());
 
 			stat.executeUpdate();
+			
+			ResultSet rs = stat.getGeneratedKeys();
+			int idAttivita = -1; 
+			if (rs.next())
+				idAttivita = rs.getInt(1);
+			else
+				throw new CustomException(Errors.ServerError);
+			
+			activity.setIdActivity(idAttivita);
+			return activity;
+			
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
@@ -617,16 +628,27 @@ public class DBManager {
 		}
 	}
 
-	public static void addProject(Project project) throws CustomException {
+	public static Project addProject(Project project) throws CustomException {
 
 		try {
 			PreparedStatement stat = (PreparedStatement) connection
-					.prepareStatement("INSERT INTO progetto (Nome, idAdmin, Attivo)" + "VALUES (?, ?, ?)");
+					.prepareStatement("INSERT INTO progetto (Nome, idAdmin, Attivo)" + "VALUES (?, ?, ?)", new String[] { "idProgetto"});
 
 			stat.setString(1, project.getName());
 			stat.setInt(2, project.getIdAdmin());
 			stat.setBoolean(3, project.isActive());
 			stat.executeUpdate();
+			
+			ResultSet rs = stat.getGeneratedKeys();
+			int idProject = -1; 
+			if (rs.next())
+				idProject = rs.getInt(1);
+			else
+				throw new CustomException(Errors.ServerError);
+			
+			project.setIdProject(idProject);
+			return project;
+			
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
