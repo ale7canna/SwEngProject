@@ -19,11 +19,11 @@ public interface IServer extends Remote{
 
 	//REMOTE METHODS
 	public Activity addActivity(Activity _activity) throws RemoteException, CustomException;
-	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException;
-	public void addFriendship(Friendship _friendship) throws RemoteException;
-	public void addParticipant(Participant _participant) throws RemoteException; 
+	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException, CustomException;
+	public void addFriendship(Friendship _friendship) throws RemoteException, CustomException;
+	public void addParticipant(Participant _participant) throws RemoteException, CustomException; 
 	public Project addProject(Project _project) throws RemoteException, CustomException;
-	public void addUser(User _user) throws RemoteException;
+	public void addUser(User _user) throws RemoteException, CustomException;
 	
 	public void startProject(Project project) throws RemoteException, CustomException;
 	
@@ -50,7 +50,6 @@ public interface IServer extends Remote{
 	//OBSERVER PATTERN
 	public void addObserver(IClient _client) throws RemoteException;
 	public void removeObserver(IClient _client) throws RemoteException;
-	public void notifyObservers(Notice _notice) throws RemoteException;
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException;
 	
 	

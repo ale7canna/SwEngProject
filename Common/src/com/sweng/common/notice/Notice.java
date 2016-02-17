@@ -48,4 +48,9 @@ public abstract class Notice implements Serializable {
 		id = _id;
 	}
 	
+	public String getDetails()
+	{
+		return "";
+	}
+	
 }

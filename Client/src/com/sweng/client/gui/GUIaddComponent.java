@@ -164,9 +164,7 @@ public class GUIaddComponent extends JFrame {
 						date = defin.parse(dateTime);
 					} catch (ParseException e) {
 						JOptionPane.showMessageDialog(null, e.getMessage()
-								+ ". Please try again!");
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+								+ ". \n Error in date casting.");
 					}
 					System.out.println(dateTime);
 
@@ -222,10 +220,8 @@ public class GUIaddComponent extends JFrame {
 					try {
 						date = defin.parse(dateTime);
 					} catch (ParseException e) {
-						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e.getMessage()
-								+ ". Please try again!");
-						e.printStackTrace();
+								+ ". Error in date casting.");
 					}
 					System.out.println(dateTime);
 
@@ -289,8 +285,8 @@ public class GUIaddComponent extends JFrame {
 		try {
 			datePicker.setDate(Date.from(Instant.now()));
 		} catch (PropertyVetoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage()
+					+ ". Error in date clearing.");
 		}
 		
 		listFriends.clearSelected();

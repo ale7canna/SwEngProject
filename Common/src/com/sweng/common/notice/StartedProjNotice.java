@@ -25,4 +25,14 @@ public class StartedProjNotice extends Notice {
 		return projectInfo;
 	}
 	
+	@Override
+	public String getDetails()
+	{
+		String s = projectInfo.getAdmin().getName() + " " + projectInfo.getAdmin().getSurname() +
+					" added you to " +
+				 	projectInfo.getName() + 
+					" project.";
+		return s;
+	}
+	
 }

@@ -1,5 +1,6 @@
 package com.sweng.client;
 
+import java.net.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,8 +23,6 @@ public class MainClient {
 	private static IServer server = null;
 	
 	public static void main(String[] args) throws RemoteException {
-		// TODO Auto-generated method stub
-		
 		
 		Registry registry;
 		try {
@@ -32,9 +31,12 @@ public class MainClient {
 			server = (IServer)registry.lookup(Consts.RMI_ID);
 			
 		} catch (RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Error from Server. Please try again and be patient!s");
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			
+			if (e.getCause() instanceof ConnectException)
+				JOptionPane.showMessageDialog(null, "The server is not available. Please try again and be patient!");
+			else
+				JOptionPane.showMessageDialog(null, "Error from the server.");
 			return;
 		}
 		

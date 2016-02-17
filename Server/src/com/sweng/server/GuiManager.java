@@ -106,7 +106,7 @@ public class GuiManager {
 				System.out.println(project.getName());
 				
 				try {
-					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this, true);
+					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this, true, 0);
 					JFrame frame = new JFrame();
 					frame.getContentPane().add(projectInfoGui);
 					frame.setVisible(true);
@@ -139,7 +139,7 @@ public class GuiManager {
 			} catch (CustomException e) {
 				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
 			}
-			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this, true);
+			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this, true, 0);
 			GUI.ChangeProjectInfo(projectInfo);
 		}
 		
@@ -163,8 +163,11 @@ public class GuiManager {
 				server.setActivityDone(activityInfo, null);
 				LoadActivities();
 			} catch (RemoteException | CustomException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				if(e instanceof CustomException)
+					showError(e.getMessage());
+				else
+					e.printStackTrace();
 			}
 			
 		}
@@ -186,8 +189,10 @@ public class GuiManager {
 			try {
 				return server.removeParticipant(part);
 			} catch (RemoteException | CustomException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if(e instanceof CustomException)
+					showError(e.getMessage());
+				else
+					e.printStackTrace();
 				return null;
 			}
 			
@@ -215,8 +220,10 @@ public class GuiManager {
 			try {
 				return server.removeActivityResponsible(resp);
 			} catch (RemoteException | CustomException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if(e instanceof CustomException)
+					showError(e.getMessage());
+				else
+					e.printStackTrace();
 				return null;
 			}
 		}
@@ -234,8 +241,10 @@ public class GuiManager {
 			try {
 				server.addTexttoActivity(activityInfo);
 			} catch (RemoteException | CustomException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if(e instanceof CustomException)
+					showError(e.getMessage());
+				else
+					e.printStackTrace();
 			}
 		}
 		

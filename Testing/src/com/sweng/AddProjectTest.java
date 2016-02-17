@@ -27,11 +27,10 @@ public class AddProjectTest {
 	ArrayList<Activity> activities;
 	HashMap<Integer, Integer> activitiesAndResponsibles;
 		
-	
 	@Test
 	public void test() throws RemoteException, CustomException {
 		
-		server = new Server(null);
+		server = Server.getInstance(null);
 		
 		aggiungiUtenti();
 		
@@ -64,7 +63,7 @@ public class AddProjectTest {
 		
 	}
 	
-	private void aggiungiUtenti() throws RemoteException {
+	private void aggiungiUtenti() throws RemoteException, CustomException {
 		
 		User u = new User("Utente1", "U1", "user1", "123");
 		server.addUser(u);
@@ -111,7 +110,7 @@ public class AddProjectTest {
 		activities.add(act);
 	}
 
-	private void aggiungiResponsabili(int idActivity) throws RemoteException
+	private void aggiungiResponsabili(int idActivity) throws RemoteException, CustomException
 	{	
 		ActivityResponsible activityResponsible = new ActivityResponsible(1, idActivity);
 		server.addActivityResponsible(activityResponsible);
@@ -122,7 +121,7 @@ public class AddProjectTest {
 		activitiesAndResponsibles.put(new Integer(idActivity), new Integer(2));
 	}
 	
-	private void aggiungiPartecipanti(int idProject) throws RemoteException
+	private void aggiungiPartecipanti(int idProject) throws RemoteException, CustomException
 	{
 		participants = new ArrayList<>();
 		

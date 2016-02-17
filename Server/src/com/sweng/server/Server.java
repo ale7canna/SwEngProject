@@ -43,11 +43,20 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	IServerEvents listener;
 	
-	public Server(IServerEvents _listener) throws RemoteException {
+	private static Server thisInstance = null;
+	
+	public static Server getInstance(IServerEvents _listener) throws RemoteException {
+		
+		if (thisInstance == null)
+			thisInstance = new Server(_listener);
+			
+		return thisInstance;
+	}
+	
+	private Server(IServerEvents _listener) throws RemoteException {
 		super();
 		DBManager.RemoveAllConnectedUsers();
 		listener = _listener;
-		// TODO Auto-generated constructor stub
 	}
 	
 	// IMPLEMENTAZIONE METODI REMOTI
@@ -70,44 +79,26 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 	
 	@Override
-	public void addActivityResponsible(ActivityResponsible _activityResponsible) throws RemoteException {
-		
-		try {
-			DBManager.addActivityResponsible(_activityResponsible);
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public void addActivityResponsible(ActivityResponsible _activityResponsible)
+			throws RemoteException, CustomException {
+			
+		DBManager.addActivityResponsible(_activityResponsible);
 	}
 	
 	@Override
-	public void addFriendship(Friendship _friendship) throws RemoteException {
+	public void addFriendship(Friendship _friendship) throws RemoteException, CustomException {
 		
-		try {
-			DBManager.addFriendship(_friendship);
-			User u = DBManager.getUser(_friendship.getIdUtente2());
-			
-			Notice n = new FriendshipAdded(DBManager.getUser(_friendship.getIdUtente1()));
-			NotifyUser(n, u);
-			
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DBManager.addFriendship(_friendship);
+		User u = DBManager.getUser(_friendship.getIdUtente2());
 		
+		Notice n = new FriendshipAdded(DBManager.getUser(_friendship.getIdUtente1()));
+		NotifyUser(n, u);
 	}
 	
 	@Override
-	public void addParticipant(Participant _participant) throws RemoteException {
+	public void addParticipant(Participant _participant) throws RemoteException, CustomException {
 		
-		try {
-			DBManager.addParticipant(_participant);
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		DBManager.addParticipant(_participant);
 	}
 	
 	@Override
@@ -121,15 +112,10 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 	
 	@Override
-	public void addUser(User _user) throws RemoteException {
+	public void addUser(User _user) throws RemoteException, CustomException {
 		
-		// TODO: è il metodo per il sign-in?
-		try {
-			DBManager.addUser(_user);
-		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DBManager.addUser(_user);
+		
 		if (listener != null)
 			listener.aggiornaUtenti();
 	}
@@ -142,7 +128,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		if (DBManager.getConnectedUserByUserId(result.getIdUser()) != null)
 			throw new CustomException(Errors.UserAlreadyLoggedIn);
-		
+			
 		return result;
 	}
 	
@@ -167,12 +153,6 @@ public class Server extends UnicastRemoteObject implements IServer {
 		} catch (CustomException e) {
 			System.out.println(e.getMessage());
 		}
-	}
-	
-	@Override
-	public void notifyObservers(Notice _notice) throws RemoteException {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
@@ -259,7 +239,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		if (whoCompletedActivity != null)
 			activityInfo.getResponsabili().remove(whoCompletedActivity);
-		
+			
 		ArrayList<User> otherResponsibles = activityInfo.getResponsabili();
 		
 		Notice n = new FinishedActivityNotice(activityInfo);
@@ -295,8 +275,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 			NotifyUser(n, activityInfo.getResponsabili());
 			
 		} catch (CustomException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage() + "\n");
 		}
 		
 	}
@@ -351,32 +330,33 @@ public class Server extends UnicastRemoteObject implements IServer {
 				
 				IClient client;
 				
+				int idNotifica = DBManager.storeNotice(notice);
+				notice.setId(idNotifica);
+				
 				try {
-					int idNotifica = DBManager.storeNotice(notice);
-					notice.setId(idNotifica);
-					
 					for (User u : users) {
 						DBManager.storeUserNotices(notice, u.getIdUser());
-						
 						client = DBManager.getConnectedUserByUserId(u.getIdUser());
+						
 						if (client != null)
-							client.update(notice);
+							try {
+								client.update(notice);
+							} catch (RemoteException e) {
+								System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n"
+										+ e.getMessage());
+							}
+							
 					}
-					
 				} catch (CustomException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (RemoteException e) {
-					System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
+					System.out.println(e.getMessage() + "\n");
 				}
-				
 			}
 		});
 		thread.start();
 		
 	}
 	
-	private void NotifyUser(Notice notice, User user) {
+	private void NotifyUser(Notice notice, User user) throws CustomException {
 		
 		Thread thread = new Thread(new Runnable() {
 			
@@ -395,10 +375,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 					if (client != null)
 						client.update(notice);
 						
-				} catch (CustomException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (RemoteException e) {
+				} catch (RemoteException | CustomException e) {
 					System.out.println("Errore di connessione. Notifica: " + notice.getTitle() + "\n" + e.getMessage());
 				}
 				

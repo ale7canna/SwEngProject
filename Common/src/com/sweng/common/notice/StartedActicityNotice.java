@@ -24,5 +24,16 @@ public class StartedActicityNotice extends Notice {
 		return activityInfo;
 	}
 	
+	@Override
+	public String getDetails()
+	{
+		String s = "The activity " +
+				 	activityInfo.getName() + 
+					" in project " +
+				 	activityInfo.getProject().getName() + 
+					" has started.";
+		return s;
+	}
+	
 
 }

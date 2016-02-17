@@ -21,5 +21,12 @@ public class FriendshipAdded extends Notice {
 	{
 		return friend;
 	}
+	
+	@Override
+	public String getDetails()
+	{
+		String s = friend.getName() + " " + friend.getSurname() + " added you to his friends.";
+		return s;
+	}
 
 }

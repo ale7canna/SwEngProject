@@ -133,6 +133,7 @@ public class ActivityInfoGui extends JPanel {
 					"Do you really want to add the text this activity?",
 					"Add Text", JOptionPane.YES_NO_OPTION);
 			if (scelta == JOptionPane.YES_OPTION) {
+				activityInfo.setText(textPane.getText());
 				_listener.addText(activityInfo, textPane.getText());
 				JOptionPane.showMessageDialog(null,"The text was correctly added!");
 				_listener.refreshAll();

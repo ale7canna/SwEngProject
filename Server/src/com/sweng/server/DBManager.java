@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import com.sweng.common.Consts;
 import com.sweng.common.IClient;
 import com.sweng.common.beans.Activity;
@@ -36,11 +38,13 @@ public class DBManager {
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = (Connection) DriverManager.getConnection(Consts.DB_URL, Consts.DB_USERNAME,
+			connection = (Connection) DriverManager.getConnection(Consts.DB_URL.concat("?useSSL=false"), Consts.DB_USERNAME,
 					Consts.DB_PASSWORD);
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Gestire classe non trovata. Ma anche no
-			e.printStackTrace();
+			if (e instanceof ClassNotFoundException)
+				JOptionPane.showMessageDialog(null, "DB connection failed due to missing library file.");
+			else
+				JOptionPane.showMessageDialog(null, "DB conection failed.");
 		}
 	}
 
@@ -883,7 +887,7 @@ public class DBManager {
 		}
 	}
 
-	public static ArrayList<IClient> getObservers() {
+	public static ArrayList<IClient> getObservers() throws CustomException {
 		ArrayList<IClient> result = null;
 		try
 		{
@@ -960,7 +964,7 @@ public class DBManager {
 		}
 	}
 	
-	public static ArrayList<Notice> getNoticesByUserId(int userId)
+	public static ArrayList<Notice> getNoticesByUserId(int userId) throws CustomException
 	{
 		ArrayList<Notice> result = null;
 		
@@ -984,41 +988,40 @@ public class DBManager {
 					n.setId(rs.getInt("id"));
 					result.add(n);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					throw new CustomException(Errors.ServerError);
 				}
-				//Notice n = getNoticeFromBytes(buffer, className);
 			}
 			
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			throw new CustomException(Errors.ServerError);
 		}
 		
 		return result;
 	}
 	
-	private static <T> T getObjectFromBytes(byte[] buffer)
+	private static <T> T getObjectFromBytes(byte[] buffer) throws CustomException
 	{
 		ObjectInputStream objectIn = null;
 		if (buffer != null)
 			try {
 				objectIn = new ObjectInputStream(new ByteArrayInputStream(buffer));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (IOException e) {
+				System.out.println(e.getMessage() + "\n");
+				throw new CustomException(Errors.ServerError);
 			}
 
 		Object deSerializedObject = null;
 		try {
 			deSerializedObject = objectIn.readObject();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage() + "\n");
+			throw new CustomException(Errors.ServerError);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage() + "\n");
+			throw new CustomException(Errors.ServerError);
 		}
 		
 		
@@ -1215,98 +1218,4 @@ public class DBManager {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	private static IClient getClientFromBytes(byte[] buffer){
-//
-//		ObjectInputStream objectIn = null;
-//		if (buffer != null)
-//			try {
-//				objectIn = new ObjectInputStream(new ByteArrayInputStream(buffer));
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//
-//		Object deSerializedObject = null;
-//		try {
-//			deSerializedObject = objectIn.readObject();
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return (IClient)deSerializedObject;
-//
-//	}
-//	
-//	
-//
-//	private static Notice getNoticeFromBytes(byte[] buffer, String className){
-//
-//		ObjectInputStream objectIn = null;
-//		if (buffer != null)
-//			try {
-//				objectIn = new ObjectInputStream(new ByteArrayInputStream(buffer));
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//
-//		Object deSerializedObject = null;
-//		try {
-//			deSerializedObject = objectIn.readObject();
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		Class myNotice;
-//		Notice notice = null;
-//		try {
-//			myNotice = Class.forName(className);
-//			notice = (Notice)myNotice.cast(deSerializedObject);
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		return notice;
-//
-//	}
-//	
-//	
 }

@@ -29,4 +29,15 @@ public class ActivityWithoutResponsibleNotice extends Notice{
 	{
 		return activity;
 	}
+	
+	@Override
+	public String getDetails()
+	{
+		String s = "The activity " +
+				activity.getName() +
+				" in project " +
+				project.getName() +
+				" has no responsible.";
+		return s;
+	}
 }

@@ -23,5 +23,14 @@ public class UnlockedActivityNotice extends Notice {
 	{
 		return activity;
 	}
+	
+	@Override
+	public String getDetails()
+	{
+		String s = "The precedent activity is completed. Now you can complete " +
+				 	activity.getName() + 
+					" activity.";
+		return s;
+	}
 
 }

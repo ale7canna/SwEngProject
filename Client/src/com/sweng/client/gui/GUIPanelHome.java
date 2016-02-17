@@ -198,9 +198,6 @@ public class GUIPanelHome extends JPanel {
 		
 			public void mousePressed(MouseEvent evt)
 			{
-				//TODO: E se la tabella degli amici è vuota? Da gestire
-				//		Idem per progetti amicizie attività e notifiche
-				//aggiunto controllo sul conteggio di riga!=-1 
 				int row = tableFriends.rowAtPoint(evt.getPoint());
 				if (evt.getClickCount() == 2&& row!=-1)
 				{

@@ -37,7 +37,7 @@ public class ProjectInfoGui extends JPanel {
 	JList listActivities;
 	JList listParticipants;
 
-	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener, Boolean isAdmin) {
+	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener, boolean isAdmin, int userID) {
 		setLayout(new GridLayout(0, 1, 0, 0));
 
 		JSplitPane splitPane = new JSplitPane();
@@ -177,8 +177,10 @@ public class ProjectInfoGui extends JPanel {
 						try {
 							_listener.startProject(project);
 						} catch (RemoteException | CustomException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							if(e instanceof CustomException)
+								JOptionPane.showMessageDialog(null, e.getMessage());
+							else
+								e.printStackTrace();
 						}
 					}
 				});
@@ -258,20 +260,24 @@ public class ProjectInfoGui extends JPanel {
 					
 				}
 			});
-			
-			
-			listActivities.addMouseListener(new MouseAdapter() {
-	
-				public void mouseClicked(MouseEvent ev) {
-					if(ev.getClickCount()==2){
-						Activity a = ((MyActivityListModel) listActivities.getModel()).getActivityAt(listActivities.getSelectedIndex());
-						_listener.showActivityInfo(a);
-					}
-					
-				}
-			});
-		
 		}
+
+		listActivities.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked(MouseEvent ev) {
+				
+				if (ev.getClickCount() == 2) {
+					Activity a = ((MyActivityListModel) listActivities.getModel())
+							.getActivityAt(listActivities.getSelectedIndex());
+					
+					boolean isResponsible = (projectInfo.getActivitiesInResponsible().get(a).getIdUser() == userID);
+					if (isAdmin || isResponsible)
+						_listener.showActivityInfo(a);
+				}
+				
+			}
+		});		
+
 	
 	}
 

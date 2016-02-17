@@ -4,9 +4,12 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import com.sweng.common.Consts;
 import com.sweng.common.notice.SimpleNotice;
@@ -18,25 +21,35 @@ public class MainServer {
 
 	private static GuiManager guiMgr;
 	
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, RemoteException {
+	public static void main(String[] args) {
 		
-		ServerEvents list = new ServerEvents();
-		Server server = new Server(list);
+		
 		try 
 		{
 			Registry registry = LocateRegistry.createRegistry(Consts.RMI_PORT);
+			
+			ServerEvents list = new ServerEvents();
+			Server server = Server.getInstance(list);
+			
 			registry.bind(Consts.RMI_ID, server);
+			
+			guiMgr = new GuiManager(server);
+			
+			guiMgr.LoadUser();
+			guiMgr.LoadProjects();
+			guiMgr.LoadActivities();
 		} 
 		catch (RemoteException | AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (e instanceof AlreadyBoundException)
+				JOptionPane.showMessageDialog(null, "Another server instance is already running on this PC.");
+			else if (e instanceof ExportException )
+				JOptionPane.showMessageDialog(null, "Another server instance is already running on this PC.");
+			else	
+				JOptionPane.showMessageDialog(null, "Remote Error Connection.");
 		}
 		
-		guiMgr = new GuiManager(server);
 		
-		guiMgr.LoadUser();
-		guiMgr.LoadProjects();
-		guiMgr.LoadActivities();
+
 	}
 	
 	public static class ServerEvents implements IServerEvents {

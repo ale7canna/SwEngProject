@@ -201,7 +201,7 @@ public class GuiManagerClient {
 
 		@Override
 		public void RemoveProjectPressed(ProjectInfo projectInfo) {
-			// TODO Auto-generated method stub
+
 			clientManager.removeProject(projectInfo);
 			projectInfoFrame.setVisible(false);
 		}
@@ -217,7 +217,7 @@ public class GuiManagerClient {
 			Project project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive());
 			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
 			projectInfoFrame = new JFrame();
-			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this, isAdmin);
+			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this, isAdmin, clientManager.getId());
 			projectInfoFrame.getContentPane().add(piGui);
 			projectInfoFrame.setSize(800, 600);
 			projectInfoFrame.setVisible(true);
@@ -279,6 +279,13 @@ public class GuiManagerClient {
 				clientManager.logout();
 				JOptionPane.showMessageDialog(null, "Logout performed");
 				switchGui(new GUIPanelSignIn(_listener));
+				
+				if (activityInfoFrame != null)
+					activityInfoFrame.dispose();
+				if (noticeInfoFrame != null)
+					noticeInfoFrame.dispose();
+				if (projectInfoFrame != null)
+					projectInfoFrame.dispose();
 			}
 		}
 		
@@ -316,20 +323,17 @@ public class GuiManagerClient {
 
 		@Override
 		public ArrayList<User> removeResponsible(ActivityResponsible resp) {
-			// TODO Auto-generated method stub
 			return clientManager.removeResponsible(resp);
 		}
 
 		@Override
 		public void startProject(Project project) throws RemoteException,
 				CustomException {
-			// TODO Auto-generated method stub
 			
 		}
 
 		
 		public void addText(ActivityInfo activityInfo, String text) {
-			// TODO Auto-generated method stub
 			clientManager.addTexttoActivity(activityInfo, text);
 		}
 

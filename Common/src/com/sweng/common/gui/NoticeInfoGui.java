@@ -24,9 +24,9 @@ import javax.swing.JTextPane;
 public class NoticeInfoGui extends JPanel{
 	private JTextField textNoticeTitle;
 	private JTextField textNoticeDate;
-	private JTextField textField;
 
 	public NoticeInfoGui(Notice notice, ICommonGui _listener) {
+		setSize(new Dimension(600, 400));
 		setLayout(null);
 		try{
 		UIManager.setLookAndFeel(
@@ -80,35 +80,31 @@ public class NoticeInfoGui extends JPanel{
 			}
 		});
 		
-		JLabel labelClass = new JLabel("Type");
-		
-		textField = new JTextField(notice.getClass().getName());
-		textField.setEditable(false);
-		textField.setColumns(10);
-		
 		JPanel panel_1 = new JPanel();
+		
+		JLabel labelDetail = new JLabel("Details");
+		
+		JTextPane textDetailField = new JTextPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(33)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNoticesTitle, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelDateNotice, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMessage, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelDetail))
+					.addGap(24)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(textNoticeDate, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblNoticesTitle, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-							.addGap(24)
 							.addComponent(textNoticeTitle, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
 							.addGap(124)
 							.addComponent(btnSetNoticeRed, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblMessage, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(labelClass, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(labelDateNotice, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
-							.addGap(24)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(panel_1, 0, 0, Short.MAX_VALUE)
-								.addComponent(textField, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
-								.addComponent(textNoticeDate, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(textDetailField, Alignment.LEADING)
+							.addComponent(panel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)))
 					.addContainerGap(27, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
@@ -126,21 +122,18 @@ public class NoticeInfoGui extends JPanel{
 							.addGap(37)
 							.addComponent(textNoticeTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(labelClass))
-					.addGap(15)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textNoticeDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(labelDateNotice))
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(18)
-							.addComponent(lblMessage))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)))
-					.addGap(153))
+						.addComponent(labelDateNotice)
+						.addComponent(textNoticeDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblMessage)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(labelDetail)
+						.addComponent(textDetailField, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE))
+					.addGap(57))
 		);
 		panel_1.setLayout(null);
 		
@@ -154,7 +147,20 @@ public class NoticeInfoGui extends JPanel{
 		scrollPane.setViewportView(txtpnSdasd);
 		panel.setLayout(gl_panel);
 		
-		
+		String detailNotice = notice.getDetails();
+		if (!detailNotice.isEmpty())
+		{
+			labelDetail.setVisible(true);
+			textDetailField.setVisible(true);
+			textDetailField.setText(detailNotice);
+			textDetailField.updateUI();
+		}
+		else
+		{
+			labelDetail.setVisible(false);
+			textDetailField.setVisible(false);
+			
+		}
 		
 	}
 }

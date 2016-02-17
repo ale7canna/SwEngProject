@@ -32,6 +32,15 @@ public class FinishedActivityNotice extends Notice {
 		this.activityInfo = activityInfo;
 	}
 	
-	
+	@Override
+	public String getDetails()
+	{
+		String s = "Someone completed the activity " +
+				 	activityInfo.getName() + 
+					" in project " +
+				 	activityInfo.getProject().getName() + 
+					".";
+		return s;
+	}
 	
 }

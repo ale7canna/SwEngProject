@@ -18,7 +18,7 @@ public class RemoveProjectTest {
 	@Test
 	public void test() throws CustomException, RemoteException {
 		
-		IServer server = new Server(null);
+		IServer server = Server.getInstance(null);
 		
 		Project p = new Project(1, "Nome_Progetto", true);
 		server.removeProject(p);
