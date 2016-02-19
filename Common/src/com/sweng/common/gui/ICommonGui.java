@@ -24,4 +24,5 @@ public interface ICommonGui {
 	public ArrayList<User> removeResponsible(ActivityResponsible resp);
 	public void startProject(Project project) throws RemoteException, CustomException;
 	public void addText(ActivityInfo activityInfo, String text);
+	public void startProjectClicked(Project project);
 }

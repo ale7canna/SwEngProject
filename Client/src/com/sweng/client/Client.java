@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import com.sweng.client.gui.ClientGUI;
-import com.sweng.client.gui.GUIPanelHome;
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
 import com.sweng.common.beans.Activity;
@@ -481,7 +479,9 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public ArrayList<User> removeResponsible(ActivityResponsible resp) {
 		
 		try {
-			return server.removeActivityResponsible(resp);
+			ArrayList<User> removeActivityResponsible = server.removeActivityResponsible(resp);
+			loadActivitiesfromServer(user);
+			return removeActivityResponsible;
 		} catch (RemoteException | CustomException e) {
 
 			if(e instanceof CustomException)
@@ -497,6 +497,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 		try {
 			server.startProject(project);
+			loadProjectsfromServer(user);
+			loadActivitiesfromServer(user);
 		} catch (RemoteException | CustomException e) {
 
 			if(e instanceof CustomException)
@@ -513,6 +515,7 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		activityInfo.setText(text);
 		try {
 			server.addTexttoActivity(activityInfo);
+			loadActivitiesfromServer(user);
 		} catch (RemoteException | CustomException e) {
 
 			if(e instanceof CustomException)

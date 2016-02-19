@@ -51,6 +51,7 @@ public interface EventListenerGUI {
 	public void performSignUp(String username, String password, String name, String surname);
 
 	public void showNoticeInfo(Notice n);
-	
+
+	public boolean WindowWasClosed();	
 
 }

@@ -12,8 +12,8 @@ import com.sweng.common.beans.User;
 
 public class MyActivityTableAdapter extends AbstractTableModel {
 
-	private ArrayList<String> columnNames = new ArrayList();
-	private ArrayList<ArrayList<Object>> data = new ArrayList();
+	private ArrayList<String> columnNames = new ArrayList<String>();
+	private ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
 
 	private ArrayList<Activity> listActivity = null;
 

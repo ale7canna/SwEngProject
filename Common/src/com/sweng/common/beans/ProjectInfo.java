@@ -10,14 +10,14 @@ public class ProjectInfo implements Serializable{
 	private int idProject;
 	private boolean isActive;
 	private User admin;
-	private HashMap<Activity, User> activitiesInResponsible;
+	private HashMap<Activity, ArrayList<User>> activitiesInResponsible;
 	private ArrayList<User> participants;
 	private float completetionPercentage;
 	
 	
 	
 	public ProjectInfo(String name, int idProject, boolean isActive, User admin,
-			HashMap<Activity, User> activitiesInResponsible, ArrayList<User> participants,
+			HashMap<Activity, ArrayList<User>> activitiesInResponsible, ArrayList<User> participants,
 			float completetionPercentage) {
 		super();
 		this.name = name;
@@ -54,10 +54,10 @@ public class ProjectInfo implements Serializable{
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	public HashMap<Activity, User> getActivitiesInResponsible() {
+	public HashMap<Activity, ArrayList<User>> getActivitiesInResponsible() {
 		return activitiesInResponsible;
 	}
-	public void setActivitiesInResponsible(HashMap<Activity, User> activitiesInResponsible) {
+	public void setActivitiesInResponsible(HashMap<Activity, ArrayList<User>> activitiesInResponsible) {
 		this.activitiesInResponsible = activitiesInResponsible;
 	}
 	public ArrayList<User> getParticipants() {

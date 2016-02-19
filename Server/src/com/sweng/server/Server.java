@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.sweng.common.IClient;
 import com.sweng.common.IServer;
@@ -44,6 +45,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	IServerEvents listener;
 	
 	private static Server thisInstance = null;
+	private DBManager dbMgr = null;
 	
 	public static Server getInstance(IServerEvents _listener) throws RemoteException {
 		
@@ -55,8 +57,39 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	private Server(IServerEvents _listener) throws RemoteException {
 		super();
-		DBManager.RemoveAllConnectedUsers();
+		dbMgr = DBManager.getInstance();
+		dbMgr.RemoveAllConnectedUsers();
 		listener = _listener;
+	}
+	
+	public ArrayList<User> getAllUsers() throws CustomException
+	{
+		return dbMgr.getAllUsers();
+	}
+	
+	public ArrayList<IClient> getObservers() throws CustomException
+	{
+		return dbMgr.getObservers();
+	}
+	
+	public ArrayList<Project> getAllProjects() throws CustomException
+	{
+		return dbMgr.getAllProjects();
+	}
+	
+	public int getActiveProjectsCount() throws CustomException
+	{
+		return dbMgr.getActiveProjectsCount();
+	}
+	
+	public ArrayList<Activity> getAllActivities() throws CustomException
+	{
+		return dbMgr.getAllActivities();
+	}
+	
+	public int getDoneActivitiesCount() throws CustomException
+	{
+		return dbMgr.getDoneActivitiesCount();
 	}
 	
 	// IMPLEMENTAZIONE METODI REMOTI
@@ -64,7 +97,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public Activity addActivity(Activity _activity) throws RemoteException, CustomException {
 		
-		_activity = DBManager.addActivity(_activity);
+		_activity = dbMgr.addActivity(_activity);
 		
 		if (listener != null)
 			listener.aggiornaAttivita();
@@ -74,37 +107,38 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	public void startProject(Project project) throws RemoteException, CustomException {
 		
-		NotifyFirstActivityResponsible(project.getIdProject());
-		NotifyAllParticipants(project.getIdProject(), true);
+		dbMgr.setProjectActive(project);
+		NotifyFirstActivityResponsible(project);
+		NotifyAllParticipants(project, true);
 	}
 	
 	@Override
 	public void addActivityResponsible(ActivityResponsible _activityResponsible)
 			throws RemoteException, CustomException {
 			
-		DBManager.addActivityResponsible(_activityResponsible);
+		dbMgr.addActivityResponsible(_activityResponsible);
 	}
 	
 	@Override
 	public void addFriendship(Friendship _friendship) throws RemoteException, CustomException {
 		
-		DBManager.addFriendship(_friendship);
-		User u = DBManager.getUser(_friendship.getIdUtente2());
+		dbMgr.addFriendship(_friendship);
+		User u = dbMgr.getUser(_friendship.getIdUtente2());
 		
-		Notice n = new FriendshipAdded(DBManager.getUser(_friendship.getIdUtente1()));
+		Notice n = new FriendshipAdded(dbMgr.getUser(_friendship.getIdUtente1()));
 		NotifyUser(n, u);
 	}
 	
 	@Override
 	public void addParticipant(Participant _participant) throws RemoteException, CustomException {
 		
-		DBManager.addParticipant(_participant);
+		dbMgr.addParticipant(_participant);
 	}
 	
 	@Override
 	public Project addProject(Project _project) throws RemoteException, CustomException {
 		
-		_project = DBManager.addProject(_project);
+		_project = dbMgr.addProject(_project);
 		
 		if (listener != null)
 			listener.aggiornaProgetti();
@@ -114,7 +148,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public void addUser(User _user) throws RemoteException, CustomException {
 		
-		DBManager.addUser(_user);
+		dbMgr.addUser(_user);
 		
 		if (listener != null)
 			listener.aggiornaUtenti();
@@ -124,9 +158,9 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public User performLogin(String username, String password) throws RemoteException, CustomException {
 		
 		User result = null;
-		result = DBManager.getUser(username, password);
+		result = dbMgr.getUser(username, password);
 		
-		if (DBManager.getConnectedUserByUserId(result.getIdUser()) != null)
+		if (dbMgr.getConnectedUserByUserId(result.getIdUser()) != null)
 			throw new CustomException(Errors.UserAlreadyLoggedIn);
 			
 		return result;
@@ -136,7 +170,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public void addObserver(IClient _client) throws RemoteException {
 		
 		// Utente connesso alla ricezione delle notifiche
-		DBManager.addClientToObservers(_client);
+		dbMgr.addClientToObservers(_client);
 		
 		listener.aggiornaUtenti();
 		
@@ -146,7 +180,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public void removeObserver(IClient _client) throws RemoteException {
 		
 		try {
-			DBManager.removeObserver(_client);
+			dbMgr.removeObserver(_client);
 			System.out.println("Utente rimosso");
 			if (listener != null)
 				listener.aggiornaUtenti();
@@ -159,9 +193,9 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<Activity> getActivityFromUser(User user) throws RemoteException, CustomException {
 		
 		ArrayList<Activity> result = null;
-		result = DBManager.getActivityFromUser(user);
+		result = dbMgr.getActivityFromUser(user);
 		for (Activity act : result)
-			act.setFinishable(DBManager.canICompleteMyActivity(act));
+			act.setFinishable(dbMgr.canICompleteMyActivity(act));
 			
 		return result;
 	}
@@ -170,7 +204,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<Project> getProjectsFromUsers(User user) throws RemoteException, CustomException {
 		
 		ArrayList<Project> result = null;
-		result = DBManager.getProjectsFromUser(user);
+		result = dbMgr.getProjectsFromUser(user);
 		
 		return result;
 	}
@@ -179,7 +213,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<User> getFriendsFromUser(User user) throws RemoteException, CustomException {
 		
 		ArrayList<User> result = null;
-		result = DBManager.getFriendsFromUser(user);
+		result = dbMgr.getFriendsFromUser(user);
 		
 		return result;
 	}
@@ -188,7 +222,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<User> getParticipantsFromProject(Project project) throws CustomException {
 		
 		ArrayList<User> result = null;
-		result = DBManager.getParticipantsFromProject(project);
+		result = dbMgr.getParticipantsFromProject(project);
 		
 		return result;
 	}
@@ -197,7 +231,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ProjectInfo getProjectInfo(Project project) throws CustomException {
 		
 		ProjectInfo result = null;
-		result = DBManager.getProjectInfo(project);
+		result = dbMgr.getProjectInfo(project);
 		
 		return result;
 	}
@@ -206,7 +240,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<User> getNotMyFriends(int idUser) throws CustomException, RemoteException {
 		
 		ArrayList<User> result = null;
-		result = DBManager.getNotMyFriends(idUser);
+		result = dbMgr.getNotMyFriends(idUser);
 		
 		return result;
 	}
@@ -214,7 +248,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public void removeProject(Project project) throws RemoteException, CustomException {
 		
-		DBManager.removeProject(project);
+		dbMgr.removeProject(project);
 		if (listener != null)
 			listener.aggiornaProgetti();
 	}
@@ -222,20 +256,20 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public void removeFriendship(Friendship friendship) throws RemoteException, CustomException {
 		
-		DBManager.removeFriendship(friendship);
+		dbMgr.removeFriendship(friendship);
 	}
 	
 	@Override
 	public ActivityInfo getActivityInfo(Activity activity) throws RemoteException, CustomException {
 		
-		return DBManager.getActivityInfo(activity);
+		return dbMgr.getActivityInfo(activity);
 	}
 	
 	@Override
 	public void setActivityDone(ActivityInfo activityInfo, User whoCompletedActivity)
 			throws RemoteException, CustomException {
 			
-		DBManager.setActivityDone(activityInfo);
+		dbMgr.setActivityDone(activityInfo);
 		
 		if (whoCompletedActivity != null)
 			activityInfo.getResponsabili().remove(whoCompletedActivity);
@@ -247,7 +281,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		// CONTROLLARE STATO ATTIVITA/PROGETTO PER NOTIFICHE
 		
-		ArrayList<Activity> activities = DBManager.getActivitiesFromProject(activityInfo.getProject());
+		ArrayList<Activity> activities = dbMgr.getActivitiesFromProject(activityInfo.getProject());
 		
 		Iterator iter = activities.iterator();
 		while (iter.hasNext()) {
@@ -264,11 +298,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 	}
 	
-	private void NotifyFirstActivityResponsible(int idProject) {
+	private void NotifyFirstActivityResponsible(Project project) {
 		
 		try {
-			ArrayList<Activity> activities = DBManager.getActivitiesFromProject(new Project(idProject));
-			ActivityInfo activityInfo = DBManager.getActivityInfo(activities.get(0));
+			ArrayList<Activity> activities = dbMgr.getActivitiesFromProject(project);
+			ActivityInfo activityInfo = dbMgr.getActivityInfo(activities.get(0));
 			
 			UnlockedActivityNotice n = new UnlockedActivityNotice(activities.get(0));
 			
@@ -286,7 +320,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 		try {
 			
-			ArrayList<User> responsibles = DBManager.getActivityInfo(activity).getResponsabili();
+			ArrayList<User> responsibles = dbMgr.getActivityInfo(activity).getResponsabili();
 			for (User r : responsibles) {
 				Date date = Date.from(Instant.now());
 				String title = DefaultMessages.UnlockedActivityTitle.toString();
@@ -302,11 +336,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 		
 	}
 	
-	private void NotifyAllParticipants(int idProject, boolean isStarted) {
+	private void NotifyAllParticipants(Project project, boolean isStarted) {
 		
 		try {
-			ProjectInfo projectInfo = DBManager.getProjectInfo(new Project(idProject));
-			ArrayList<User> participants = DBManager.getParticipantsFromProject(new Project(idProject));
+			ProjectInfo projectInfo = dbMgr.getProjectInfo(project);
+			ArrayList<User> participants = dbMgr.getParticipantsFromProject(project);
 			
 			Notice notice = null;
 			if (isStarted)
@@ -330,13 +364,13 @@ public class Server extends UnicastRemoteObject implements IServer {
 				
 				IClient client;
 				
-				int idNotifica = DBManager.storeNotice(notice);
+				int idNotifica = dbMgr.storeNotice(notice);
 				notice.setId(idNotifica);
 				
 				try {
 					for (User u : users) {
-						DBManager.storeUserNotices(notice, u.getIdUser());
-						client = DBManager.getConnectedUserByUserId(u.getIdUser());
+						dbMgr.storeUserNotices(notice, u.getIdUser());
+						client = dbMgr.getConnectedUserByUserId(u.getIdUser());
 						
 						if (client != null)
 							try {
@@ -366,12 +400,12 @@ public class Server extends UnicastRemoteObject implements IServer {
 				IClient client;
 				
 				try {
-					int idNotifica = DBManager.storeNotice(notice);
+					int idNotifica = dbMgr.storeNotice(notice);
 					notice.setId(idNotifica);
 					
-					DBManager.storeUserNotices(notice, user.getIdUser());
+					dbMgr.storeUserNotices(notice, user.getIdUser());
 					
-					client = DBManager.getConnectedUserByUserId(user.getIdUser());
+					client = dbMgr.getConnectedUserByUserId(user.getIdUser());
 					if (client != null)
 						client.update(notice);
 						
@@ -386,14 +420,14 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	private void endOfProject(Project project) {
 		
-		NotifyAllParticipants(project.getIdProject(), false);
+		NotifyAllParticipants(project, false);
 	}
 	
 	@Override
 	public ArrayList<Notice> getNoticeFromUser(User user) throws CustomException, RemoteException {
 		
 		ArrayList<Notice> result = null;
-		result = DBManager.getNoticesByUserId(user.getIdUser());
+		result = dbMgr.getNoticesByUserId(user.getIdUser());
 		
 		return result;
 	}
@@ -401,27 +435,27 @@ public class Server extends UnicastRemoteObject implements IServer {
 	@Override
 	public void setNoticeRead(Notice notice, User user) throws RemoteException, CustomException {
 		
-		DBManager.setNoticeDone(notice, user);
+		dbMgr.setNoticeDone(notice, user);
 	}
 	
 	@Override
 	public ArrayList<User> removeParticipant(Participant participant) throws RemoteException, CustomException {
 		
-		DBManager.removeParticipant(participant);
-		return DBManager.getParticipantsFromProject(new Project(participant.getIdProject()));
+		dbMgr.removeParticipant(participant);
+		return dbMgr.getParticipantsFromProject(new Project(participant.getIdProject()));
 	}
 	
 	@Override
 	public ArrayList<User> removeActivityResponsible(ActivityResponsible resp) throws RemoteException, CustomException {
 		
-		DBManager.removeActivityResponsible(resp);
+		dbMgr.removeActivityResponsible(resp);
 		
-		ArrayList<User> responsabili = DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
+		ArrayList<User> responsabili = dbMgr.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 		
 		if (!(responsabili.size() > 0)) {
-			Activity activity = DBManager.getActivityFromId(resp.getIdActivity());
-			Project proj = DBManager.getProjectFromActivity(activity);
-			User admin = DBManager.getProjectAdmin(proj);
+			Activity activity = dbMgr.getActivityFromId(resp.getIdActivity());
+			Project proj = dbMgr.getProjectFromActivity(activity);
+			User admin = dbMgr.getProjectAdmin(proj);
 			
 			ActivityResponsible ar = new ActivityResponsible(admin.getIdUser(), activity.getIdActivity());
 			addActivityResponsible(ar);
@@ -430,13 +464,13 @@ public class Server extends UnicastRemoteObject implements IServer {
 			NotifyUser(notice, admin);
 		}
 		
-		return DBManager.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
+		return dbMgr.getActivityInfo(new Activity(resp.getIdActivity())).getResponsabili();
 	}
 	
 	@Override
 	public void addTexttoActivity(ActivityInfo activityInfo) throws RemoteException, CustomException {
 		
-		DBManager.updateActivityText(activityInfo);
+		dbMgr.updateActivityText(activityInfo);
 	}
 	
 }

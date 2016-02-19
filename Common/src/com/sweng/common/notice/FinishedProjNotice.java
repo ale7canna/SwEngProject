@@ -1,7 +1,5 @@
 package com.sweng.common.notice;
 
-import java.util.Date;
-
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.utils.DefaultMessages;
 
@@ -27,7 +25,7 @@ public class FinishedProjNotice extends Notice {
 	@Override
 	public String getDetails() {
 		
-		String s = "The project " + projectInfo.getName() + "is readey to be completed.";
+		String s = "The project " + projectInfo.getName() + " is readey to be completed.";
 		return s;
 	}
 	

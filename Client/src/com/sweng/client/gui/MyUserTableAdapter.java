@@ -10,8 +10,12 @@ import com.sweng.common.beans.User;
 
 public class MyUserTableAdapter extends AbstractTableModel {
 
-	private ArrayList<String> columnNames = new ArrayList();
-	private ArrayList<List> data = new ArrayList();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<String> columnNames = new ArrayList<String>();
+	private ArrayList<List> data = new ArrayList<List>();
 
 	private ArrayList<User> listUser = null;
 

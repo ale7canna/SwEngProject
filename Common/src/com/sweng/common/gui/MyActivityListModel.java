@@ -14,16 +14,20 @@ public class MyActivityListModel extends DefaultListModel<String> {
 	private HashMap<Activity, User> activitiesAndUSers;
 	private ArrayList<Activity> activities;
 	
-	public void addElement(Activity a, User u)
+	public void addElement(Activity act, ArrayList<User> users)
 	{
-		super.addElement(a.getName() + " - " + u.getUsername());
-		if (activitiesAndUSers == null)
-			activitiesAndUSers = new HashMap<Activity, User>();
-		activitiesAndUSers.put(a, u);
-
-		if (activities == null)
-			activities = new ArrayList<Activity>();
-		activities.add(a);
+		for (User u : users)
+		{
+			Activity a = new Activity(act.getIdProject(), act.getIdActivity(), act.getName(), act.getPlace(), act.getHour(), act.getIsDone(), act.getText());
+			super.addElement(a.getName() + " - " + u.getUsername());
+			if (activitiesAndUSers == null)
+				activitiesAndUSers = new HashMap<Activity, User>();
+			activitiesAndUSers.put(a, u);
+	
+			if (activities == null)
+				activities = new ArrayList<Activity>();
+			activities.add(a);
+		}
 	}
 	
 	public void addElement(Activity a)

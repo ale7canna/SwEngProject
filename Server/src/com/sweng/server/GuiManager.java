@@ -26,11 +26,11 @@ import com.sweng.server.gui.ServerGUI;
 public class GuiManager {
 	
 	private static ServerGUI GUI;
-	private IServer server;
+	private Server server;
 	private ProjectInfoGui projectInfoGui;
 	
 	
-	public GuiManager(IServer _server) {
+	public GuiManager(Server _server) {
 		GUI = new ServerGUI(new GuiListener());
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUI.setSize(1400, 800);
@@ -43,9 +43,9 @@ public class GuiManager {
 	public void LoadUser() {
 		
 		try {
-			ArrayList<User> allUsers = DBManager.getAllUsers();
+			ArrayList<User> allUsers = server.getAllUsers(); 
 			GUI.AddUsersToList(allUsers);
-			GUI.ChangeUserSummary(DBManager.getObservers().size(), allUsers.size());
+			GUI.ChangeUserSummary(server.getObservers().size(), allUsers.size());
 		} catch (CustomException e) {
 			showError(e.getMessage());
 		}
@@ -55,8 +55,9 @@ public class GuiManager {
 	public void LoadProjects() {
 		
 		try {
-			GUI.AddProjectsToList(DBManager.getAllProjects());
-			GUI.ChangeProjectsSummary(DBManager.getActiveProjectsCount(), DBManager.getTotalProjectsCount());
+			ArrayList<Project> allProjects = server.getAllProjects();
+			GUI.AddProjectsToList(allProjects);
+			GUI.ChangeProjectsSummary(server.getActiveProjectsCount(), allProjects.size());
 		} catch (CustomException e) {
 			showError(e.getMessage());
 		}
@@ -65,8 +66,9 @@ public class GuiManager {
 	public void LoadActivities() {
 		
 		try {
-			GUI.AddActivitiesToList(DBManager.getAllActivities());
-			GUI.ChangeActivitiesSummary(DBManager.getDoneActivitiesCount(), DBManager.getActivitiesCount());
+			ArrayList<Activity> allActivities = server.getAllActivities();
+			GUI.AddActivitiesToList(allActivities);
+			GUI.ChangeActivitiesSummary(server.getDoneActivitiesCount(), allActivities.size());
 		} catch (CustomException e) {
 			showError(e.getMessage());
 		}
@@ -85,16 +87,16 @@ public class GuiManager {
 			ArrayList<Project> progetti = null;
 			
 			try {
-				progetti = DBManager.getProjectsFromUser(user);
+				progetti = server.getProjectsFromUsers(user);
 				GUI.AddUserProjectsToList(progetti);
-			} catch (CustomException e) {
+			} catch (CustomException | RemoteException e) {
 				GUI.AddUserProjectsToList(null);
 			}
 			
 			try {
-				ArrayList<User> friends = DBManager.getFriendsFromUser(user);
+				ArrayList<User> friends = server.getFriendsFromUser(user);
 				GUI.AddFriendsToList(friends);
-			} catch (CustomException e) {
+			} catch (CustomException | RemoteException e) {
 				GUI.AddFriendsToList(null);
 			}
 		}
@@ -106,7 +108,7 @@ public class GuiManager {
 				System.out.println(project.getName());
 				
 				try {
-					projectInfoGui = new ProjectInfoGui(DBManager.getProjectInfo(project), this, true, 0);
+					projectInfoGui = new ProjectInfoGui(server.getProjectInfo(project), this, true, 0);
 					JFrame frame = new JFrame();
 					frame.getContentPane().add(projectInfoGui);
 					frame.setVisible(true);
@@ -123,9 +125,9 @@ public class GuiManager {
 			Project p = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(),
 					projectInfo.getName(), projectInfo.isActive());
 			try {
-				DBManager.removeProject(p);
+				server.removeProject(p);
 				GUI.ChangeProjectInfo(null);
-			} catch (CustomException e) {
+			} catch (CustomException | RemoteException e) {
 			
 			}
 		}
@@ -135,7 +137,7 @@ public class GuiManager {
 			
 			ProjectInfo pi = null;
 			try {
-				pi = DBManager.getProjectInfo(project);
+				pi = server.getProjectInfo(project);
 			} catch (CustomException e) {
 				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
 			}
@@ -149,8 +151,8 @@ public class GuiManager {
 			ActivityInfo ai = null;
 			
 			try {
-				ai = DBManager.getActivityInfo(activity);
-			} catch (CustomException e) {
+				ai = server.getActivityInfo(activity);
+			} catch (CustomException | RemoteException e) {
 				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
 			}
 			ActivityInfoGui activityInfoGui = new ActivityInfoGui(ai, this);
@@ -246,6 +248,11 @@ public class GuiManager {
 				else
 					e.printStackTrace();
 			}
+		}
+
+		@Override
+		public void startProjectClicked(Project project) {
+			
 		}
 		
 	}

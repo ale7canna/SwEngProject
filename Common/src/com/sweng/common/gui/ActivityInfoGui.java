@@ -34,11 +34,11 @@ public class ActivityInfoGui extends JPanel {
 	private JTextField textFieldHour;
 
 	public ActivityInfoGui(ActivityInfo activityInfo, ICommonGui _listener) {
-		setSize(new Dimension(800, 416));
+		setSize(new Dimension(800, 466));
 		setLayout(null);
 
 		JSplitPane splitPane = new JSplitPane();
-		splitPane.setBounds(0, 0, 790, 402);
+		splitPane.setBounds(0, 0, 790, 450);
 		add(splitPane);
 
 		JPanel panelActivity = new JPanel();

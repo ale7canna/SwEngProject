@@ -1,7 +1,5 @@
 package com.sweng.common.notice;
 
-import java.util.Date;
-
 import com.sweng.common.beans.ActivityInfo;
 import com.sweng.common.utils.DefaultMessages;
 

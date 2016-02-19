@@ -1,13 +1,11 @@
 package com.sweng.client.gui;
 
 import java.awt.Dimension;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.sql.Date;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -22,9 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingUtilities;
-
-import sun.swing.SwingAccessor;
+import javax.swing.WindowConstants;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import com.sweng.client.CheckBoxId;
@@ -33,9 +29,9 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.User;
 
 import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextPane;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUIaddComponent extends JFrame {
 
@@ -71,9 +67,26 @@ public class GUIaddComponent extends JFrame {
 
 	public GUIaddComponent(EventListenerGUI _listener,
 			ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
 
+				if (!isProject)
+				{
+					if (_listener.WindowWasClosed()) {
+	                    setVisible(false);
+	                    dispose();
+	                }
+					else
+						JOptionPane.showMessageDialog(null, "You must add at least one activity.");
+				}
+			}
+		});
 		getContentPane().setLayout(null);
-
+		
+		if (!isProject)
+			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
 		if (isProject && !isAddFriends)
 			NameLabel = new JLabel("Project Name\r\n");
 		if (isProject && isAddFriends)
@@ -197,14 +210,14 @@ public class GUIaddComponent extends JFrame {
 							isActive.isSelected());
 					_listener.refreshAll();
 				}
-				if (isProject && isAddFriends) {
+				else if (isProject && isAddFriends) {
 					// ArrayList<Integer> daaggiungere =
 					// listFriends.getSelectedItems();
 					_listener.addFriends(listFriends.getSelectedItems());
 					_listener.refreshAll();
 
 				}
-				if (!isProject) {
+				else if (!isProject) {
 					String ts = null;
 
 					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");

@@ -380,8 +380,8 @@ public class GUIPanelHome extends JPanel {
 	
 	class MyTableModel extends AbstractTableModel{
 
-	    private ArrayList<String> columnNames = new ArrayList();
-	    private ArrayList<List> data = new ArrayList();
+	    private ArrayList<String> columnNames = new ArrayList<String>();
+	    private ArrayList<List> data = new ArrayList<List>();
 	   
 	    public MyTableModel(ArrayList<String> titoli) {
 	    	for (String t : titoli){

@@ -10,8 +10,8 @@ import com.sweng.common.beans.User;
 
 public class MyProjectTableAdapter extends AbstractTableModel {
 
-	private ArrayList<String> columnNames = new ArrayList();
-	private ArrayList<List> data = new ArrayList();
+	private ArrayList<String> columnNames = new ArrayList<String>();
+	private ArrayList<List> data = new ArrayList<List>();
 
 	private ArrayList<Project> listProject = null;
 

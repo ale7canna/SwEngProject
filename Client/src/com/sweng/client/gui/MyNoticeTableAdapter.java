@@ -10,8 +10,8 @@ import com.sweng.common.notice.Notice;
 
 public class MyNoticeTableAdapter extends AbstractTableModel{
 	
-	private ArrayList<String> columnNames = new ArrayList();
-	private ArrayList<ArrayList<Object>> data = new ArrayList();
+	private ArrayList<String> columnNames = new ArrayList<String>();
+	private ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
 
 	private ArrayList<Notice> listNotice = null;
 
