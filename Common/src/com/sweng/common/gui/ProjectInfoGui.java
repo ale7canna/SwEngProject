@@ -58,25 +58,43 @@ public class ProjectInfoGui extends JPanel {
 		JLabel lblDoubleClickTo_1 = new JLabel("Double click to remove a participant");
 		lblDoubleClickTo_1.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
 		
+		JButton btnAddNewParticipants = new JButton("Add New Participants");
+		if(!isAdmin){
+			btnAddNewParticipants.setVisible(false);
+		}
+		else
+			btnAddNewParticipants.setVisible(true);
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addGap(71)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_panel_1.createSequentialGroup()
-										.addComponent(lblPartecipanti, GroupLayout.PREFERRED_SIZE, 85,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(61))
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(71)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel_1.createSequentialGroup()
-								.addComponent(lblDoubleClickTo_1, GroupLayout.PREFERRED_SIZE, 207,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)))
-						.addContainerGap(47, Short.MAX_VALUE))
-				.addComponent(listParticipants, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addContainerGap().addComponent(lblPartecipanti)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(listParticipants, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE).addGap(18)
-						.addComponent(lblDoubleClickTo_1).addContainerGap()));
+							.addComponent(lblPartecipanti, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+							.addGap(61))
+						.addComponent(lblDoubleClickTo_1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addComponent(listParticipants, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(81)
+					.addComponent(btnAddNewParticipants)
+					.addContainerGap(316, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPartecipanti)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listParticipants, GroupLayout.PREFERRED_SIZE, 309, GroupLayout.PREFERRED_SIZE)
+					.addGap(54)
+					.addComponent(btnAddNewParticipants)
+					.addPreferredGap(ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+					.addComponent(lblDoubleClickTo_1)
+					.addContainerGap())
+		);
 		panel_1.setLayout(gl_panel_1);
 		
 		JSplitPane splitPane_1 = new JSplitPane();
@@ -222,20 +240,45 @@ public class ProjectInfoGui extends JPanel {
 		JLabel lblDoubleClickTo = new JLabel("Double click to modify an activity");
 		lblDoubleClickTo.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
 		
+		JButton btnAddNewActivity = new JButton("Add New Activity");
+		
+		if(!isAdmin){
+			btnAddNewActivity.setVisible(false);
+		}
+		else
+			btnAddNewActivity.setVisible(true);
+		
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel_2.createSequentialGroup().addGap(171).addComponent(lblAttivit))
-								.addGroup(gl_panel_2.createSequentialGroup().addGap(46).addComponent(lblDoubleClickTo,
-										GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(88, Short.MAX_VALUE))
-				.addComponent(listActivities, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE));
-		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup().addContainerGap().addComponent(lblAttivit)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(listActivities, GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblDoubleClickTo).addContainerGap()));
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(171)
+							.addComponent(lblAttivit))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(46)
+							.addComponent(lblDoubleClickTo, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(88, Short.MAX_VALUE))
+				.addComponent(listActivities, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addGap(27)
+					.addComponent(btnAddNewActivity)
+					.addContainerGap(281, Short.MAX_VALUE))
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblAttivit)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(listActivities, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnAddNewActivity)
+					.addPreferredGap(ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+					.addComponent(lblDoubleClickTo)
+					.addContainerGap())
+		);
 		panel_2.setLayout(gl_panel_2);
 		
 		splitPane_1.setDividerLocation(175);
@@ -253,11 +296,9 @@ public class ProjectInfoGui extends JPanel {
 			JLabel lblNewLabel_1 = new JLabel("Double click on a row to remove a participant from your project\r\n");
 			panel_1.add(lblNewLabel_1);
 			
-			JButton addPartBtn = new JButton("Add new Participants");
+		
 			
-			JButton addActBtn = new JButton("Add new Activity");
-			
-			addActBtn.addMouseListener(new MouseAdapter() {
+			btnAddNewActivity.addMouseListener(new MouseAdapter() {
 				public void muoseClicked (MouseEvent e){
 					
 					_listener.addActivityView(new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive()));
@@ -265,7 +306,7 @@ public class ProjectInfoGui extends JPanel {
 				
 			});
 			
-			addPartBtn.addMouseListener(new MouseAdapter() {
+			btnAddNewParticipants.addMouseListener(new MouseAdapter() {
 				public void muoseClicked (MouseEvent e){
 					
 					_listener.addFriendsView(projectInfo);
