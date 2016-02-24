@@ -69,4 +69,7 @@ public interface IClientManager {
 	public ArrayList<User> removeResponsible(ActivityResponsible resp);
 
 	public void addTexttoActivity(ActivityInfo activityInfo, String text);
+
+	public void addParticipantstoExistingProject(
+			ArrayList<Integer> selectedItems, int i);
 }

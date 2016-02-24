@@ -220,7 +220,9 @@ public class ActivityInfoGui extends JPanel {
 					int scelta = JOptionPane.showConfirmDialog(null, "Do you really want to remove "+ u.getUsername()+ " from "+ activityInfo.getName()+" activity?", "Remove participant", JOptionPane.YES_NO_OPTION );
 					if(scelta == JOptionPane.YES_OPTION){
 						ActivityResponsible resp= new ActivityResponsible(u.getIdUser(), activityInfo.getIdActivity()); 
+						
 						addUsers(_listener.removeResponsible(resp));
+						
 						} 
 				}
 				

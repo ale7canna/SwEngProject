@@ -475,6 +475,8 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 		try {
 			ArrayList<User> removeActivityResponsible = server.removeActivityResponsible(resp);
+			if(resp.getIdUser()==user.getIdUser())
+		
 			loadActivitiesfromServer(user);
 			return removeActivityResponsible;
 		} catch (RemoteException | CustomException e) {
@@ -519,6 +521,23 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 				e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public void addParticipantstoExistingProject(ArrayList<Integer> selectedItems, int i) {
+		// TODO Auto-generated method stub
+		Participant part;
+		for(Integer x : selectedItems){
+			part = new Participant(x, i);
+			try {
+				server.addParticipant(part);
+			} catch (RemoteException | CustomException e) {
+				if (e instanceof CustomException)
+					guiManagerClient.showError(e.getMessage());
+				else
+					e.printStackTrace();
+			}
+		}
 	}
 	
 }

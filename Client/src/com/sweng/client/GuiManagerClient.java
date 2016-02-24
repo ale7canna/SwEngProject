@@ -160,7 +160,7 @@ public class GuiManagerClient {
 				friendsNotInProject.remove(u);
 			}
 			
-			addFriendsFrame = new GUIaddComponent(this, clientManager.getNotmyFriends(), true, true, projectInfo.getIdProject());
+			addFriendsFrame = new GUIaddComponent(this, friendsNotInProject, true, true, projectInfo.getIdProject());
 			addFriendsFrame.setVisible(true);
 			addFriendsFrame.setBounds(700, 0, 600, 400);
 			
@@ -246,6 +246,13 @@ public class GuiManagerClient {
 			return clientManager.getFriendships();
 			
 		}
+		
+		@Override
+		public void addParticipantstoExistingProject(ArrayList<Integer> selectedItems, int i) {
+			// TODO Auto-generated method stub
+			clientManager.addParticipantstoExistingProject(selectedItems, i);
+		}
+
 		
 		// REMOVING FROM DB
 		public void removeFriend(User u) {
@@ -431,6 +438,7 @@ public class GuiManagerClient {
 			clientManager.startProject(project);
 		}
 
+	
 	
 		
 	}
