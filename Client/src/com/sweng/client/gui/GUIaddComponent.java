@@ -259,12 +259,13 @@ public class GUIaddComponent extends JFrame {
 		PlaceActivityText.setBounds(99, 90, 86, 20);
 		getContentPane().add(PlaceActivityText);
 
-		JLabel lblNewLabelActivate = new JLabel("Activate");
-		lblNewLabelActivate.setBounds(10, 57, 68, 14);
-		getContentPane().add(lblNewLabelActivate);
+	
 
 		if (isProject) {
 			// Nascondi solo le etichette ma rimangono i campi di testo
+			JLabel lblNewLabelActivate = new JLabel("Activate");
+			lblNewLabelActivate.setBounds(10, 57, 68, 14);
+			getContentPane().add(lblNewLabelActivate);
 			PlaceActivityText.setVisible(false);
 			PlaceActivityLabel.setVisible(false);
 

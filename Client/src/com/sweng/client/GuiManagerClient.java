@@ -409,8 +409,8 @@ public class GuiManagerClient {
 	
 	public void notifyPopUser(Notice notice) {
 		
-		JOptionPane.showConfirmDialog(null, "A new notice is arrived " + notice.getTitle(), "Notice",
-				JOptionPane.OK_OPTION);
+		JOptionPane.showMessageDialog(null, "A new notice is arrived " + notice.getTitle());
+				
 	}
 	
 	public void showError(String message) {
