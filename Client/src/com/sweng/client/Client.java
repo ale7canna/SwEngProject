@@ -2,7 +2,6 @@ package com.sweng.client;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -19,11 +18,7 @@ import com.sweng.common.beans.Project;
 import com.sweng.common.beans.ProjectInfo;
 import com.sweng.common.beans.User;
 import com.sweng.common.notice.Notice;
-import com.sweng.common.notice.StartedActicityNotice;
-import com.sweng.common.notice.StartedProjNotice;
-import com.sweng.common.notice.UnlockedActivityNotice;
 import com.sweng.common.utils.CustomException;
-import com.sweng.common.utils.Errors;
 
 public class Client extends UnicastRemoteObject implements IClient, IClientManager {
 	
