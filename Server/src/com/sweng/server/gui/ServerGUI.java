@@ -149,7 +149,7 @@ public class ServerGUI extends JFrame {
 		listFriends.setAlignmentY(Component.TOP_ALIGNMENT);
 		listFriends.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		usersSummaryLabel = new JLabel("New label");
+		usersSummaryLabel = new JLabel("");
 		GroupLayout gl_tabUtente = new GroupLayout(tabUtente);
 		gl_tabUtente.setHorizontalGroup(
 			gl_tabUtente.createParallelGroup(Alignment.TRAILING)

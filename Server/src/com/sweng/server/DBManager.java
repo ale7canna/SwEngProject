@@ -593,7 +593,7 @@ public class DBManager {
 		
 		try {
 			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(
-					"INSERT INTO attivita (Nome, Luogo, Ora, idProgetto)" + "VALUES (?, ?, ?, ?)",
+					"INSERT INTO attivita (Nome, Luogo, Ora, idProgetto, Testo)" + "VALUES (?, ?, ?, ?, ?)",
 					new String[] { "idAttivita" });
 					
 			stat.setString(1, activity.getName());
@@ -601,6 +601,7 @@ public class DBManager {
 			Timestamp t = new Timestamp(activity.getHour().getTime());
 			stat.setTimestamp(3, t);
 			stat.setInt(4, activity.getIdProject());
+			stat.setString(5, activity.getText());
 			
 			stat.executeUpdate();
 			
