@@ -143,6 +143,8 @@ public class GuiManagerClient {
 		
 		@Override
 		public void addFriendsView(ProjectInfo projectInfo) {
+			Project project = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive());
+			projectInfo = clientManager.getProjectInfo(project);
 			ArrayList<User> friendsNotInProject = (ArrayList<User>) clientManager.getFriendships().clone();
 			
 			
@@ -225,6 +227,7 @@ public class GuiManagerClient {
 					
 				showError(error);
 			} else {
+				// TODO: capire perché progetto è nullo
 				activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text,
 						respActivity);
 						

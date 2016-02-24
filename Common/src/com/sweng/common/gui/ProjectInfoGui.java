@@ -299,19 +299,21 @@ public class ProjectInfoGui extends JPanel {
 		
 			
 			btnAddNewActivity.addMouseListener(new MouseAdapter() {
-				public void muoseClicked (MouseEvent arg0){
+				@Override
+				public void mouseClicked(MouseEvent e) {
 					
 					_listener.addActivityView(new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive()));
-					}
-				
+				}
 			});
 			
 			
 			btnAddNewParticipants.addMouseListener(new MouseAdapter() {
-				public void muoseClicked (MouseEvent arg0){
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
 					
 					_listener.addFriendsView(projectInfo);
-					}
+				}
 				
 			});
 			

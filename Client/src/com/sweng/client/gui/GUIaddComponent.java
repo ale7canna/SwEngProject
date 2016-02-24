@@ -226,6 +226,8 @@ public class GUIaddComponent extends JFrame {
 					// listFriends.getSelectedItems();
 					_listener.addParticipantstoExistingProject(listFriends.getSelectedItems(), i);
 					_listener.refreshAll();
+					setVisible(false);
+					dispose();
 
 				}
 				else if (!isProject) {
