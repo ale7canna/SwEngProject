@@ -253,6 +253,26 @@ public class ProjectInfoGui extends JPanel {
 			JLabel lblNewLabel_1 = new JLabel("Double click on a row to remove a participant from your project\r\n");
 			panel_1.add(lblNewLabel_1);
 			
+			JButton addPartBtn = new JButton("Add new Participants");
+			
+			JButton addActBtn = new JButton("Add new Activity");
+			
+			addActBtn.addMouseListener(new MouseAdapter() {
+				public void muoseClicked (MouseEvent e){
+					
+					_listener.addActivityView(new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive()));
+					}
+				
+			});
+			
+			addPartBtn.addMouseListener(new MouseAdapter() {
+				public void muoseClicked (MouseEvent e){
+					
+					_listener.addFriendsView(projectInfo);
+					}
+				
+			});
+			
 			listParticipants.addMouseListener(new MouseAdapter() {
 				
 				public void mouseClicked(MouseEvent e) {

@@ -52,6 +52,9 @@ public interface EventListenerGUI {
 
 	public void showNoticeInfo(Notice n);
 
-	public boolean WindowWasClosed();	
+	public boolean WindowWasClosed();
+
+	public void addParticipantstoExistingProject(
+			ArrayList<Integer> selectedItems, int i);	
 
 }

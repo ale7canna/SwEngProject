@@ -113,7 +113,7 @@ public class GuiManagerClient {
 		public void addProjectView() {
 			
 			ArrayList<User> friendships = clientManager.getFriendships();
-			addProjectFrame = new GUIaddComponent(this, friendships, true, false);
+			addProjectFrame = new GUIaddComponent(this, friendships, true, false, 0);
 			addProjectFrame.setVisible(true);
 			addProjectFrame.setBounds(700, 0, 600, 400);
 			// addProjectFrame.setSize(600, 600);
@@ -122,7 +122,7 @@ public class GuiManagerClient {
 		public void addActivityView(Project project) {
 			
 			ArrayList<User> participants = clientManager.getParticipant(project);
-			addActivityFrame = new GUIaddComponent(this, participants, false, false);
+			addActivityFrame = new GUIaddComponent(this, participants, false, false, 0);
 			addActivityFrame.setVisible(true);
 			addActivityFrame.setBounds(700, 0, 600, 500);
 			// addActivityFrame.setSize(600, 600);
@@ -133,11 +133,37 @@ public class GuiManagerClient {
 			// DA CREARE QUERY PER FAR SI DI TROVARE TUTTI GLI UTENTI NON MIEI
 			// AMICI
 			// notmyfriends = clientManager.getNotmyFriends();
-			addFriendsFrame = new GUIaddComponent(this, clientManager.getNotmyFriends(), true, true);
+			addFriendsFrame = new GUIaddComponent(this, clientManager.getNotmyFriends(), true, true, 0);
 			addFriendsFrame.setVisible(true);
 			addFriendsFrame.setBounds(700, 0, 600, 400);
 			// addFriendsFrame.setSize(600, 600);
 			System.out.println("Add friends view");
+			
+		}
+		
+		@Override
+		public void addFriendsView(ProjectInfo projectInfo) {
+			ArrayList<User> friendsNotInProject = (ArrayList<User>) clientManager.getFriendships().clone();
+			
+			
+//				for(User u1 : clientManager.getFriendships()){
+//					
+//					for(User u : projectInfo.getParticipants()){
+////						if(u1.getIdUser()= u.getIdUser())
+////							
+////						else
+////							break;
+//					}
+//				}
+			
+			for (User u : projectInfo.getParticipants()){
+				friendsNotInProject.remove(u);
+			}
+			
+			addFriendsFrame = new GUIaddComponent(this, clientManager.getNotmyFriends(), true, true, projectInfo.getIdProject());
+			addFriendsFrame.setVisible(true);
+			addFriendsFrame.setBounds(700, 0, 600, 400);
+			
 			
 		}
 		
@@ -404,6 +430,8 @@ public class GuiManagerClient {
 			
 			clientManager.startProject(project);
 		}
+
+	
 		
 	}
 	

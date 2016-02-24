@@ -66,7 +66,7 @@ public class GUIaddComponent extends JFrame {
 	private CheckBoxList listFriends;
 
 	public GUIaddComponent(EventListenerGUI _listener,
-			ArrayList<User> friendships, boolean isProject, boolean isAddFriends) {
+			ArrayList<User> friendships, boolean isProject, boolean isAddFriends, int i) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -89,10 +89,12 @@ public class GUIaddComponent extends JFrame {
 		
 		if (isProject && !isAddFriends)
 			NameLabel = new JLabel("Project Name\r\n");
-		if (isProject && isAddFriends)
+		else if (isProject && isAddFriends && i==0)
 			NameLabel = new JLabel("Add Friends\r\n");
-		if (!isProject)
+		else if (!isProject)
 			NameLabel = new JLabel("Activity Name\r\n");
+		else if(isProject && isAddFriends && i!=0)
+			NameLabel = new JLabel("Add Participant to Project\r\n");
 
 		NameLabel.setBounds(10, 21, 83, 14);
 		getContentPane().add(NameLabel);
@@ -149,9 +151,11 @@ public class GUIaddComponent extends JFrame {
 
 		if (isProject && !isAddFriends)
 			ChooseFriendsLabel = new JLabel("Choose partecipans among your friends ");
-		if (isProject && isAddFriends)
+		else if (isProject && isAddFriends && i==0)
 			ChooseFriendsLabel = new JLabel("Choose new friends");
-		if (!isProject)
+		else if (isProject && isAddFriends && i!=0)
+			ChooseFriendsLabel = new JLabel("Choose new friends to add to the Project");
+		else if (!isProject)
 			ChooseFriendsLabel = new JLabel("Choose responsible for the activity");
 		
 		ChooseFriendsLabel.setBounds(279, 21, 239, 14);
@@ -210,10 +214,17 @@ public class GUIaddComponent extends JFrame {
 							isActive.isSelected());
 					_listener.refreshAll();
 				}
-				else if (isProject && isAddFriends) {
+				else if (isProject && isAddFriends && i==0) {
 					// ArrayList<Integer> daaggiungere =
 					// listFriends.getSelectedItems();
 					_listener.addFriends(listFriends.getSelectedItems());
+					_listener.refreshAll();
+
+				}
+				else if (isProject && isAddFriends && i!=0) {
+					// ArrayList<Integer> daaggiungere =
+					// listFriends.getSelectedItems();
+					_listener.addParticipantstoExistingProject(listFriends.getSelectedItems(), i);
 					_listener.refreshAll();
 
 				}

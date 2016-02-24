@@ -25,4 +25,6 @@ public interface ICommonGui {
 	public void startProject(Project project) throws RemoteException, CustomException;
 	public void addText(ActivityInfo activityInfo, String text);
 	public void startProjectClicked(Project project);
+	public void addActivityView(Project project);
+	public void addFriendsView(ProjectInfo projectInfo);
 }
