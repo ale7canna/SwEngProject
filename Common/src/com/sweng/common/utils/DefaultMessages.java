@@ -14,7 +14,9 @@ public enum DefaultMessages {
 	ActivityWithoutResponsibleTitle("No responsible for activity"),
 	ActivityWithoutResponsible("Each responsible for activity gives up role of responsible. You become the responsible of the activity."),
 	ActivityDoneByOtherTitle("Your activity was completed"),
-	ActivityDoneByOther("Another co-responsible completed your activity.");
+	ActivityDoneByOther("Another co-responsible completed your activity."),
+	RemovedFromProjectTitle("You were removed from Project"),
+	RemovedFromProject("The admin removed from the project");
 	
 	
 	private String message;

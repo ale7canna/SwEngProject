@@ -24,6 +24,7 @@ import com.sweng.common.notice.FinishedActivityNotice;
 import com.sweng.common.notice.FinishedProjNotice;
 import com.sweng.common.notice.FriendshipAdded;
 import com.sweng.common.notice.Notice;
+import com.sweng.common.notice.RemovedFromProject;
 import com.sweng.common.notice.StartedProjNotice;
 import com.sweng.common.notice.UnlockedActivityNotice;
 import com.sweng.common.utils.CustomException;
@@ -271,19 +272,21 @@ public class Server extends UnicastRemoteObject implements IServer {
 			
 		dbMgr.setActivityDone(activityInfo);
 		
-		ArrayList<User> otherResponsibles = activityInfo.getResponsabili();
-		if (whoCompletedActivity != null)
-		{
-			int index = 0;
-			for (User u : otherResponsibles)
-			{
-				if (u.getIdUser() == whoCompletedActivity.getIdUser())
-					break;
-				index++;
-			}
-			if (index <= otherResponsibles.size())
-				otherResponsibles.remove(index);
-		}
+		ArrayList<User> otherResponsibles = (ArrayList<User>) activityInfo.getResponsabili().clone();
+		
+		otherResponsibles.remove(whoCompletedActivity);
+//		if (whoCompletedActivity != null)
+//		{
+//			int index = 0;
+//			for (User u : otherResponsibles)
+//			{
+//				if (u.getIdUser() == whoCompletedActivity.getIdUser())
+//					break;
+//				index++;
+//			}
+//			if (index <= otherResponsibles.size())
+//				otherResponsibles.remove(index);
+//		}
 			
 		
 		Notice n = new FinishedActivityNotice(activityInfo, whoCompletedActivity);
@@ -456,7 +459,29 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public ArrayList<User> removeParticipant(Participant participant) throws RemoteException, CustomException {
 		
 		dbMgr.removeParticipant(participant);
+		
+		User removedUser = dbMgr.getUser(participant.getIdUser());
+		Project projectFromId = dbMgr.getProjectFromId(participant.getIdProject());
+		ArrayList<Activity> activitiesFromProject = dbMgr.getActivitiesFromProject(projectFromId);
+		for (Activity act : activitiesFromProject)
+		{
+			ActivityInfo activityInfo = getActivityInfo(act);
+			for (User resp : activityInfo.getResponsabili())
+			{
+				if (resp.equals(removedUser))
+				{
+					ActivityResponsible ar = new ActivityResponsible(resp.getIdUser(), act.getIdActivity());
+					removeActivityResponsible(ar);
+				}
+			}
+		}
+		
+		Notice n = new RemovedFromProject(dbMgr.getProjectInfo(projectFromId));
+		NotifyUser(n, removedUser);
+		
 		return dbMgr.getParticipantsFromProject(new Project(participant.getIdProject()));
+		
+		
 	}
 	
 	@Override

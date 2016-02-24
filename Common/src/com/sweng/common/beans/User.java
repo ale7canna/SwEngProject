@@ -71,8 +71,10 @@ public class User implements Serializable {
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof User))
+			return false;
 		User u = (User)obj;
-		if (u.idUser == getIdUser() && u.name == getName() && u.surname == getSurname() && u.username == getUsername())
+		if (u.idUser == getIdUser() && u.name.equals(getName()) && u.surname.equals(getSurname()) && u.username.equals(getUsername()))
 			return true;
 		
 		return false;

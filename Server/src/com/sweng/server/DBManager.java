@@ -724,15 +724,14 @@ public class DBManager {
 		}
 	}
 	
-	public Project getProjectFromNameAndAdmin(String projectName, int idAdmin) throws CustomException {
+	public Project getProjectFromId(int idProject) throws CustomException {
 		
 		Project result = null;
-		String query = "SELECT * FROM progetto WHERE Nome = ? AND idAdmin = ? ";
+		String query = "SELECT * FROM progetto WHERE idProgetto = ? ";
 		
 		try {
 			PreparedStatement stat = (PreparedStatement) connection.prepareStatement(query);
-			stat.setString(1, projectName);
-			stat.setInt(2, idAdmin);
+			stat.setInt(1, idProject);
 			ResultSet rs = stat.executeQuery();
 			
 			if (rs.next()) {
