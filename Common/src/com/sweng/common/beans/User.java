@@ -68,4 +68,14 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		User u = (User)obj;
+		if (u.idUser == getIdUser() && u.name == getName() && u.surname == getSurname() && u.username == getUsername())
+			return true;
+		
+		return false;
+		
+	}
 }

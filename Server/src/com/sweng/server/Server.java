@@ -271,13 +271,26 @@ public class Server extends UnicastRemoteObject implements IServer {
 			
 		dbMgr.setActivityDone(activityInfo);
 		
-		if (whoCompletedActivity != null)
-			activityInfo.getResponsabili().remove(whoCompletedActivity);
-			
 		ArrayList<User> otherResponsibles = activityInfo.getResponsabili();
+		if (whoCompletedActivity != null)
+		{
+			int index = 0;
+			for (User u : otherResponsibles)
+			{
+				if (u.getIdUser() == whoCompletedActivity.getIdUser())
+					break;
+				index++;
+			}
+			if (index <= otherResponsibles.size())
+				otherResponsibles.remove(index);
+		}
+			
 		
 		Notice n = new FinishedActivityNotice(activityInfo, whoCompletedActivity);
-		NotifyUser(n, otherResponsibles);
+		if (otherResponsibles.size() > 0)
+			NotifyUser(n, otherResponsibles);
+		User admin = dbMgr.getUser(activityInfo.getProject().getIdAdmin());
+		NotifyUser(n, admin);
 		
 		// CONTROLLARE STATO ATTIVITA/PROGETTO PER NOTIFICHE
 		
@@ -295,9 +308,6 @@ public class Server extends UnicastRemoteObject implements IServer {
 				break;
 			}
 		}
-		
-		User admin = dbMgr.getUser(activityInfo.getProject().getIdAdmin());
-		NotifyUser(n, admin);
 		
 		
 	}

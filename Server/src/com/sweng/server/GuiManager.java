@@ -254,6 +254,20 @@ public class GuiManager {
 		public void startProjectClicked(Project project) {
 			
 		}
+
+		@Override
+		public void addActivityView(Project project) {
+			
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void addFriendsView(ProjectInfo projectInfo) {
+			
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 	
