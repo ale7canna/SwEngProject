@@ -222,7 +222,7 @@ public class GUIaddComponent extends JFrame {
 
 				}
 				else if (isProject && isAddFriends && i!=0) {
-					// ArrayList<Integer> daaggiungere =
+					// ArrayList<Integer> da aggiungere =
 					// listFriends.getSelectedItems();
 					_listener.addParticipantstoExistingProject(listFriends.getSelectedItems(), i);
 					_listener.refreshAll();

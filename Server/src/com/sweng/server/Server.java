@@ -63,33 +63,33 @@ public class Server extends UnicastRemoteObject implements IServer {
 		listener = _listener;
 	}
 	
-	public ArrayList<User> getAllUsers() throws CustomException
-	{
+	public ArrayList<User> getAllUsers() throws CustomException {
+		
 		return dbMgr.getAllUsers();
 	}
 	
-	public ArrayList<IClient> getObservers() throws CustomException
-	{
+	public ArrayList<IClient> getObservers() throws CustomException {
+		
 		return dbMgr.getObservers();
 	}
 	
-	public ArrayList<Project> getAllProjects() throws CustomException
-	{
+	public ArrayList<Project> getAllProjects() throws CustomException {
+		
 		return dbMgr.getAllProjects();
 	}
 	
-	public int getActiveProjectsCount() throws CustomException
-	{
+	public int getActiveProjectsCount() throws CustomException {
+		
 		return dbMgr.getActiveProjectsCount();
 	}
 	
-	public ArrayList<Activity> getAllActivities() throws CustomException
-	{
+	public ArrayList<Activity> getAllActivities() throws CustomException {
+		
 		return dbMgr.getAllActivities();
 	}
 	
-	public int getDoneActivitiesCount() throws CustomException
-	{
+	public int getDoneActivitiesCount() throws CustomException {
+		
 		return dbMgr.getDoneActivitiesCount();
 	}
 	
@@ -108,9 +108,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 	
 	public void startProject(Project project) throws RemoteException, CustomException {
 		
-		dbMgr.setProjectActive(project);
-		NotifyFirstActivityResponsible(project);
-		NotifyAllParticipants(project, true);
+		if (!dbMgr.getProjectFromId(project.getIdProject()).isActive()) {
+			dbMgr.setProjectActive(project);
+			NotifyFirstActivityResponsible(project);
+			NotifyAllParticipants(project, true);
+		}
 	}
 	
 	@Override
@@ -275,19 +277,6 @@ public class Server extends UnicastRemoteObject implements IServer {
 		ArrayList<User> otherResponsibles = (ArrayList<User>) activityInfo.getResponsabili().clone();
 		
 		otherResponsibles.remove(whoCompletedActivity);
-//		if (whoCompletedActivity != null)
-//		{
-//			int index = 0;
-//			for (User u : otherResponsibles)
-//			{
-//				if (u.getIdUser() == whoCompletedActivity.getIdUser())
-//					break;
-//				index++;
-//			}
-//			if (index <= otherResponsibles.size())
-//				otherResponsibles.remove(index);
-//		}
-			
 		
 		Notice n = new FinishedActivityNotice(activityInfo, whoCompletedActivity);
 		if (otherResponsibles.size() > 0)
@@ -311,7 +300,6 @@ public class Server extends UnicastRemoteObject implements IServer {
 				break;
 			}
 		}
-		
 		
 	}
 	
@@ -435,8 +423,9 @@ public class Server extends UnicastRemoteObject implements IServer {
 		thread.start();
 	}
 	
-	private void endOfProject(Project project) {
+	private void endOfProject(Project project) throws CustomException {
 		
+		dbMgr.setProjectComplete(project);
 		NotifyAllParticipants(project, false);
 	}
 	
@@ -463,13 +452,10 @@ public class Server extends UnicastRemoteObject implements IServer {
 		User removedUser = dbMgr.getUser(participant.getIdUser());
 		Project projectFromId = dbMgr.getProjectFromId(participant.getIdProject());
 		ArrayList<Activity> activitiesFromProject = dbMgr.getActivitiesFromProject(projectFromId);
-		for (Activity act : activitiesFromProject)
-		{
+		for (Activity act : activitiesFromProject) {
 			ActivityInfo activityInfo = getActivityInfo(act);
-			for (User resp : activityInfo.getResponsabili())
-			{
-				if (resp.equals(removedUser))
-				{
+			for (User resp : activityInfo.getResponsabili()) {
+				if (resp.equals(removedUser)) {
 					ActivityResponsible ar = new ActivityResponsible(resp.getIdUser(), act.getIdActivity());
 					removeActivityResponsible(ar);
 				}
@@ -480,7 +466,6 @@ public class Server extends UnicastRemoteObject implements IServer {
 		NotifyUser(n, removedUser);
 		
 		return dbMgr.getParticipantsFromProject(new Project(participant.getIdProject()));
-		
 		
 	}
 	

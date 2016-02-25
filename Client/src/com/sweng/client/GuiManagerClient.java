@@ -98,6 +98,7 @@ public class GuiManagerClient {
 		JFrame activityInfoFrame = null;
 		JFrame projectInfoFrame = null;
 		JFrame noticeInfoFrame = null;
+		ProjectInfoGui projectInfoGui = null;
 		
 		Project project = null;
 		Activity activity = null;
@@ -121,6 +122,7 @@ public class GuiManagerClient {
 		
 		public void addActivityView(Project project) {
 			
+			this.project = project;
 			ArrayList<User> participants = clientManager.getParticipant(project);
 			addActivityFrame = new GUIaddComponent(this, participants, false, false, 0);
 			addActivityFrame.setVisible(true);
@@ -143,30 +145,23 @@ public class GuiManagerClient {
 		
 		@Override
 		public void addFriendsView(ProjectInfo projectInfo) {
-			Project project = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive());
+			Project project = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive(), projectInfo.isComplete());
 			projectInfo = clientManager.getProjectInfo(project);
 			ArrayList<User> friendsNotInProject = (ArrayList<User>) clientManager.getFriendships().clone();
-			
-			
-//				for(User u1 : clientManager.getFriendships()){
-//					
-//					for(User u : projectInfo.getParticipants()){
-////						if(u1.getIdUser()= u.getIdUser())
-////							
-////						else
-////							break;
-//					}
-//				}
-			
+
 			for (User u : projectInfo.getParticipants()){
 				friendsNotInProject.remove(u);
 			}
 			
+			if (friendsNotInProject.size() > 0)
+			{
 			addFriendsFrame = new GUIaddComponent(this, friendsNotInProject, true, true, projectInfo.getIdProject());
 			addFriendsFrame.setVisible(true);
 			addFriendsFrame.setBounds(700, 0, 600, 400);
-			
-			
+			}
+			else
+				showError("All of your friends are already in your project");
+
 		}
 		
 		// ADDING TO DB
@@ -210,6 +205,9 @@ public class GuiManagerClient {
 						
 				JOptionPane.showMessageDialog(null, "Activity was added correctly");
 				addActivityFrame.clearall();
+				
+				if (projectInfoGui != null & project != null)
+					projectInfoGui.refreshContent(clientManager.getProjectInfo(project));
 			}
 		}
 		
@@ -227,7 +225,6 @@ public class GuiManagerClient {
 					
 				showError(error);
 			} else {
-				// TODO: capire perché progetto è nullo
 				activity = clientManager.addActivity(nameActivity, project.getIdProject(), place, hour, text,
 						respActivity);
 						
@@ -236,6 +233,9 @@ public class GuiManagerClient {
 				
 				if (project.isActive())
 					clientManager.startProject(project);
+				
+				if (projectInfoGui != null & project != null)
+					projectInfoGui.refreshContent(clientManager.getProjectInfo(project));
 			}
 		}
 		
@@ -254,6 +254,8 @@ public class GuiManagerClient {
 		public void addParticipantstoExistingProject(ArrayList<Integer> selectedItems, int i) {
 			// TODO Auto-generated method stub
 			clientManager.addParticipantstoExistingProject(selectedItems, i);
+			if (projectInfoGui != null & project != null)
+				projectInfoGui.refreshContent(clientManager.getProjectInfo(project));
 		}
 
 		
@@ -268,7 +270,12 @@ public class GuiManagerClient {
 		public void RemoveProjectPressed(ProjectInfo projectInfo) {
 			
 			clientManager.removeProject(projectInfo);
+			JOptionPane.showMessageDialog(null, "The Project was correctly removed.");
+			refreshAll();
 			projectInfoFrame.setVisible(false);
+			projectInfoFrame.dispose();
+			projectInfoFrame = null;
+			projectInfoGui = null;
 		}
 		
 		// showing info
@@ -280,13 +287,14 @@ public class GuiManagerClient {
 			else
 				isAdmin = false;
 				
-			Project project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive());
+			project = new Project(p.getIdProject(), p.getIdAdmin(), p.getName(), p.isActive(), p.isComplete());
 			ProjectInfo projectInfo = clientManager.getProjectInfo(project);
 			projectInfoFrame = new JFrame();
 			ProjectInfoGui piGui = new ProjectInfoGui(projectInfo, this, isAdmin, clientManager.getId());
 			projectInfoFrame.getContentPane().add(piGui);
 			projectInfoFrame.setSize(800, 600);
 			projectInfoFrame.setVisible(true);
+			projectInfoGui = piGui;
 		}
 		
 		public void showActivityInfo(Activity a) {
@@ -332,6 +340,8 @@ public class GuiManagerClient {
 			
 			clientManager.setActivityInfoDone(activityInfo);
 			activityInfoFrame.setVisible(false);
+			if (projectInfoGui != null & project != null)
+				projectInfoGui.refreshContent(clientManager.getProjectInfo(project));
 		}
 		
 		// REFRESHING AFTER ADDING OR DELETE
@@ -396,7 +406,11 @@ public class GuiManagerClient {
 		@Override
 		public ArrayList<User> removeParticipant(Participant part) {
 			
-			return clientManager.removeParticipant(part);
+			ArrayList<User> removeParticipant = clientManager.removeParticipant(part);
+			if (projectInfoGui != null & project != null)
+				projectInfoGui.refreshContent(clientManager.getProjectInfo(project));
+			
+			return removeParticipant;
 		}
 		
 		@Override

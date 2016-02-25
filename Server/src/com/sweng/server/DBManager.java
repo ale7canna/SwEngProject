@@ -104,7 +104,7 @@ public class DBManager {
 			result = new ArrayList<Project>();
 			while (rs.next()) {
 				Project proj = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"),
-						rs.getBoolean("Attivo"));
+						rs.getBoolean("Attivo"), rs.getBoolean("isComplete"));
 				result.add(proj);
 			}
 			
@@ -208,7 +208,7 @@ public class DBManager {
 			result = new ArrayList<Project>();
 			while (rs.next()) {
 				Project p = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"),
-						rs.getBoolean("Attivo"));
+						rs.getBoolean("Attivo"), rs.getBoolean("isComplete"));
 				result.add(p);
 			}
 			
@@ -249,7 +249,9 @@ public class DBManager {
 		return result;
 	}
 	
-	public ProjectInfo getProjectInfo(Project project) throws CustomException {
+	public ProjectInfo getProjectInfo(Project _project) throws CustomException {
+		
+		Project project = getProjectFromId(_project.getIdProject());
 		
 		ProjectInfo resultInfo = null;
 		int attivitaComplete = 0;
@@ -318,7 +320,7 @@ public class DBManager {
 		if (admin == null && actInResp == null && parts == null)
 			throw new CustomException(Errors.ProjectsNotFound);
 		else
-			resultInfo = new ProjectInfo(project.getName(), project.getIdProject(), project.isActive(), admin,
+			resultInfo = new ProjectInfo(project.getName(), project.getIdProject(), project.isActive(), project.isComplete(), admin,
 					actInResp, parts, compPerc);
 					
 		return resultInfo;
@@ -520,8 +522,8 @@ public class DBManager {
 			ResultSet rs = stat.executeQuery();
 			
 			if (rs.next()) {
-				project = new Project(rs.getInt("idProgetto"), rs.getInt("idAttivita"), rs.getString("Nome"),
-						rs.getBoolean("Attivo"));
+				project = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"),
+						rs.getBoolean("Attivo"), rs.getBoolean("isComplete"));
 			}
 			
 		} catch (SQLException e) {
@@ -670,7 +672,7 @@ public class DBManager {
 					
 			stat.setString(1, project.getName());
 			stat.setInt(2, project.getIdAdmin());
-			stat.setBoolean(3, project.isActive());
+			stat.setBoolean(3, false);
 			stat.executeUpdate();
 			
 			ResultSet rs = stat.getGeneratedKeys();
@@ -736,7 +738,7 @@ public class DBManager {
 			
 			if (rs.next()) {
 				result = new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"),
-						rs.getBoolean("Attivo"));
+						rs.getBoolean("Attivo"), rs.getBoolean("isComplete"));
 			} else
 				throw new CustomException(Errors.ProjectsNotFound);
 		} catch (SQLException e) {
@@ -1177,7 +1179,7 @@ public class DBManager {
 			ResultSet rs = stat.executeQuery();
 			if (rs.next())
 				return new Project(rs.getInt("idProgetto"), rs.getInt("idAdmin"), rs.getString("Nome"),
-						rs.getBoolean("Attivo"));
+						rs.getBoolean("Attivo"), rs.getBoolean("isComplete"));
 		} catch (SQLException e) {
 			throw new CustomException(Errors.ServerError);
 		}
@@ -1207,6 +1209,24 @@ public class DBManager {
 		
 		try {
 			String query = "UPDATE progetto SET Attivo = 1 WHERE idProgetto = ?";
+			PreparedStatement stat = connection.prepareStatement(query);
+			
+			stat.setInt(1, project.getIdProject());
+			
+			int affectedRows = stat.executeUpdate();
+			
+			if (affectedRows != 1)
+				throw new CustomException(Errors.ProjectsNotFound);
+				
+		} catch (SQLException e) {
+			throw new CustomException(Errors.ServerError);
+		}
+	}
+	
+	public void setProjectComplete(Project project) throws CustomException {
+		
+		try {
+			String query = "UPDATE progetto SET isComplete = 1 WHERE idProgetto = ?";
 			PreparedStatement stat = connection.prepareStatement(query);
 			
 			stat.setInt(1, project.getIdProject());

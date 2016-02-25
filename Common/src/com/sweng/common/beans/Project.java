@@ -8,6 +8,7 @@ public class Project  implements Serializable{
 	private int idProject;
 	private int idAdmin;
 	private boolean isActive;
+	private boolean isComplete;
 	
 	public Project(int _idProject){
 		idProject = _idProject;
@@ -20,12 +21,13 @@ public class Project  implements Serializable{
 		isActive = _isActive;
 	}
 	
-	public Project(int _idProject, int _idAdmin, String _name, boolean _isActive)
+	public Project(int _idProject, int _idAdmin, String _name, boolean _isActive, boolean _isComplete)
 	{
 		idProject = _idProject;
 		idAdmin = _idAdmin;
 		name = _name;
 		isActive = _isActive;
+		isComplete = _isComplete;
 	}
 
 	public String getName() {
@@ -59,4 +61,18 @@ public class Project  implements Serializable{
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	
+	public boolean isComplete() {
+		
+		return isComplete;
+	}
+
+	
+	public void setComplete(boolean isComplete) {
+		
+		this.isComplete = isComplete;
+	}
+	
+	
 }

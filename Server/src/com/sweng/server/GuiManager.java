@@ -123,7 +123,7 @@ public class GuiManager {
 		public void RemoveProjectPressed(ProjectInfo projectInfo) {
 			
 			Project p = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(),
-					projectInfo.getName(), projectInfo.isActive());
+					projectInfo.getName(), projectInfo.isActive(), projectInfo.isComplete());
 			try {
 				server.removeProject(p);
 				GUI.ChangeProjectInfo(null);
@@ -279,7 +279,7 @@ public class GuiManager {
 				@Override
 				public void run() {
 					
-					JOptionPane.showMessageDialog(null, message + ". Please try again! ");
+					JOptionPane.showMessageDialog(null, message);
 				}
 			});
 		}

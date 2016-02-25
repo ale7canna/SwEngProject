@@ -340,8 +340,9 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 	public void removeProject(ProjectInfo p) {
 		
 		try {
-			Project proj = new Project(p.getIdProject(), p.getAdmin().getIdUser(), p.getName(), p.isActive());
+			Project proj = new Project(p.getIdProject(), p.getAdmin().getIdUser(), p.getName(), p.isActive(), p.isComplete());
 			server.removeProject(proj);
+			loadProjectsfromServer(user);
 		} catch (RemoteException | CustomException e) {
 			if (e instanceof CustomException)
 				guiManagerClient.showError(e.getMessage());
@@ -475,7 +476,6 @@ public class Client extends UnicastRemoteObject implements IClient, IClientManag
 		
 		try {
 			ArrayList<User> removeActivityResponsible = server.removeActivityResponsible(resp);
-			if(resp.getIdUser()==user.getIdUser())
 		
 			loadActivitiesfromServer(user);
 			return removeActivityResponsible;

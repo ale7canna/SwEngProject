@@ -9,6 +9,7 @@ public class ProjectInfo implements Serializable{
 	private String name;
 	private int idProject;
 	private boolean isActive;
+	private boolean isComplete;
 	private User admin;
 	private HashMap<Activity, ArrayList<User>> activitiesInResponsible;
 	private ArrayList<User> participants;
@@ -16,13 +17,14 @@ public class ProjectInfo implements Serializable{
 	
 	
 	
-	public ProjectInfo(String name, int idProject, boolean isActive, User admin,
+	public ProjectInfo(String name, int idProject, boolean isActive, boolean isComplete, User admin,
 			HashMap<Activity, ArrayList<User>> activitiesInResponsible, ArrayList<User> participants,
 			float completetionPercentage) {
 		super();
 		this.name = name;
 		this.idProject = idProject;
 		this.isActive = isActive;
+		this.isComplete = isComplete;
 		this.admin = admin;
 		this.activitiesInResponsible = activitiesInResponsible;
 		this.participants = participants;
@@ -71,6 +73,20 @@ public class ProjectInfo implements Serializable{
 	}
 	public void setCompletetionPercentage(float completetionPercentage) {
 		this.completetionPercentage = completetionPercentage;
+	}
+
+
+	
+	public boolean isComplete() {
+		
+		return isComplete;
+	}
+
+
+	
+	public void setComplete(boolean isComplete) {
+		
+		this.isComplete = isComplete;
 	}
 	
 	

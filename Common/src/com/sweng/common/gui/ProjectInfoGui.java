@@ -35,12 +35,15 @@ public class ProjectInfoGui extends JPanel {
 	
 	private JTextField txtProjectName;
 	private JTextField txtAdmin;
-	JList listActivities;
-	JList listParticipants;
+	private JList listActivities;
+	private JList listParticipants;
+	private ProjectInfo projectInfo;
+	private JCheckBox checkBox;
+	private JProgressBar progressBar;
 	
-	public ProjectInfoGui(ProjectInfo projectInfo, ICommonGui _listener, boolean isAdmin, int userID) {
+	public ProjectInfoGui(ProjectInfo _projectInfo, ICommonGui _listener, boolean isAdmin, int userID) {
 		setLayout(new GridLayout(0, 1, 0, 0));
-		
+		projectInfo = _projectInfo;
 		JSplitPane splitPane = new JSplitPane();
 		// getContentPane().add(splitPane);
 		add(splitPane);
@@ -59,42 +62,33 @@ public class ProjectInfoGui extends JPanel {
 		lblDoubleClickTo_1.setFont(new Font("Trebuchet MS", Font.ITALIC, 10));
 		
 		JButton btnAddNewParticipants = new JButton("Add New Participants");
-		if(!isAdmin){
+		if (!isAdmin || projectInfo.getCompletetionPercentage() >= 1) {
 			btnAddNewParticipants.setVisible(false);
-		}
-		else
+		} else
 			btnAddNewParticipants.setVisible(true);
-		
+			
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(71)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(lblPartecipanti, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-							.addGap(61))
+		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup().addGap(71)
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panel_1.createSequentialGroup()
+										.addComponent(lblPartecipanti, GroupLayout.PREFERRED_SIZE, 85,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(61))
 						.addComponent(lblDoubleClickTo_1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addComponent(listParticipants, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(81)
-					.addComponent(btnAddNewParticipants)
-					.addContainerGap(316, Short.MAX_VALUE))
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblPartecipanti)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(listParticipants, GroupLayout.PREFERRED_SIZE, 309, GroupLayout.PREFERRED_SIZE)
-					.addGap(54)
-					.addComponent(btnAddNewParticipants)
-					.addPreferredGap(ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-					.addComponent(lblDoubleClickTo_1)
-					.addContainerGap())
-		);
+				.addGroup(gl_panel_1.createSequentialGroup().addGap(81).addComponent(btnAddNewParticipants)
+						.addContainerGap(316, Short.MAX_VALUE)));
+		gl_panel_1
+				.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup().addContainerGap().addComponent(lblPartecipanti)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(listParticipants, GroupLayout.PREFERRED_SIZE, 309,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(54).addComponent(btnAddNewParticipants)
+								.addPreferredGap(ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+								.addComponent(lblDoubleClickTo_1).addContainerGap()));
 		panel_1.setLayout(gl_panel_1);
 		
 		JSplitPane splitPane_1 = new JSplitPane();
@@ -126,7 +120,7 @@ public class ProjectInfoGui extends JPanel {
 		lblAttivo.setBounds(261, 47, 82, 20);
 		panel.add(lblAttivo);
 		
-		JCheckBox checkBox = new JCheckBox("");
+		checkBox = new JCheckBox("");
 		checkBox.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -135,20 +129,17 @@ public class ProjectInfoGui extends JPanel {
 				if (e.getClickCount() == 2) {
 					if (isAdmin) {
 						int scelta = JOptionPane.showConfirmDialog(null,
-								"Do you really want to start " + projectInfo.getName() + " project?",
-								"Start Project", JOptionPane.YES_NO_OPTION);
+								"Do you really want to start " + projectInfo.getName() + " project?", "Start Project",
+								JOptionPane.YES_NO_OPTION);
 						if (scelta == JOptionPane.YES_OPTION) {
-							_listener.startProjectClicked(new Project(
-									projectInfo.getIdProject(),
-									projectInfo.getAdmin().getIdUser(),
-									projectInfo.getName(),
-									projectInfo.isActive()));
+							_listener.startProjectClicked(
+									new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(),
+											projectInfo.getName(), projectInfo.isActive(), projectInfo.isComplete()));
 							JOptionPane.showMessageDialog(null, "The Project was correctly started.");
 							_listener.refreshAll();
 							checkBox.setSelected(true);
 						}
-					}
-					else
+					} else
 						JOptionPane.showMessageDialog(null, "Only the project admin can start the project");
 				}
 			}
@@ -159,7 +150,7 @@ public class ProjectInfoGui extends JPanel {
 		checkBox.setBounds(357, 47, 29, 29);
 		panel.add(checkBox);
 		
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		if (projectInfo != null) {
 			int comp = (int) (projectInfo.getCompletetionPercentage() * 100);
 			progressBar.setValue(comp);
@@ -190,12 +181,10 @@ public class ProjectInfoGui extends JPanel {
 				public void mouseClicked(MouseEvent arg0) {
 					
 					int scelta = JOptionPane.showConfirmDialog(null,
-							"Do you really want to remove from your friends " + projectInfo.getName() + "?",
-							"Remove Project", JOptionPane.YES_NO_OPTION);
+							"Do you really want to remove " + projectInfo.getName() + " project?", "Remove Project",
+							JOptionPane.YES_NO_OPTION);
 					if (scelta == JOptionPane.YES_OPTION) {
 						_listener.RemoveProjectPressed(projectInfo);
-						JOptionPane.showMessageDialog(null, "The Project was correctly removed.");
-						_listener.refreshAll();
 					}
 					
 				}
@@ -203,28 +192,6 @@ public class ProjectInfoGui extends JPanel {
 			btnRemove.setBounds(271, 12, 115, 29);
 			panel.add(btnRemove);
 			
-			if (!projectInfo.isActive()) {
-				JButton btnNewButton = new JButton("Start Project");
-				btnNewButton.addMouseListener(new MouseAdapter() {
-					
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						
-						Project project = new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(),
-								projectInfo.getName(), projectInfo.isActive());
-						try {
-							_listener.startProject(project);
-						} catch (RemoteException | CustomException e) {
-							if (e instanceof CustomException)
-								JOptionPane.showMessageDialog(null, e.getMessage());
-							else
-								e.printStackTrace();
-						}
-					}
-				});
-				btnNewButton.setBounds(285, 133, 89, 23);
-				panel.add(btnNewButton);
-			}
 		}
 		
 		JPanel panel_2 = new JPanel();
@@ -242,43 +209,31 @@ public class ProjectInfoGui extends JPanel {
 		
 		JButton btnAddNewActivity = new JButton("Add New Activity");
 		
-		if(!isAdmin){
+		if (!isAdmin || projectInfo.getCompletetionPercentage() >= 1) {
 			btnAddNewActivity.setVisible(false);
-		}
-		else
+		} else
 			btnAddNewActivity.setVisible(true);
-		
+			
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
+		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addGap(171)
-							.addComponent(lblAttivit))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addGap(46)
-							.addComponent(lblDoubleClickTo, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(88, Short.MAX_VALUE))
+						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_2.createSequentialGroup().addGap(171).addComponent(lblAttivit))
+								.addGroup(gl_panel_2.createSequentialGroup().addGap(46).addComponent(lblDoubleClickTo,
+										GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(88, Short.MAX_VALUE))
 				.addComponent(listActivities, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGap(27)
-					.addComponent(btnAddNewActivity)
-					.addContainerGap(281, Short.MAX_VALUE))
-		);
-		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblAttivit)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(listActivities, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(btnAddNewActivity)
-					.addPreferredGap(ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-					.addComponent(lblDoubleClickTo)
-					.addContainerGap())
-		);
+				.addGroup(gl_panel_2.createSequentialGroup().addGap(27).addComponent(btnAddNewActivity)
+						.addContainerGap(281, Short.MAX_VALUE)));
+		gl_panel_2
+				.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup().addContainerGap().addComponent(lblAttivit)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(listActivities, GroupLayout.PREFERRED_SIZE, 213,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(btnAddNewActivity)
+								.addPreferredGap(ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+								.addComponent(lblDoubleClickTo).addContainerGap()));
 		panel_2.setLayout(gl_panel_2);
 		
 		splitPane_1.setDividerLocation(175);
@@ -296,16 +251,16 @@ public class ProjectInfoGui extends JPanel {
 			JLabel lblNewLabel_1 = new JLabel("Double click on a row to remove a participant from your project\r\n");
 			panel_1.add(lblNewLabel_1);
 			
-		
-			
 			btnAddNewActivity.addMouseListener(new MouseAdapter() {
+				
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					
-					_listener.addActivityView(new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(), projectInfo.getName(), projectInfo.isActive()));
+					_listener
+							.addActivityView(new Project(projectInfo.getIdProject(), projectInfo.getAdmin().getIdUser(),
+									projectInfo.getName(), projectInfo.isActive(), projectInfo.isComplete()));
 				}
 			});
-			
 			
 			btnAddNewParticipants.addMouseListener(new MouseAdapter() {
 				
@@ -322,15 +277,20 @@ public class ProjectInfoGui extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					
 					if (e.getClickCount() == 2) {
-						User u = (User) ((MyUserListModel) listParticipants.getModel())
-								.getUserAt(listParticipants.getSelectedIndex());
-						int scelta = JOptionPane.showConfirmDialog(
-								null, "Do you really want to remove " + u.getUsername() + " from "
-										+ projectInfo.getName() + " project?",
-								"Remove participant", JOptionPane.YES_NO_OPTION);
-						if (scelta == JOptionPane.YES_OPTION) {
-							Participant part = new Participant(u.getIdUser(), projectInfo.getIdProject());
-							addUsers(_listener.removeParticipant(part));
+						if (projectInfo.isComplete())
+							JOptionPane.showMessageDialog(null,
+									"You cannot remove participant cause the project is complete.");
+						else {
+							User u = (User) ((MyUserListModel) listParticipants.getModel())
+									.getUserAt(listParticipants.getSelectedIndex());
+							int scelta = JOptionPane.showConfirmDialog(
+									null, "Do you really want to remove " + u.getUsername() + " from "
+											+ projectInfo.getName() + " project?",
+									"Remove participant", JOptionPane.YES_NO_OPTION);
+							if (scelta == JOptionPane.YES_OPTION) {
+								Participant part = new Participant(u.getIdUser(), projectInfo.getIdProject());
+								addUsers(_listener.removeParticipant(part));
+							}
 						}
 					}
 					
@@ -393,5 +353,27 @@ public class ProjectInfoGui extends JPanel {
 			for (User u : users) {
 				model.addElement(u);
 			}
+	}
+	
+	public void refreshContent(ProjectInfo info) {
+		
+		if (info != null)
+			txtProjectName = new JTextField(info.getName());
+			
+		if (info != null)
+			checkBox.setSelected(info.isActive());
+			
+		if (info != null) {
+			int comp = (int) (info.getCompletetionPercentage() * 100);
+			progressBar.setValue(comp);
+		}
+		if (info != null)
+			txtAdmin = new JTextField(info.getAdmin().getUsername());
+			
+		if (info != null)
+			addActivitiesAndUsers(info.getActivitiesInResponsible());
+		if (info != null)
+			addUsers(info.getParticipants());
+		this.projectInfo = info;
 	}
 }
