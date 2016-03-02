@@ -108,7 +108,7 @@ public class GuiManager {
 				System.out.println(project.getName());
 				
 				try {
-					projectInfoGui = new ProjectInfoGui(server.getProjectInfo(project), this, true, 0);
+					projectInfoGui = new ProjectInfoGui(server.getProjectInfo(project), this, false, 0);
 					JFrame frame = new JFrame();
 					frame.getContentPane().add(projectInfoGui);
 					frame.setVisible(true);
@@ -141,7 +141,7 @@ public class GuiManager {
 			} catch (CustomException e) {
 				JOptionPane.showMessageDialog(null, "AHIA " + e.getMessage());
 			}
-			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this, true, 0);
+			ProjectInfoGui projectInfo = new ProjectInfoGui(pi, this, false, 0);
 			GUI.ChangeProjectInfo(projectInfo);
 		}
 		
